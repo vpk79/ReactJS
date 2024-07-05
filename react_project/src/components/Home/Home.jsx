@@ -1,13 +1,13 @@
-import Header from './Header'
-import Topbar from './Topbar'
-import Navbar from './Navbar'
-import About from './About'
-import Service from './Service'
-import Feature from './Feature'
-import Team from './Team'
-import Appointment from './Appointment'
-import Testemonial from './Testimonial'
-import Footer from './Footer'
+import Header from '../Main/Header'
+import Topbar from '../Main/Topbar'
+import Navbar from '../Main/Navbar'
+import About from '../Main/About'
+import Service from '../Main/Service'
+import Feature from '../Main/Feature'
+import Team from '../Main/Team'
+import Appointment from '../Main/Appointment'
+import Testemonial from '../Main/Testimonial'
+import Footer from '../Main/Footer'
 
 export default function Home(){
     return(

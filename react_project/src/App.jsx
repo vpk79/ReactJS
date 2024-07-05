@@ -1,8 +1,12 @@
 import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom';
+
 import Home from './components/Home/Home'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+
 
   return (
     <>
@@ -22,8 +26,10 @@ function App() {
       </div> */}
       {/* Spinner End */}
 
-      <Home />
 
+      <Routes>
+          <Route path="/" element={<Home />} />
+      </Routes>
 
       {/* Back to Top */}
       <a
