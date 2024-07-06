@@ -6,6 +6,7 @@ import AboutPage from './components/AboutPage/AboutPage';
 import TestimonialPage from './components/TestimonialPage/TestimonialPage';
 import ServicePage from './components/ServicePage/ServicePage';
 import ContactPage from './components/ContactPage/ContactPage';
+import TeamPage from './components/TeamPage/TeamPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -36,6 +37,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/service" element={<ServicePage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/team" element={<TeamPage />} />
         <Route path="/testimonial" element={<TestimonialPage />} />
       </Routes>
 

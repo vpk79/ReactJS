@@ -56,7 +56,7 @@ export default function TestimonialPage() {
                                     <a href="feature.html" className="dropdown-item">
                                         Feature
                                     </a>
-                                    <a href="team.html" className="dropdown-item">
+                                    <a href="/team" className="dropdown-item">
                                         Our Doctor
                                     </a>
                                     <a href="appointment.html" className="dropdown-item">
