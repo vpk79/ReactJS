@@ -1,17 +1,16 @@
-import About from "../Main/About";
-import Feature from "../Main/Feature";
 import Footer from "../Main/Footer";
-import Team from "../Main/Team";
+import Testemonial from "../Main/Testimonial";
 import Topbar from "../Main/Topbar";
-import AboutHeader from "./AboutHeader";
+import TestemonialHeader from "./TestemonialHeader";
 
-export default function AboutPage() {
+export default function TestimonialPage() {
     return (
         <>
             <>
-              
-               <Topbar />
-                
+                {/* Topbar Start */}
+                    <Topbar />
+                {/* Topbar End */}
+
                 {/* Navbar Start */}
                 <nav
                     className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
@@ -39,16 +38,16 @@ export default function AboutPage() {
                             <a href="/" className="nav-item nav-link">
                                 Home
                             </a>
-                            <a href="/about" className="nav-item nav-link active">
+                            <a href="/about" className="nav-item nav-link">
                                 About
                             </a>
-                            <a href="/service" className="nav-item nav-link">
+                            <a href="service.html" className="nav-item nav-link">
                                 Service
                             </a>
                             <div className="nav-item dropdown">
                                 <a
                                     href="#"
-                                    className="nav-link dropdown-toggle"
+                                    className="nav-link dropdown-toggle active"
                                     data-bs-toggle="dropdown"
                                 >
                                     Pages
@@ -63,7 +62,7 @@ export default function AboutPage() {
                                     <a href="appointment.html" className="dropdown-item">
                                         Appointment
                                     </a>
-                                    <a href="/testimonial" className="dropdown-item">
+                                    <a href="/testimonial" className="dropdown-item active">
                                         Testimonial
                                     </a>
                                     <a href="404.html" className="dropdown-item">
@@ -87,20 +86,12 @@ export default function AboutPage() {
                 {/* Navbar End */}
 
                 {/* Page Header Start */}
-                    <AboutHeader />
+                    <TestemonialHeader />
                 {/* Page Header End */}
 
-                {/* About Start */}
-                    <About />
-                {/* About End */}
-
-                {/* Feature Start */}
-                    <Feature />
-                {/* Feature End */}
-
-                {/* Team Start */}
-                    <Team />
-                {/* Team End */}
+                {/* Testimonial Start */}
+                    <Testemonial />
+                {/* Testimonial End */}
 
                 {/* Footer Start */}
                     <Footer />

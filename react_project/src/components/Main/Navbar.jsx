@@ -31,7 +31,7 @@ export default function Navbar() {
                         <a href="/about" className="nav-item nav-link">
                             About
                         </a>
-                        <a href="service.html" className="nav-item nav-link">
+                        <a href="/service" className="nav-item nav-link">
                             Service
                         </a>
                         <div className="nav-item dropdown">
@@ -52,7 +52,7 @@ export default function Navbar() {
                                 <a href="appointment.html" className="dropdown-item">
                                     Appointment
                                 </a>
-                                <a href="testimonial.html" className="dropdown-item">
+                                <a href="/testimonial" className="dropdown-item">
                                     Testimonial
                                 </a>
                                 <a href="404.html" className="dropdown-item">
@@ -60,7 +60,7 @@ export default function Navbar() {
                                 </a>
                             </div>
                         </div>
-                        <a href="contact.html" className="nav-item nav-link">
+                        <a href="/contact" className="nav-item nav-link">
                             Contact
                         </a>
                     </div>
