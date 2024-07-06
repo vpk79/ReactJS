@@ -9,7 +9,7 @@ import Appointment from '../Main/Appointment'
 import Testemonial from '../Main/Testimonial'
 import Footer from '../Main/Footer'
 
-export default function Home(){
+export default function HomePage(){
     return(
         <>
 

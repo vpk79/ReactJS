@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './components/Home/Home'
-import About from './components/About/About';
+import HomePage from './components/HomePage/HomePage'
+import AboutPage from './components/AboutPage/AboutPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -29,8 +29,8 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
 
       {/* Back to Top */}
