@@ -74,7 +74,7 @@ export default function TeamPage(){
                             </a>
                         </div>
                         <a
-                            href=""
+                            href="/appointment"
                             className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
                         >
                             Appointment

@@ -59,15 +59,13 @@ export default function TestimonialPage() {
                                     <a href="/team" className="dropdown-item">
                                         Our Doctor
                                     </a>
-                                    <a href="appointment.html" className="dropdown-item">
+                                    <a href="/appointment" className="dropdown-item">
                                         Appointment
                                     </a>
                                     <a href="/testimonial" className="dropdown-item active">
                                         Testimonial
                                     </a>
-                                    <a href="404.html" className="dropdown-item">
-                                        404 Page
-                                    </a>
+                                   
                                 </div>
                             </div>
                             <a href="/contact" className="nav-item nav-link">
@@ -75,7 +73,7 @@ export default function TestimonialPage() {
                             </a>
                         </div>
                         <a
-                            href=""
+                            href="/appointment"
                             className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
                         >
                             Appointment

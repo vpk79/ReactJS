@@ -1,5 +1,6 @@
 import Footer from '../Main/Footer'
 import Topbar from '../Main/Topbar'
+import FeatureHeader from './FeatureHeader'
 
 export default function FeaturePage() {
     return (
@@ -8,6 +9,7 @@ export default function FeaturePage() {
             {/* Topbar Start */}
             <Topbar />
             {/* Topbar End */}
+
             {/* Navbar Start */}
             <nav
                 className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
@@ -62,9 +64,7 @@ export default function FeaturePage() {
                                 <a href="/testimonial" className="dropdown-item">
                                     Testimonial
                                 </a>
-                                <a href="404.html" className="dropdown-item">
-                                    404 Page
-                                </a>
+                                
                             </div>
                         </div>
                         <a href="/contact" className="nav-item nav-link">
@@ -72,7 +72,7 @@ export default function FeaturePage() {
                         </a>
                     </div>
                     <a
-                        href=""
+                        href="/appointment"
                         className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
                     >
                         Appointment
@@ -83,36 +83,7 @@ export default function FeaturePage() {
             {/* Navbar End */}
 
             {/* Page Header Start */}
-            <div
-                className="container-fluid page-header py-5 mb-5 wow fadeIn"
-                data-wow-delay="0.1s"
-            >
-                <div className="container py-5">
-                    <h1 className="display-3 text-white mb-3 animated slideInDown">
-                        Feature
-                    </h1>
-                    <nav aria-label="breadcrumb animated slideInDown">
-                        <ol className="breadcrumb text-uppercase mb-0">
-                            <li className="breadcrumb-item">
-                                <a className="text-white" href="#">
-                                    Home
-                                </a>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <a className="text-white" href="#">
-                                    Pages
-                                </a>
-                            </li>
-                            <li
-                                className="breadcrumb-item text-primary active"
-                                aria-current="page"
-                            >
-                                Feature
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
+            <FeatureHeader />
             {/* Page Header End */}
 
 

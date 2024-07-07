@@ -8,6 +8,8 @@ import ServicePage from './components/ServicePage/ServicePage';
 import ContactPage from './components/ContactPage/ContactPage';
 import TeamPage from './components/TeamPage/TeamPage';
 import FeaturePage from './components/FeaturePage/FeaturePage';
+import AppointmentPage from './components/AppointmentPage/AppointmentPage';
+import ErrorPage from './components/Main/404';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -40,7 +42,9 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/feature" element={<FeaturePage />} />
+        <Route path="/appointment" element={<AppointmentPage />} />
         <Route path="/testimonial" element={<TestimonialPage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
 
       {/* Back to Top */}
