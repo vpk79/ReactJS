@@ -7,6 +7,7 @@ import TestimonialPage from './components/TestimonialPage/TestimonialPage';
 import ServicePage from './components/ServicePage/ServicePage';
 import ContactPage from './components/ContactPage/ContactPage';
 import TeamPage from './components/TeamPage/TeamPage';
+import FeaturePage from './components/FeaturePage/FeaturePage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/service" element={<ServicePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/team" element={<TeamPage />} />
+        <Route path="/feature" element={<FeaturePage />} />
         <Route path="/testimonial" element={<TestimonialPage />} />
       </Routes>
 

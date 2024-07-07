@@ -54,10 +54,10 @@ export default function ServicePage(){
                                     Pages
                                 </a>
                                 <div className="dropdown-menu rounded-0 rounded-bottom m-0">
-                                    <a href="feature.html" className="dropdown-item">
+                                    <a href="/feature" className="dropdown-item">
                                         Feature
                                     </a>
-                                    <a href="team.html" className="dropdown-item">
+                                    <a href="/team" className="dropdown-item">
                                         Our Doctor
                                     </a>
                                     <a href="appointment.html" className="dropdown-item">

@@ -53,7 +53,7 @@ export default function TestimonialPage() {
                                     Pages
                                 </a>
                                 <div className="dropdown-menu rounded-0 rounded-bottom m-0">
-                                    <a href="feature.html" className="dropdown-item">
+                                    <a href="/feature" className="dropdown-item">
                                         Feature
                                     </a>
                                     <a href="/team" className="dropdown-item">

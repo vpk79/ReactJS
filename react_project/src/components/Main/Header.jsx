@@ -13,7 +13,7 @@ export default function Header() {
         autoplayTimeout: 3000,
         autoplayHoverPause: true,
         animateOut: 'fadeOutLeft',
-        dots: true,
+        dots: false,
         navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
