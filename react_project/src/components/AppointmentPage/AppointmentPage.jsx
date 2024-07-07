@@ -7,7 +7,7 @@ export default function AppointmentPage() {
         <>
 
             {/* Page Header Start */}
-                <AppointmentHeader />
+                {/* <AppointmentHeader /> */}
             {/* Page Header End */}
 
             {/* Appointment Start */}

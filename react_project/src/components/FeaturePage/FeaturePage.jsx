@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom'
 import FeatureHeader from './FeatureHeader'
 
 export default function FeaturePage() {
     return (
         <>
             {/* Page Header Start */}
-            <FeatureHeader />
+            {/* <FeatureHeader /> */}
             {/* Page Header End */}
 
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import HomePage from './components/HomePage/HomePage'
 import AboutPage from './components/AboutPage/AboutPage';
@@ -13,11 +13,28 @@ import ErrorPage from './components/Main/404';
 import Topbar from './components/Main/Topbar';
 import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
-import Header from './components/Main/Header';
+import HomeHeader from './components/Main/HomeHeader';
+import DefaultHeader from './components/Main/DefaultHeader';
 
 function App() {
   const [count, setCount] = useState(0);
 
+  const pageTitles = {
+    '/about': 'About',
+    '/service': 'Service',
+    '/contact': 'Contact',
+    '/team': 'Team',
+    '/feature': 'Feature',
+    '/appointment': 'Appointment',
+    '/testimonial': 'Testemonial',
+  };
+
+  const Header = () => {
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const title = pageTitles[currentPath] || '404 error';
+    return currentPath === '/' ? <HomeHeader /> : <DefaultHeader title={title} />;
+  };
 
 
   return (
@@ -55,9 +72,6 @@ function App() {
       </Routes>
 
       <Footer />
-
-      
-
 
       {/* Back to Top */}
       <a

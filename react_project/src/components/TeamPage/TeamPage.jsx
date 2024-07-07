@@ -7,7 +7,7 @@ export default function TeamPage(){
             <>
 
                 {/* Page Header Start */}
-                    <TeamHeader />
+                    {/* <TeamHeader /> */}
                 {/* Page Header End */}
 
                 {/* Team Start */}

@@ -9,7 +9,7 @@ export default function AboutPage() {
         <>
             <>
                 {/* Page Header Start */}
-                    <AboutHeader />
+                    {/* <AboutHeader /> */}
                 {/* Page Header End */}
 
                 {/* About Start */}

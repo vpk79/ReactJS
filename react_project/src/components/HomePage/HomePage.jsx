@@ -1,4 +1,4 @@
-import Header from '../Main/Header'
+import Header from '../Main/HomeHeader'
 import About from '../Main/About'
 import Service from '../Main/Service'
 import Feature from '../Main/Feature'
@@ -9,7 +9,7 @@ import Testemonial from '../Main/Testimonial'
 export default function HomePage(){
     return(
         <>
-            <Header />
+            {/* <Header /> */}
 
             <About />
 

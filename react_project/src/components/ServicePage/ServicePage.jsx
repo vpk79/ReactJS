@@ -8,7 +8,7 @@ export default function ServicePage(){
         <>
             <>
                 {/* Page Header Start */}
-                    <ServiceHeader />
+                    {/* <ServiceHeader /> */}
                 {/* Page Header End */}
 
                 {/* Service Start */}

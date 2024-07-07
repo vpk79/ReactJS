@@ -7,7 +7,7 @@ export default function TestimonialPage() {
         <>
             <>
                 {/* Page Header Start */}
-                    <TestemonialHeader />
+                    {/* <TestemonialHeader /> */}
                 {/* Page Header End */}
 
                 {/* Testimonial Start */}

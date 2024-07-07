@@ -5,7 +5,7 @@ export default function ContactPage() {
     return (
         <>
             {/* Page Header Start */}
-            <ContactHeader />
+            {/* <ContactHeader /> */}
             {/* Page Header End */}
 
             {/* Contact Start */}
