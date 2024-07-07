@@ -1,3 +1,5 @@
+import { Link, NavLink } from "react-router-dom";
+
 export default function Navbar() {
     return (
         <>
@@ -6,15 +8,14 @@ export default function Navbar() {
                 className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
                 data-wow-delay="0.1s"
             >
-                <a
-                    href="/"
+                <Link to="/"
                     className="navbar-brand d-flex align-items-center px-4 px-lg-5"
                 >
                     <h1 className="m-0 text-primary">
                         <i className="far fa-hospital me-3" />
                         Klinik
                     </h1>
-                </a>
+                </Link>
                 <button
                     type="button"
                     className="navbar-toggler me-4"
@@ -25,50 +26,48 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <div className="navbar-nav ms-auto p-4 p-lg-0">
-                        <a href="/" className="nav-item nav-link active">
+                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/">
                             Home
-                        </a>
-                        <a href="/about" className="nav-item nav-link">
+                        </NavLink>
+                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/about">
                             About
-                        </a>
-                        <a href="/service" className="nav-item nav-link">
+                        </NavLink>
+                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/service">
                             Service
-                        </a>
+                        </NavLink>
                         <div className="nav-item dropdown">
-                            <a
-                                href="#"
+                            <Link to="#"
                                 className="nav-link dropdown-toggle"
                                 data-bs-toggle="dropdown"
                             >
                                 Pages
-                            </a>
+                            </Link>
                             <div className="dropdown-menu rounded-0 rounded-bottom m-0">
-                                <a href="/feature" className="dropdown-item">
+                                <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/feature">
                                     Feature
-                                </a>
-                                <a href="/team" className="dropdown-item">
+                                </NavLink>
+                                <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/team">
                                     Our Doctor
-                                </a>
-                                <a href="/appointment" className="dropdown-item">
+                                </NavLink>
+                                <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/appointment">
                                     Appointment
-                                </a>
-                                <a href="/testimonial" className="dropdown-item">
+                                </NavLink>
+                                <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/testimonial">
                                     Testimonial
-                                </a>
+                                </NavLink>
                                 
                             </div>
                         </div>
-                        <a href="/contact" className="nav-item nav-link">
+                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/contact">
                             Contact
-                        </a>
+                        </NavLink>
                     </div>
-                    <a
-                        href="/appointment"
+                    <Link to="/appointment"
                         className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
                     >
                         Appointment
                         <i className="fa fa-arrow-right ms-3" />
-                    </a>
+                    </Link>
                 </div>
             </nav>
             {/* Navbar End */}

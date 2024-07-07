@@ -10,6 +10,10 @@ import TeamPage from './components/TeamPage/TeamPage';
 import FeaturePage from './components/FeaturePage/FeaturePage';
 import AppointmentPage from './components/AppointmentPage/AppointmentPage';
 import ErrorPage from './components/Main/404';
+import Topbar from './components/Main/Topbar';
+import Footer from './components/Main/Footer';
+import Navbar from './components/Main/Navbar';
+import Header from './components/Main/Header';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -34,6 +38,9 @@ function App() {
       </div> */}
       {/* Spinner End */}
 
+      <Topbar />
+      <Navbar />
+      <Header />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -46,6 +53,11 @@ function App() {
         <Route path="/testimonial" element={<TestimonialPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+
+      <Footer />
+
+      
+
 
       {/* Back to Top */}
       <a

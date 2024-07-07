@@ -1,89 +1,12 @@
+import { Link } from "react-router-dom";
 import Appointment from "../Main/Appointment";
-import Footer from "../Main/Footer";
 import Testemonial from "../Main/Testimonial";
-import Topbar from "../Main/Topbar";
 import ServiceHeader from "./ServiceHeader";
 
 export default function ServicePage(){
     return(
         <>
             <>
-                {/* Topbar Start */}
-                    <Topbar />
-                {/* Topbar End */}
-
-                {/* Navbar Start */}
-                <nav
-                    className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
-                    data-wow-delay="0.1s"
-                >
-                    <a
-                        href="/"
-                        className="navbar-brand d-flex align-items-center px-4 px-lg-5"
-                    >
-                        <h1 className="m-0 text-primary">
-                            <i className="far fa-hospital me-3" />
-                            Klinik
-                        </h1>
-                    </a>
-                    <button
-                        type="button"
-                        className="navbar-toggler me-4"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarCollapse"
-                    >
-                        <span className="navbar-toggler-icon" />
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarCollapse">
-                        <div className="navbar-nav ms-auto p-4 p-lg-0">
-                            <a href="/" className="nav-item nav-link">
-                                Home
-                            </a>
-                            <a href="/about" className="nav-item nav-link">
-                                About
-                            </a>
-                            <a href="/service" className="nav-item nav-link active">
-                                Service
-                            </a>
-                            <div className="nav-item dropdown">
-                                <a
-                                    href="#"
-                                    className="nav-link dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                >
-                                    Pages
-                                </a>
-                                <div className="dropdown-menu rounded-0 rounded-bottom m-0">
-                                    <a href="/feature" className="dropdown-item">
-                                        Feature
-                                    </a>
-                                    <a href="/team" className="dropdown-item">
-                                        Our Doctor
-                                    </a>
-                                    <a href="/appointment" className="dropdown-item">
-                                        Appointment
-                                    </a>
-                                    <a href="/testimonial" className="dropdown-item">
-                                        Testimonial
-                                    </a>
-                                 
-                                </div>
-                            </div>
-                            <a href="/contact" className="nav-item nav-link">
-                                Contact
-                            </a>
-                        </div>
-                        <a
-                            href="/appointment"
-                            className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
-                        >
-                            Appointment
-                            <i className="fa fa-arrow-right ms-3" />
-                        </a>
-                    </div>
-                </nav>
-                {/* Navbar End */}
-
                 {/* Page Header Start */}
                     <ServiceHeader />
                 {/* Page Header End */}
@@ -113,10 +36,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -132,10 +55,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -151,10 +74,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -170,10 +93,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -189,10 +112,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -208,10 +131,10 @@ export default function ServicePage(){
                                         Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem
                                         sed diam stet diam sed stet.
                                     </p>
-                                    <a className="btn" href="">
+                                    <Link to="" className="btn">
                                         <i className="fa fa-plus text-primary me-3" />
                                         Read More
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -227,9 +150,6 @@ export default function ServicePage(){
                     <Testemonial />
                 {/* Testimonial End */}
 
-                {/* Footer Start */}
-                    <Footer />
-                {/* Footer End */}
             </>
 
         </>
