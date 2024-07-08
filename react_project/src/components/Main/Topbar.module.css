@@ -1,0 +1,18 @@
+.loginModal{
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: space-between;
+    border: 1px solid black;
+}
+
+.modalHeader{
+    border-bottom: none;
+    margin-top: -60px;
+}
+
+.loginForm{
+    padding: 30px;
+}

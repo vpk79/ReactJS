@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import styles from './Topbar.module.css';
 
 export default function Topbar(){
     return(
@@ -62,17 +63,19 @@ export default function Topbar(){
 
             {/* Login-Modal */}
             <div
+                
                 className="modal fade"
                 id="LoginModal"
                 tabIndex={-1}
                 aria-labelledby="LoginModal"
                 aria-hidden="true"
+
             >
                 <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
+                    <div className={`${styles.loginModal} modal-content`}>
+                        <div className={`${styles.modalHeader} modal-header`}>
                             <h5 className="modal-title" id="LoginModalLabel">
-                                Modal title
+                                Login
                             </h5>
                             <button
                                 type="button"
@@ -81,19 +84,29 @@ export default function Topbar(){
                                 aria-label="Close"
                             />
                         </div>
-                        <div className="modal-body">...</div>
-                        <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
+                        <form className={styles.loginForm}>
+                            <div className="row mb-3">
+                                <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+                                    Email
+                                </label>
+                                <div className="col-sm-10">
+                                    <input type="email" className="form-control" id="inputEmail3" />
+                                </div>
+                            </div>
+                            <div className="row mb-3">
+                                <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+                                    Password
+                                </label>
+                                <div className="col-sm-10">
+                                    <input type="password" className="form-control" id="inputPassword3" />
+                                </div>
+                            </div>
+                            <button type="submit" className="btn btn-primary">
+                                Sign in
                             </button>
-                            <button type="button" className="btn btn-primary">
-                                Save changes
-                            </button>
-                        </div>
+                        </form>
+
+                      
                     </div>
                 </div>
             </div>
