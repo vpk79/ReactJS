@@ -29,12 +29,13 @@ function App() {
     '/feature': 'Feature',
     '/appointment': 'Appointment',
     '/testimonial': 'Testemonial',
+    '/404': '404 Error'
   };
 
   const Header = () => {
     const location = useLocation();
     const currentPath = location.pathname;
-    const title = pageTitles[currentPath] || '404 error';
+    const title = pageTitles[currentPath] || '404 Error';
     return currentPath === '/' ? <HomeHeader /> : <DefaultHeader title={title} />;
   };
 
