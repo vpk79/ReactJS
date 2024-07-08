@@ -61,6 +61,8 @@ export default function Navbar() {
                         <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/contact">
                             Contact
                         </NavLink>
+                        
+                      
                     </div>
                     <Link to="/appointment"
                         className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"

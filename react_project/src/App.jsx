@@ -15,6 +15,8 @@ import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
+import Login from './components/Authorization/Login';
+import Register from './components/Authorization/Register';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -68,6 +70,8 @@ function App() {
         <Route path="/feature" element={<FeaturePage />} />
         <Route path="/appointment" element={<AppointmentPage />} />
         <Route path="/testimonial" element={<TestimonialPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 

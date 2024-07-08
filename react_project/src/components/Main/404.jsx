@@ -5,10 +5,6 @@ export default function ErrorPage(){
     return(
         <>
             <>
-                {/* Topbar Start */}
-                    <Topbar />
-                {/* Topbar End */}
-
                 {/* Navbar Start */}
                 <nav
                     className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
@@ -136,10 +132,6 @@ export default function ErrorPage(){
                     </div>
                 </div>
                 {/* 404 End */}
-
-                {/* Footer Start */}
-                    <Footer />
-                {/* Footer End */}
             </>
 
         </>
