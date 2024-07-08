@@ -5,7 +5,7 @@ export default function Topbar(){
         <>
             {/* Topbar Start */}
             <div
-                className="container-fluid bg-light p-0 wow fadeIn"
+                className="topbar container-fluid bg-light p-0 wow fadeIn"
                 data-wow-delay="0.1s"
             >
                 <div className="row gx-0 d-none d-lg-flex">
@@ -22,7 +22,12 @@ export default function Topbar(){
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
                             <div className="h-100 d-inline-flex align-items-center me-4">
-                                Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;<Link to="/login" className="btn btn-primary btn-sm">Login</Link>&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;<Link to="/register" className="btn btn-primary btn-sm">Register</Link>
+                                Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#LoginModal">Login</button>
+                                &nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;
+                                <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#RegisterModal">Register</button>
                             </div>
                           
                             <small className="fa fa-phone-alt text-primary me-2" />
@@ -54,6 +59,82 @@ export default function Topbar(){
                 </div>
             </div>
             {/* Topbar End */}
+
+            {/* Login-Modal */}
+            <div
+                className="modal fade"
+                id="LoginModal"
+                tabIndex={-1}
+                aria-labelledby="LoginModal"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="LoginModalLabel">
+                                Modal title
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            />
+                        </div>
+                        <div className="modal-body">...</div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Register-Modal */}
+            <div
+                className="modal fade"
+                id="RegisterModal"
+                tabIndex={-1}
+                aria-labelledby="RegisterModal"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="RegisterLabel">
+                                Modal title
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            />
+                        </div>
+                        <div className="modal-body">...</div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

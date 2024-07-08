@@ -6,6 +6,7 @@ export default function Navbar() {
             {/* Navbar Start */}
             <nav
                 className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
+                
                 data-wow-delay="0.1s"
             >
                 <Link to="/"
