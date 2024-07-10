@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom';
 
+import * as authService from './services/authService'
+import AuthContext from './contexts/authContext';
+
+
 import HomePage from './components/HomePage/HomePage'
 import AboutPage from './components/AboutPage/AboutPage';
 import TestimonialPage from './components/TestimonialPage/TestimonialPage';
@@ -15,13 +19,18 @@ import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
-import AuthContext from './contexts/authContext';
+
 
 function App() {
   const [auth, setAuth] = useState({});
 
-  const loginSubmitHandler = (values) => {
-    console.log(values);
+
+
+
+  const loginSubmitHandler = async (values) => {
+    const result = await authService.login(values.email, values.password);
+
+    console.log(result);
   }
 
   const pageTitles = {
