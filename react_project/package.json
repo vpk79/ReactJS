@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "5.0",
     "counterup2": "^2.0.2",
+    "default-passive-events": "^2.0.0",
     "jquery": "^3.7.1",
     "owl.carousel": "^2.3.4",
     "react": "^18.3.1",

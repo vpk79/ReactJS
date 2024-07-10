@@ -15,6 +15,7 @@ import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
+import AuthContext from './contexts/authContext';
 
 function App() {
   const [auth, setAuth] = useState({});
@@ -22,7 +23,7 @@ function App() {
   const loginSubmitHandler = (values) => {
     console.log(values);
   }
- 
+
   const pageTitles = {
     '/about': 'About',
     '/service': 'Service',
@@ -62,24 +63,30 @@ function App() {
       </div> */}
       {/* Spinner End */}
 
-      <Topbar loginSubmitHandler={loginSubmitHandler}/>
-      <Navbar />
-      <Header />
+      <AuthContext.Provider value={{ loginSubmitHandler }}>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/service" element={<ServicePage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/team" element={<TeamPage />} />
-        <Route path="/feature" element={<FeaturePage />} />
-        <Route path="/appointment" element={<AppointmentPage />} />
-        <Route path="/testimonial" element={<TestimonialPage />} />
-  
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
 
-      <Footer />
+
+        <Topbar />
+        <Navbar />
+        <Header />
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/service" element={<ServicePage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/feature" element={<FeaturePage />} />
+          <Route path="/appointment" element={<AppointmentPage />} />
+          <Route path="/testimonial" element={<TestimonialPage />} />
+
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+
+        <Footer />
+
+      </AuthContext.Provider>
 
       {/* Back to Top */}
       <a

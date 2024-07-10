@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Login from "./Modals/Login.jsx";
 
-export default function Topbar({loginSubmitHandler}){
+export default function Topbar(){
 
     return(
         <>
@@ -62,7 +62,7 @@ export default function Topbar({loginSubmitHandler}){
             </div>
             {/* Topbar End */}
 
-           <Login loginSubmitHandler={loginSubmitHandler}/>
+           <Login />
 
             {/* Register-Modal */}
             <div

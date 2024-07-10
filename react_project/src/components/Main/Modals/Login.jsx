@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Login.module.css';
 import useForm from '../../../hooks/useForm';
+import AuthContext from '../../../contexts/authContext';
 
 
 const LoginFormKeys = {
@@ -9,10 +10,12 @@ const LoginFormKeys = {
 }
 
 
-export default function Login({ loginSubmitHandler }) {
+export default function Login() {
 
+
+    const { loginSubmitHandler } = useContext(AuthContext);
     const { values, onChange, onSubmit } = useForm(loginSubmitHandler, {
-        [LoginFormKeys.email]: '',
+        [LoginFormKeys.Email]: '',
         [LoginFormKeys.Password]: ''
     });
 
@@ -52,7 +55,9 @@ export default function Login({ loginSubmitHandler }) {
                                         id="inputEmail3"
                                         name={LoginFormKeys.Email}
                                         onChange={onChange}
-                                        value={values[LoginFormKeys.Email]} />
+                                        value={values[LoginFormKeys.Email]}
+                                        autoComplete="on" />
+                                        
                                 </div>
                             </div>
                             <div className={`${styles.formInputs} row mb-3`}>
@@ -65,7 +70,9 @@ export default function Login({ loginSubmitHandler }) {
                                         name={LoginFormKeys.Password}
                                         id="inputPassword3"
                                         onChange={onChange}
-                                        value={values[LoginFormKeys.Password]} />
+                                        value={values[LoginFormKeys.Password]}
+                                        autoComplete="on" />
+                                       
                                 </div>
                             </div>
                             <button type="submit" className={`${styles.btnLogin} btn btn-primary`}>
