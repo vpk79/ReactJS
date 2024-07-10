@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import OwlCarousel from 'react-owl-carousel';
 
 export default function HomeHeader() {
+
+    {/* carousel settings */}
     const options = {
         loop: true,
         margin: 10,
@@ -19,6 +21,14 @@ export default function HomeHeader() {
             '<i class="bi bi-chevron-right"></i>'
         ]
     };
+
+    {/* counter settings */}
+    useEffect(() => {
+        $('[data-toggle="counter-up"]').counterUp({
+            delay: 10,
+            time: 2000
+        });
+    }, []);
 
     return (
         <>

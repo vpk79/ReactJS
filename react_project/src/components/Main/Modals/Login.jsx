@@ -1,12 +1,19 @@
+import React from 'react';
 import styles from './Login.module.css';
 import useForm from '../../../hooks/useForm';
 
 
-export default function Login() {
+const LoginFormKeys = {
+    Email: 'email',
+    Password: 'password'
+}
 
-    const { values, onChange, onSubmit } = useForm({
-        email: '',
-        password: ''
+
+export default function Login({ loginSubmitHandler }) {
+
+    const { values, onChange, onSubmit } = useForm(loginSubmitHandler, {
+        [LoginFormKeys.email]: '',
+        [LoginFormKeys.Password]: ''
     });
 
     return (
@@ -43,8 +50,9 @@ export default function Login() {
                                     <input type="email"
                                         className="form-control"
                                         id="inputEmail3"
+                                        name={LoginFormKeys.Email}
                                         onChange={onChange}
-                                        value={values.email} />
+                                        value={values[LoginFormKeys.Email]} />
                                 </div>
                             </div>
                             <div className={`${styles.formInputs} row mb-3`}>
@@ -54,9 +62,10 @@ export default function Login() {
                                 <div className="col-sm-9">
                                     <input type="password"
                                         className="form-control"
+                                        name={LoginFormKeys.Password}
                                         id="inputPassword3"
                                         onChange={onChange}
-                                        value={values.password} />
+                                        value={values[LoginFormKeys.Password]} />
                                 </div>
                             </div>
                             <button type="submit" className={`${styles.btnLogin} btn btn-primary`}>

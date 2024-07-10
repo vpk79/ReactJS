@@ -17,8 +17,12 @@ import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [auth, setAuth] = useState({});
 
+  const loginSubmitHandler = (values) => {
+    console.log(values);
+  }
+ 
   const pageTitles = {
     '/about': 'About',
     '/service': 'Service',
@@ -58,7 +62,7 @@ function App() {
       </div> */}
       {/* Spinner End */}
 
-      <Topbar />
+      <Topbar loginSubmitHandler={loginSubmitHandler}/>
       <Navbar />
       <Header />
 
