@@ -1,4 +1,4 @@
-.loginModal{
+.login{
     width: 600px;
     height: 500px;
     display: flex;
@@ -8,7 +8,7 @@
     border: 1px solid black;
 }
 
-.modalHeader{
+.loginHeader{
     border-bottom: none;
     padding-left: 30px;
     margin-top: -60px;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from './Topbar.module.css';
+import Login from "./Modals/Login.jsx";
 
 export default function Topbar(){
     return(
@@ -25,10 +25,10 @@ export default function Topbar(){
                             <div className="h-100 d-inline-flex align-items-center me-4">
                                 Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#LoginModal">Login</button>
+                                    data-bs-target="#Login">Login</button>
                                 &nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;
                                 <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#RegisterModal">Register</button>
+                                    data-bs-target="#Register">Register</button>
                             </div>
                           
                             <small className="fa fa-phone-alt text-primary me-2" />
@@ -61,63 +61,14 @@ export default function Topbar(){
             </div>
             {/* Topbar End */}
 
-            {/* Login-Modal */}
-            <div
-                
-                className="modal fade"
-                id="LoginModal"
-                tabIndex={-1}
-                aria-labelledby="LoginModal"
-                aria-hidden="true"
-
-            >
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className={`${styles.loginModal} modal-content`}>
-                        <div className={`${styles.modalHeader} modal-header`}>
-                            <h5 className="modal-title" id="LoginModalLabel">
-                                Login
-                            </h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            />
-                        </div>
-                        <form className={styles.loginForm}>
-                            <div className="row mb-3">
-                                <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
-                                    Email
-                                </label>
-                                <div className={`${styles.emailInput} col-sm-9`}>
-                                    <input type="email" className="form-control" id="inputEmail3" />
-                                </div>
-                            </div>
-                            <div className={`${styles.formInputs} row mb-3`}>
-                                <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
-                                    Password
-                                </label>
-                                <div className="col-sm-9">
-                                    <input type="password" className="form-control" id="inputPassword3" />
-                                </div>
-                            </div>
-                            <button type="submit" className={`${styles.btnLogin} btn btn-primary`}>
-                                Sign in
-                            </button>
-                        </form>
-
-                        <p style={{textAlign: 'center', marginTop:'-50px', marginBottom:'-40px'}}>Not have an account?&nbsp;&nbsp;<span><a className="btn" data-bs-toggle="modal"
-                            data-bs-target="#RegisterModal">Register</a></span></p>
-                    </div>
-                </div>
-            </div>
+           <Login />
 
             {/* Register-Modal */}
             <div
                 className="modal fade"
-                id="RegisterModal"
+                id="Register"
                 tabIndex={-1}
-                aria-labelledby="RegisterModal"
+                aria-labelledby="Register"
                 aria-hidden="true"
             >
                 <div className="modal-dialog modal-dialog-centered">
