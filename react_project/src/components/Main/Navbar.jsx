@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import AuthContext from "../../contexts/authContext";
 
 export default function Navbar() {
+
+    const { isAuthanticated, username} = useContext(AuthContext);
+
     return (
         <>
             {/* Navbar Start */}

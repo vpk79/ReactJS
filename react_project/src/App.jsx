@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import * as authService from './services/authService'
 import AuthContext from './contexts/authContext';
@@ -22,6 +22,7 @@ import DefaultHeader from './components/Main/DefaultHeader';
 
 
 function App() {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState({});
 
 
@@ -30,6 +31,9 @@ function App() {
   const loginSubmitHandler = async (values) => {
     const result = await authService.login(values.email, values.password);
 
+    setAuth(result);
+
+    navigate('/');
     console.log(result);
   }
 
@@ -46,6 +50,8 @@ function App() {
     '/404': '404 Error'
   };
 
+
+  // home header is different - all other pages use default header and set their titles also
   const Header = () => {
     const location = useLocation();
     const currentPath = location.pathname;
@@ -53,6 +59,12 @@ function App() {
     return currentPath === '/' ? <HomeHeader /> : <DefaultHeader title={title} />;
   };
 
+  const values = {
+      loginSubmitHandler,
+      username: auth.username,
+      email: auth.email,
+      isAuthanticated: !!auth.username
+  }
 
   return (
     <>
@@ -72,9 +84,7 @@ function App() {
       </div> */}
       {/* Spinner End */}
 
-      <AuthContext.Provider value={{ loginSubmitHandler }}>
-
-
+      <AuthContext.Provider value={values}>
 
         <Topbar />
         <Navbar />
@@ -97,15 +107,13 @@ function App() {
 
       </AuthContext.Provider>
 
-      {/* Back to Top */}
+      {/* Back to Top Arrow*/}
       <a
         href="#"
         className="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"
       >
         <i className="bi bi-arrow-up" />
       </a>
-
-
     </>
   )
 }

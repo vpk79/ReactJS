@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import Login from "./Modals/Login.jsx";
+import { useContext } from "react";
+import AuthContext from "../../contexts/authContext.js";
 
-export default function Topbar(){
+export default function Topbar() {
 
-    return(
+    const { isAuthanticated, username } = useContext(AuthContext);
+
+    return (
         <>
             {/* Topbar Start */}
             <div
@@ -23,36 +27,46 @@ export default function Topbar(){
                     </div>
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
-                            <div className="h-100 d-inline-flex align-items-center me-4">
-                                Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;
+                            
+                                {!isAuthanticated && (
+                                    <div className="h-100 d-inline-flex align-items-center me-4">
+                                    Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#Login">Login</button>
                                 &nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;
                                 <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#Register">Register</button>
-                            </div>
-                          
+                                </div>
+                                )}
+
+                                {isAuthanticated && (
+                                    <div className="h-100 d-inline-flex align-items-center me-4">
+                                    <span>Welcome back, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <button className="btn btn-primary btn-sm">Logout</button>
+                                        </div>
+                                )}
+
                             <small className="fa fa-phone-alt text-primary me-2" />
                             <small>+012 345 6789</small>
                         </div>
                         <div className="h-100 d-inline-flex align-items-center">
-                            <Link to="https://www.facebook.com"  className="btn btn-sm-square rounded-circle bg-white text-primary me-1"
-                                
+                            <Link to="https://www.facebook.com" className="btn btn-sm-square rounded-circle bg-white text-primary me-1"
+
                             >
                                 <i className="fab fa-facebook-f" />
                             </Link>
                             <Link to="https://twitter.com" className="btn btn-sm-square rounded-circle bg-white text-primary me-1"
-                                
+
                             >
                                 <i className="fab fa-twitter" />
                             </Link>
                             <Link to="https://linkedin.com" className="btn btn-sm-square rounded-circle bg-white text-primary me-1"
-                               
+
                             >
                                 <i className="fab fa-linkedin-in" />
                             </Link>
                             <Link to="https://instagram.com" className="btn btn-sm-square rounded-circle bg-white text-primary me-0"
-                                
+
                             >
                                 <i className="fab fa-instagram" />
                             </Link>
@@ -62,7 +76,7 @@ export default function Topbar(){
             </div>
             {/* Topbar End */}
 
-           <Login />
+            <Login />
 
             {/* Register-Modal */}
             <div
