@@ -42,7 +42,7 @@ export default function Topbar() {
 
                                 {isAuthanticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
-                                    <span>Welcome back, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <button className="btn btn-primary btn-sm">Logout</button>
                                         </div>
                                 )}

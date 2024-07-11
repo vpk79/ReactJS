@@ -4,7 +4,6 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import * as authService from './services/authService'
 import AuthContext from './contexts/authContext';
 
-
 import HomePage from './components/HomePage/HomePage'
 import AboutPage from './components/AboutPage/AboutPage';
 import TestimonialPage from './components/TestimonialPage/TestimonialPage';
@@ -70,9 +69,9 @@ function App() {
   const values = {
     loginSubmitHandler,
     registerSubmitHandler,
-    username: auth.username,
+    username: auth.username || auth.email,
     email: auth.email,
-    isAuthanticated: !!auth.username
+    isAuthanticated: !!auth.email
   }
 
   return (
