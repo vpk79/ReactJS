@@ -25,17 +25,20 @@ function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = useState({});
 
-
-
-
   const loginSubmitHandler = async (values) => {
     const result = await authService.login(values.email, values.password);
 
     setAuth(result);
 
     navigate('/');
-    console.log(result);
+    // console.log(result);
+  };
+
+  const registerSubmitHandler = async(values) => {
+    console.log(values);
   }
+
+
 
   const pageTitles = {
     '/about': 'About',
@@ -61,6 +64,7 @@ function App() {
 
   const values = {
       loginSubmitHandler,
+      registerSubmitHandler,
       username: auth.username,
       email: auth.email,
       isAuthanticated: !!auth.username

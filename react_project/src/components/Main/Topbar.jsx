@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Login from "./Modals/Login.jsx";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext.js";
+import Register from "./Modals/Register.jsx";
 
 export default function Topbar() {
 
@@ -79,42 +80,8 @@ export default function Topbar() {
             <Login />
 
             {/* Register-Modal */}
-            <div
-                className="modal fade"
-                id="Register"
-                tabIndex={-1}
-                aria-labelledby="Register"
-                aria-hidden="true"
-            >
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="RegisterLabel">
-                                Modal title
-                            </h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            />
-                        </div>
-                        <div className="modal-body">...</div>
-                        <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                            <button type="button" className="btn btn-primary">
-                                Save changes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
+            <Register />
         </>
     )
 }
