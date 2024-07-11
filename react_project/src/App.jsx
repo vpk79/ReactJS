@@ -34,7 +34,7 @@ function App() {
     // console.log(result);
   };
 
-  const registerSubmitHandler = async(values) => {
+  const registerSubmitHandler = async (values) => {
     console.log(values);
   }
 
@@ -63,11 +63,11 @@ function App() {
   };
 
   const values = {
-      loginSubmitHandler,
-      registerSubmitHandler,
-      username: auth.username,
-      email: auth.email,
-      isAuthanticated: !!auth.username
+    loginSubmitHandler,
+    registerSubmitHandler,
+    username: auth.username,
+    email: auth.email,
+    isAuthanticated: !!auth.username
   }
 
   return (

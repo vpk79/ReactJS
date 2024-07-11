@@ -46,13 +46,13 @@ export default function Register() {
                         </div>
                         <form className={styles.registerForm} onSubmit={onSubmit}>
                             <div className="row mb-3">
-                                <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+                                <label htmlFor="registerEmail3" className="col-sm-2 col-form-label">
                                     Email
                                 </label>
                                 <div className={`${styles.emailInput} col-sm-9`}>
                                     <input type="email"
                                         className="form-control"
-                                        id="inputEmail3"
+                                        id="registerEmail3"
                                         name={RegisterFormKeys.Email}
                                         onChange={onChange}
                                         value={values[RegisterFormKeys.Email]}
@@ -61,14 +61,14 @@ export default function Register() {
                                 </div>
                             </div>
                             <div className={`${styles.formInputs} row mb-3`}>
-                                <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+                                <label htmlFor="registerPassword3" className="col-sm-2 col-form-label">
                                     Password
                                 </label>
                                 <div className="col-sm-9">
                                     <input type="password"
                                         className="form-control"
                                         name={RegisterFormKeys.Password}
-                                        id="inputPassword3"
+                                        id="registerPassword3"
                                         onChange={onChange}
                                         value={values[RegisterFormKeys.Password]}
                                         autoComplete="on" />
@@ -83,18 +83,18 @@ export default function Register() {
                                         name={RegisterFormKeys.ConfirmPassword}
                                         id="ConfirmPassword3"
                                         onChange={onChange}
-                                        // value={values[RegisterFormKeys.Password]}
+                                        value={values[RegisterFormKeys.ConfirmPassword]}
                                         autoComplete="on" />
 
                                 </div>
                             </div>
                             <button type="submit" className={`${styles.btnRegister} btn btn-primary`}>
-                                Sign in
+                                Register
                             </button>
                         </form>
 
-                        <p style={{ textAlign: 'center', marginTop: '-50px', marginBottom: '-40px' }}>Not have an account?&nbsp;&nbsp;<span><a className="btn" data-bs-toggle="modal"
-                            data-bs-target="#RegisterModal">Register</a></span></p>
+                        <p style={{ textAlign: 'center', marginTop: '-50px', marginBottom: '-40px' }}>Already have an account?&nbsp;&nbsp;<span><a className="btn" data-bs-toggle="modal"
+                            data-bs-target="#RLoginModal">Login</a></span></p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,39 @@
+.register {
+    width: 600px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: space-between;
+    border: 1px solid black;
+}
+
+.registerHeader {
+    border-bottom: none;
+    padding-left: 30px;
+    margin-top: -60px;
+}
+
+.registerForm {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px
+}
+
+.formInputs {
+    display: flex;
+    gap: 30px;
+}
+
+
+.emailInput {
+    margin-left: 30px;
+}
+
+.btnRegister {
+    margin-top: 20px;
+    width: 200px;
+    text-align: center;
+    align-self: center;
+}
