@@ -1,6 +1,6 @@
 .register {
     width: 600px;
-    height: 700px;
+    height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -11,7 +11,7 @@
 .registerHeader {
     border-bottom: none;
     padding-left: 30px;
-    margin-top: -60px;
+    margin-top: -40px;
 }
 
 .registerForm {
@@ -32,7 +32,9 @@
 }
 
 .btnRegister {
-    margin-top: 20px;
+    /* margin-top: 10px; */
+    margin-bottom: -60px;
+    /* padding-bottom: 0px; */
     width: 200px;
     text-align: center;
     align-self: center;

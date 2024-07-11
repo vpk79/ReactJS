@@ -1,4 +1,4 @@
-.login{
+.login {
     width: 600px;
     height: 500px;
     display: flex;
@@ -8,30 +8,30 @@
     border: 1px solid black;
 }
 
-.loginHeader{
+.loginHeader {
     border-bottom: none;
     padding-left: 30px;
-    margin-top: -60px;
+    margin-top: -40px;
 }
 
-.loginForm{
+.loginForm {
     padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 30px
 }
 
-.formInputs{
+.formInputs {
     display: flex;
     gap: 30px;
-}   
+}
 
 
-.emailInput{
+.emailInput {
     margin-left: 30px;
 }
 
-.btnLogin{
+.btnLogin {
     margin-top: 20px;
     width: 200px;
     text-align: center;
