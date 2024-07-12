@@ -1,4 +1,5 @@
 import * as request from '../lib/request';
+import * as localService from './localStorageService';
 
 const baseUrl = 'http://localhost:3030/users'
 
@@ -30,3 +31,16 @@ export const register = (email, password) => {
     }
 }
 
+
+export const logout = async () => {
+    const options = {};
+    const userData = localService.getItem('userData');
+    const token = userData.accessToken;
+    options.headers = {
+        'X-Authorization': { token }
+    }
+    console.log(options);
+    const result = await fetch(`${baseUrl}/logout`, { method: 'GET', options });
+
+    console.log(result);
+}

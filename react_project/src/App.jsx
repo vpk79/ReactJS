@@ -25,17 +25,12 @@ function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = useState({});
 
-
-  useEffect(()=> {
-    
-  },[])
-
-
   const loginSubmitHandler = async (values) => {
     try {
       const result = await authService.login(values.email, values.password);
 
       setAuth(result);
+      localService.setItem(result);
 
       navigate('/');
 
@@ -53,6 +48,7 @@ function App() {
       const result = await authService.register(values.email, values.password)
 
       setAuth(result);
+      localService.setItem(result);
 
       navigate('/');
     } catch (error) {
@@ -65,7 +61,13 @@ function App() {
     // console.log(values);
   }
 
+  useEffect(() => {
+    const userData = localService.getItem('userData');
+    if(userData) setAuth(userData);
+    // console.log(userData);
+  }, []);
 
+  console.log(auth);
 
   const pageTitles = {
     '/about': 'About',
