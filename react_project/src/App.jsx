@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import * as authService from './services/authService'
@@ -26,18 +26,22 @@ function App() {
   const [auth, setAuth] = useState({});
 
 
+  useEffect(()=> {
+    
+  },[])
+
 
   const loginSubmitHandler = async (values) => {
     try {
       const result = await authService.login(values.email, values.password);
 
-      setAuth(state => [...state, result]);
+      setAuth(result);
 
       navigate('/');
 
     } catch (error) {
       alert(error);
-      console.log(error);
+      console.log('error', error);
     }
 
   
@@ -48,12 +52,13 @@ function App() {
     try {
       const result = await authService.register(values.email, values.password)
 
-      setAuth(state => [...state, result]);
+      setAuth(result);
 
       navigate('/');
     } catch (error) {
+
       alert(error);
-      console.log(error);
+      console.log('error', error);
     }
 
    
