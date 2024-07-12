@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import * as authService from './services/authService'
 import AuthContext from './contexts/authContext';
+import * as localService from './services/localStorageService';
 
 import HomePage from './components/HomePage/HomePage'
 import AboutPage from './components/AboutPage/AboutPage';
@@ -24,21 +25,38 @@ function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = useState({});
 
+
+
   const loginSubmitHandler = async (values) => {
-    const result = await authService.login(values.email, values.password);
+    try {
+      const result = await authService.login(values.email, values.password);
 
-    setAuth(result);
+      setAuth(state => [...state, result]);
 
-    navigate('/');
+      navigate('/');
+
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+
+  
     // console.log(result);
   };
 
   const registerSubmitHandler = async (values) => {
-    const result = await authService.register(values.email, values.password)
+    try {
+      const result = await authService.register(values.email, values.password)
 
-    setAuth(result);
+      setAuth(state => [...state, result]);
 
-    navigate('/');
+      navigate('/');
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+
+   
     // console.log(values);
   }
 
