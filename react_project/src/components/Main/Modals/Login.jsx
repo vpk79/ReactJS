@@ -13,20 +13,21 @@ const LoginFormKeys = {
 export default function Login() {
 
 
-    const { loginSubmitHandler } = useContext(AuthContext);
+    const { isAuthenticated, loginSubmitHandler } = useContext(AuthContext);
     const { values, onChange, onSubmit } = useForm(loginSubmitHandler, {
         [LoginFormKeys.Email]: '',
         [LoginFormKeys.Password]: ''
     });
 
 
-    // closing the form when open register form
+    // closing the form when is necessary
     const closeBtnRef = useRef(null);
 
     function closeForm() {
         closeBtnRef.current.click();
-    }
+    };
 
+    if (isAuthenticated) closeForm();
 
     return (
         <>

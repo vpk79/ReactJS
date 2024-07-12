@@ -6,7 +6,7 @@ import Register from "./Modals/Register.jsx";
 
 export default function Topbar() {
 
-    const { isAuthanticated, username } = useContext(AuthContext);
+    const { isAuthenticated, username } = useContext(AuthContext);
 
     return (
         <>
@@ -29,7 +29,7 @@ export default function Topbar() {
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
                             
-                                {!isAuthanticated && (
+                                {!isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
                                     Do you have an account?&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -40,7 +40,7 @@ export default function Topbar() {
                                 </div>
                                 )}
 
-                                {isAuthanticated && (
+                                {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
                                     <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <button className="btn btn-primary btn-sm">Logout</button>
