@@ -36,11 +36,12 @@ export const logout = async () => {
     const options = {};
     const userData = localService.getItem('userData');
     const token = userData.accessToken;
+    
     options.headers = {
-        'X-Authorization': { token }
+        'X-Authorization':  token
     }
     console.log(options);
-    const result = await fetch(`${baseUrl}/logout`, { method: 'GET', options });
+    const result = await fetch(`${baseUrl}/logout/`, { method: 'GET', options });
 
     console.log(result);
 }
