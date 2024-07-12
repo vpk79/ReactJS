@@ -12,7 +12,6 @@ const LoginFormKeys = {
 
 export default function Login() {
 
-
     const { isAuthenticated, loginSubmitHandler } = useContext(AuthContext);
     const { values, onChange, onSubmit } = useForm(loginSubmitHandler, {
         [LoginFormKeys.Email]: '',
@@ -30,6 +29,7 @@ export default function Login() {
     if (isAuthenticated) closeForm();
 
     return (
+
         <>
             {/* Login */}
             <div
