@@ -19,11 +19,15 @@ import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
+import Logout from './components/Main/Logout';
 
 
 function App() {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(() => {
+    localService.removeItem('userData');
+    return {};
+  });
 
   const loginSubmitHandler = async (values) => {
     try {
@@ -35,8 +39,9 @@ function App() {
       navigate('/');
 
     } catch (error) {
-      alert(error);
+      alert(error.message);
       console.log('error', error);
+      throw new Error(error.message);
     }
 
   
@@ -61,13 +66,19 @@ function App() {
     // console.log(values);
   }
 
-  useEffect(() => {
-    const userData = localService.getItem('userData');
-    if(userData) setAuth(userData);
-    // console.log(userData);
-  }, []);
+  const logoutHandler = () => {
+    setAuth({});
+    localStorage.removeItem('userData');
+    navigate('/');
+  }
 
-  console.log(auth);
+  // useEffect(() => {
+  //   const userData = localService.getItem('userData');
+  //   if(userData) setAuth(userData);
+  //   // console.log(userData);
+  // }, []);
+
+  
 
   const pageTitles = {
     '/about': 'About',
@@ -94,6 +105,7 @@ function App() {
   const values = {
     loginSubmitHandler,
     registerSubmitHandler,
+    logoutHandler,
     username: auth.username || auth.email,
     email: auth.email,
     isAuthenticated: !!auth.accessToken
@@ -132,6 +144,7 @@ function App() {
           <Route path="/feature" element={<FeaturePage />} />
           <Route path="/appointment" element={<AppointmentPage />} />
           <Route path="/testimonial" element={<TestimonialPage />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>

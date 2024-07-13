@@ -1,6 +1,9 @@
+import * as localService from '../services/localStorageService'
+
 
 const buildOptions = (data) => {
     const options = {};
+    let token = '';
 
     if (data) {
         options.body = JSON.stringify(data);
@@ -8,6 +11,20 @@ const buildOptions = (data) => {
             'content-type': 'application/json',
         }
     }
+
+    const userData = localService.getItem('userData');
+    if(userData){
+        token = userData.accessToken;
+    }
+
+    if(token){
+        options.headers = {
+            ...options,
+            'X-Authorization': token
+        }
+    }
+
+
     return options;
 }
 
@@ -19,9 +36,17 @@ export const request = async (method, url, data) => {
             ...buildOptions(data),
         });
 
-        console.log(response.status);
+        // console.log(response.status);
 
-        if (response.status == 403 || response.status == 401) {
+        if(response.status === 204) {
+            return {};
+        }
+
+        if(!response.ok){
+            throw result;
+        }
+
+        if (response.status === 403 || response.status === 401) {
             alert('No such user or password!');
             return new Error('No such user or password!');
         }
@@ -37,9 +62,8 @@ export const request = async (method, url, data) => {
 
 
     } catch (error) {
-
-        console.log('request error', error);
-        return error;
+        alert(error.message)
+        throw new Error(error.message);
     }
 }
 

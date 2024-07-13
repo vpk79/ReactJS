@@ -3,14 +3,10 @@ import Login from "./Modals/Login.jsx";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext.js";
 import Register from "./Modals/Register.jsx";
-import * as localService from "../../services/localStorageService.js";
-import * as authService from "../../services/authService.js";
 
 export default function Topbar() {
 
     const { isAuthenticated, username } = useContext(AuthContext);
-
-    const logout = () => authService.logout();
 
     return (
         <>
@@ -47,7 +43,7 @@ export default function Topbar() {
                                 {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
                                     <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    <button className="btn btn-primary btn-sm" onClick={logout}>Logout</button>
+                                    <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>
                                         </div>
                                 )}
 

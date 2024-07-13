@@ -12,8 +12,8 @@ export const login = async (email, password) => {
 
         return result;
     } catch (error) {
-        console.log('login error', error);
-        return error;
+        alert(error.message);
+        throw new Error(error.message);
     }
 }
 
@@ -33,15 +33,17 @@ export const register = (email, password) => {
 
 
 export const logout = async () => {
-    const options = {};
-    const userData = localService.getItem('userData');
-    const token = userData.accessToken;
-    
-    options.headers = {
-        'X-Authorization':  token
-    }
-    console.log(options);
-    const result = await fetch(`${baseUrl}/logout/`, { method: 'GET', options });
+     request.get(`${baseUrl}/logout`)
 
-    console.log(result);
+    // const options = {};
+    // const userData = localService.getItem('userData');
+    // const token = userData.accessToken;
+    
+    // options.headers = {
+    //     'X-Authorization':  token
+    // }
+    // console.log(options);
+    // const result = await fetch(`${baseUrl}/logout/`, { method: 'GET', options });
+
+    // console.log(result);
 }
