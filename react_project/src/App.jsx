@@ -96,7 +96,7 @@ function App() {
     registerSubmitHandler,
     username: auth.username || auth.email,
     email: auth.email,
-    isAuthenticated: !!auth.email
+    isAuthenticated: !!auth.accessToken
   }
 
   return (
