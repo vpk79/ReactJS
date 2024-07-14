@@ -23,10 +23,22 @@ export default function Login() {
     const closeBtnRef = useRef(null);
 
     function closeForm() {
-        closeBtnRef.current.click();
+        try {
+            closeBtnRef.current.click();
+
+        } catch (error) {
+            return null;
+        }
     };
 
-    if (isAuthenticated) closeForm();
+    if (isAuthenticated){
+        try {
+            closeForm();
+        } catch (error) {
+            return null;
+        }
+        
+    } 
 
     return (
 

@@ -4,7 +4,7 @@ import AuthContext from "../../contexts/authContext";
 
 export default function Navbar() {
 
-    const { isAuthanticated, username} = useContext(AuthContext);
+    const { isAuthenticated, email} = useContext(AuthContext);
 
     return (
         <>

@@ -25,6 +25,10 @@ export default function Topbar() {
                             <small className="far fa-clock text-primary me-2" />
                             <small>Mon - Fri : 09.00 AM - 09.00 PM</small>
                         </div>
+                        <div style={{marginLeft: '25px'}} className="h-100 d-inline-flex align-items-center py-3">
+                            <small className="fa fa-phone-alt text-primary me-2" />
+                            <small>+012 345 6789</small>
+                        </div>
                     </div>
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
@@ -47,8 +51,7 @@ export default function Topbar() {
                                         </div>
                                 )}
 
-                            <small className="fa fa-phone-alt text-primary me-2" />
-                            <small>+012 345 6789</small>
+                          
                         </div>
                         <div className="h-100 d-inline-flex align-items-center">
                             <Link to="https://www.facebook.com" className="btn btn-sm-square rounded-circle bg-white text-primary me-1"

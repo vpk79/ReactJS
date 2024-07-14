@@ -29,7 +29,14 @@ export default function Register() {
         closeBtnRef.current.click();
     };
 
-    if (isAuthenticated) closeForm();
+    if (isAuthenticated) {
+        try {
+            closeForm();
+        } catch (error) {
+            return null;
+        }
+
+    } 
 
     return (
         <>
