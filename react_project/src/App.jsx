@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import * as authService from './services/authService'
@@ -43,27 +43,19 @@ function App() {
       console.log('error', error);
       throw new Error(error.message);
     }
-
-  
-    // console.log(result);
   };
 
   const registerSubmitHandler = async (values) => {
     try {
       const result = await authService.register(values.email, values.password)
-
       setAuth(result);
       localService.setItem(result);
-
       navigate('/');
-    } catch (error) {
 
+    } catch (error) {
       alert(error);
       console.log('error', error);
     }
-
-   
-    // console.log(values);
   }
 
   const logoutHandler = () => {
@@ -72,13 +64,6 @@ function App() {
     navigate('/');
   }
 
-  // useEffect(() => {
-  //   const userData = localService.getItem('userData');
-  //   if(userData) setAuth(userData);
-  //   // console.log(userData);
-  // }, []);
-
-  
 
   const pageTitles = {
     '/about': 'About',
@@ -94,7 +79,7 @@ function App() {
   };
 
 
-  // home header is different - all other pages use default header and set their titles also
+  // home header is different than all other pages, they use default header and we set their titles also
   const Header = () => {
     const location = useLocation();
     const currentPath = location.pathname;
@@ -106,7 +91,7 @@ function App() {
     loginSubmitHandler,
     registerSubmitHandler,
     logoutHandler,
-    username: auth.username || auth.email,
+    // username: auth.username || auth.email,
     email: auth.email,
     isAuthenticated: !!auth.accessToken
   }

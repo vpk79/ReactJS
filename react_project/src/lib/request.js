@@ -42,19 +42,18 @@ export const request = async (method, url, data) => {
             return {};
         }
 
-        if(!response.ok){
-            throw result;
-        }
+
 
         if (response.status === 403 || response.status === 401) {
             alert('No such user or password!');
             return new Error('No such user or password!');
-        }
-
-        if (response.status == 200) {
+        } else if (response.status === 409){
+            alert('User already exist!');
+            return new Error('User already exist!');
+        } else if (response.status == 200) {
             const result = await response.json();
-
             return result;
+
         } else {
             alert('Something went wrong')
             return new Error('Something went wrong')
@@ -63,7 +62,7 @@ export const request = async (method, url, data) => {
 
     } catch (error) {
         alert(error.message)
-        throw new Error(error.message);
+        return new Error(error.message);
     }
 }
 

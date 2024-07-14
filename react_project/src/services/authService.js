@@ -1,5 +1,4 @@
 import * as request from '../lib/request';
-import * as localService from './localStorageService';
 
 const baseUrl = 'http://localhost:3030/users'
 
@@ -11,6 +10,7 @@ export const login = async (email, password) => {
         });
 
         return result;
+
     } catch (error) {
         alert(error.message);
         throw new Error(error.message);
@@ -21,10 +21,11 @@ export const login = async (email, password) => {
 
 export const register = (email, password) => {
     try {
-        request.post(`${baseUrl}/register`, {
+       const result = request.post(`${baseUrl}/register`, {
             email,
             password
         });
+        return result;
     } catch (error) {
         console.log('register error', error);
         return error;

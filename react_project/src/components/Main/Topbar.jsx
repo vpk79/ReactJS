@@ -6,7 +6,7 @@ import Register from "./Modals/Register.jsx";
 
 export default function Topbar() {
 
-    const { isAuthenticated, username } = useContext(AuthContext);
+    const { isAuthenticated, email } = useContext(AuthContext);
 
     return (
         <>
@@ -42,7 +42,7 @@ export default function Topbar() {
 
                                 {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
-                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span>Welcome, {email}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>
                                         </div>
                                 )}
