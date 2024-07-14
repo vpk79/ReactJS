@@ -21,14 +21,15 @@ import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
 import Logout from './components/Main/Logout';
 import AuthGuard from './components/Guards/AuthGuard';
+import usePersistedState from './hooks/usePersistedState';
 
 
 function App() {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState(() => {
-    localService.removeItem('userData');
-    return {};
-  });
+  const [auth, setAuth] = usePersistedState({})
+    // localService.removeItem('userData');
+    // return {};
+
 
   const loginSubmitHandler = async (values) => {
     try {
