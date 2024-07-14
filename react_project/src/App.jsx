@@ -20,6 +20,7 @@ import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
 import Logout from './components/Main/Logout';
+import AuthGuard from './components/Guards/AuthGuard';
 
 
 function App() {
@@ -73,8 +74,6 @@ function App() {
     '/feature': 'Feature',
     '/appointment': 'Appointment',
     '/testimonial': 'Testemonial',
-    '/login': 'Login',
-    '/register': 'Register',
     '/404': '404 Error'
   };
 
@@ -123,13 +122,13 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/service" element={<ServicePage />} />
+          <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard> } />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/feature" element={<FeaturePage />} />
-          <Route path="/appointment" element={<AppointmentPage />} />
+          <Route path="/appointment" element={<AuthGuard><AppointmentPage /></AuthGuard>} />
           <Route path="/testimonial" element={<TestimonialPage />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/logout" element={<AuthGuard><Logout /></AuthGuard>} />
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
