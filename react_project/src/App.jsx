@@ -22,6 +22,7 @@ import DefaultHeader from './components/Main/DefaultHeader';
 import Logout from './components/Main/Logout';
 import AuthGuard from './components/Guards/AuthGuard';
 import usePersistedState from './hooks/usePersistedState';
+import { loginValidator, registerValidator } from './services/validators';
 
 
 function App() {
@@ -33,8 +34,9 @@ function App() {
 
   const loginSubmitHandler = async (values) => {
     try {
+      
+      loginValidator(values);
 
-      console.log(values);
       const result = await authService.login(values.email, values.password);
 
       setAuth(result);
@@ -44,21 +46,23 @@ function App() {
 
     } catch (error) {
       alert(error.message);
-      console.log('error', error);
-      throw new Error(error.message);
+      return null
     }
   };
 
   const registerSubmitHandler = async (values) => {
     try {
+
+      registerValidator(values);
+
       const result = await authService.register(values.email, values.password)
       setAuth(result);
       localService.setItem(result);
       navigate('/');
 
     } catch (error) {
-      alert(error);
-      console.log('error', error);
+      alert(error.message);
+      return null
     }
   }
 

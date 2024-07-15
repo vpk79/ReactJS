@@ -48,6 +48,16 @@ export default function Login() {
         }
     }, [isAuthenticated]);
 
+    // focus on email field
+    const emailRef = useRef(null);
+
+    useEffect(()=>{
+
+        if(emailRef.current){
+            emailRef.current.focus();
+        }
+    }, []);
+
 
     return (
 
@@ -91,6 +101,7 @@ export default function Login() {
                                         name={LoginFormKeys.Email}
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Email]}
+                                        ref={emailRef}
                                         autoComplete="on" />
 
                                 </div>
