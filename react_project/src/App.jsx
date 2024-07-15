@@ -33,6 +33,8 @@ function App() {
 
   const loginSubmitHandler = async (values) => {
     try {
+
+      console.log(values);
       const result = await authService.login(values.email, values.password);
 
       setAuth(result);

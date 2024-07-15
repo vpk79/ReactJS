@@ -13,30 +13,43 @@ const RegisterFormKeys = {
 export default function Register() {
 
     const {isAuthenticated, registerSubmitHandler } = useContext(AuthContext);
-    const {values, onChange, onSubmit} = useForm(registerSubmitHandler, {
+    const {values, onChange, onSubmit, setValues} = useForm(registerSubmitHandler, {
         [RegisterFormKeys.Email]: '',
         [RegisterFormKeys.Password]: '',
         [RegisterFormKeys.ConfirmPassword]: ''
     });
 
 
-    
+    function formReset() {
+        setValues({
+            [RegisterFormKeys.Email]: '',
+            [RegisterFormKeys.Password]: '',
+            [RegisterFormKeys.ConfirmPassword]: ''
+        });
+    }
 
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
 
     function closeForm() {
-        closeBtnRef.current.click();
-    };
 
-    if (isAuthenticated) {
         try {
-            closeForm();
+            formReset();
+            if (closeBtnRef.current) {
+                closeBtnRef.current.click();
+            };
         } catch (error) {
+            console.error('Error closing form:', error);
             return null;
         }
+    };
 
-    } 
+    useEffect(() => {
+        if (isAuthenticated) {
+            closeForm();
+        }
+    }, [isAuthenticated]);
+
 
     return (
         <>
@@ -59,6 +72,7 @@ export default function Register() {
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
+                                onClick={formReset}
                                 ref={closeBtnRef}
                             />
                         </div>

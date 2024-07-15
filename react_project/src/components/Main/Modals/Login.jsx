@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import styles from './Login.module.css';
 import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
@@ -13,7 +13,7 @@ const LoginFormKeys = {
 export default function Login() {
 
     const { isAuthenticated, loginSubmitHandler } = useContext(AuthContext);
-    const { values, onChange, onSubmit } = useForm(loginSubmitHandler, {
+    const { values, onChange, onSubmit, setValues } = useForm(loginSubmitHandler, {
         [LoginFormKeys.Email]: '',
         [LoginFormKeys.Password]: ''
     });
@@ -22,23 +22,32 @@ export default function Login() {
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
 
+    function formReset() {
+        setValues({
+            [LoginFormKeys.Email]: '',
+            [LoginFormKeys.Password]: ''
+        });
+    }
+
     function closeForm() {
         try {
-            closeBtnRef.current.click();
-
+            formReset();
+            if (closeBtnRef.current) {
+                closeBtnRef.current.click();
+            };
         } catch (error) {
+            console.error('Error closing form:', error);
             return null;
         }
     };
 
-    if (isAuthenticated){
-        try {
+
+    useEffect(() => {
+        if (isAuthenticated) {
             closeForm();
-        } catch (error) {
-            return null;
         }
-        
-    } 
+    }, [isAuthenticated]);
+
 
     return (
 
@@ -56,18 +65,19 @@ export default function Login() {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className={`${styles.login} modal-content`}>
                         <div className={`${styles.loginHeader} modal-header`}>
-                           
+
                             <button
                                 id='closeBtn2'
                                 type="button"
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
+                                onClick={formReset}
                                 ref={closeBtnRef}
                             />
                         </div>
                         <form className={styles.loginForm} onSubmit={onSubmit}>
-                            <h3 style={{ textAlign: 'center', marginTop: '-50px' }}  className="form-title" id="LoginLabel">
+                            <h3 style={{ textAlign: 'center', marginTop: '-50px' }} className="form-title" id="LoginLabel">
                                 Login
                             </h3>
                             <div className="row mb-3">
@@ -82,7 +92,7 @@ export default function Login() {
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Email]}
                                         autoComplete="on" />
-                                        
+
                                 </div>
                             </div>
                             <div className={`${styles.formInputs} row mb-3`}>
@@ -97,7 +107,7 @@ export default function Login() {
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Password]}
                                         autoComplete="on" />
-                                       
+
                                 </div>
                             </div>
                             <button type="submit" className={`${styles.btnLogin} btn btn-primary`}>
@@ -108,7 +118,7 @@ export default function Login() {
                         <p style={{ textAlign: 'center', marginTop: '-50px', marginBottom: '-40px' }}>
                             Not have an account?&nbsp;&nbsp;<span>
                                 <a style={{ color: 'blue', fontSize: '1.1em', marginBottom: '5px' }} className="btn" data-bs-toggle="modal"
-                            data-bs-target="#Register" onClick={closeForm}>Register</a></span></p>
+                                    data-bs-target="#Register" onClick={closeForm}>Register</a></span></p>
                     </div>
                 </div>
             </div>
