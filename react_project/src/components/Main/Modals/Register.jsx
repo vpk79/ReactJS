@@ -50,6 +50,31 @@ export default function Register() {
         }
     }, [isAuthenticated]);
 
+    // focus on email field when is shown
+    const emailRef = useRef(null);
+    const modalRef = useRef(null);
+
+    useEffect(() => {
+        const handleShown = () => {
+            if (emailRef.current) {
+                emailRef.current.focus();
+            }
+        };
+
+        const modalElement = modalRef.current;
+        if (modalElement) {
+            modalElement.addEventListener('shown.bs.modal', handleShown);
+        }
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            if (modalElement) {
+                modalElement.removeEventListener('shown.bs.modal', handleShown);
+            }
+        };
+    }, []);
+
+
 
     return (
         <>
@@ -61,6 +86,7 @@ export default function Register() {
                 tabIndex={-1}
                 aria-labelledby="Register"
                 aria-hidden="true"
+                ref={modalRef}
 
             >
                 <div className="modal-dialog modal-dialog-centered">
@@ -91,7 +117,8 @@ export default function Register() {
                                         name={RegisterFormKeys.Email}
                                         onChange={onChange}
                                         value={values[RegisterFormKeys.Email]}
-                                        autoComplete="on" />
+                                        autoComplete="on"
+                                        ref={emailRef} />
 
                                 </div>
                             </div>

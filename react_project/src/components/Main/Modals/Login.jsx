@@ -48,16 +48,29 @@ export default function Login() {
         }
     }, [isAuthenticated]);
 
-    // focus on email field
-    const emailRef = useRef(null);
+        // focus on email field when is shown
+        const emailRef = useRef(null);
+        const modalRef = useRef(null);
 
-    useEffect(()=>{
+        useEffect(() => {
+            const handleShown = () => {
+                if (emailRef.current) {
+                    emailRef.current.focus();
+                }
+            };
 
-        if(emailRef.current){
-            emailRef.current.focus();
-        }
-    }, []);
+            const modalElement = modalRef.current;
+            if (modalElement) {
+                modalElement.addEventListener('shown.bs.modal', handleShown);
+            }
 
+            // Cleanup the event listener on component unmount
+            return () => {
+                if (modalElement) {
+                    modalElement.removeEventListener('shown.bs.modal', handleShown);
+                }
+            };
+        }, []);
 
     return (
 
@@ -70,7 +83,7 @@ export default function Login() {
                 tabIndex={-1}
                 aria-labelledby="Login"
                 aria-hidden="true"
-
+                ref={modalRef}
             >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className={`${styles.login} modal-content`}>
@@ -101,8 +114,8 @@ export default function Login() {
                                         name={LoginFormKeys.Email}
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Email]}
-                                        ref={emailRef}
-                                        autoComplete="on" />
+                                        autoComplete="on"
+                                        ref={emailRef} />
 
                                 </div>
                             </div>
