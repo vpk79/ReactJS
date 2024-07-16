@@ -38,7 +38,7 @@
     align-self: center;
 }
 
-.loginError {
+.emailError {
     display: inline-block;
     position: absolute;
     color: red;

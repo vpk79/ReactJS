@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Login.module.css';
 import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
-import { emailValidator, loginValidator } from '../../../services/validators';
+import { emailValidator } from '../../../services/validators';
 
 
 const LoginFormKeys = {
@@ -19,14 +19,18 @@ export default function Login() {
         [LoginFormKeys.Password]: ''
     });
 
-    const [loginInputError, setLoginInputError] = useState('');
+    const [emailInputError, setEmailInputError] = useState('');
     const [passwordInputError, setPasswordInputError] = useState('');
+    const [touched, setTouched] = useState(false); // handle out of focus for email input - not show unnecessary errors
 
 
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
 
     function formReset() {
+        setEmailInputError('');
+        setPasswordInputError('');
+        setTouched(false);
         setValues({
             [LoginFormKeys.Email]: '',
             [LoginFormKeys.Password]: ''
@@ -37,8 +41,6 @@ export default function Login() {
         try {
             formReset();
             if (closeBtnRef.current) {
-                setLoginInputError('');
-                setPasswordInputError('');
                 closeBtnRef.current.click();
             };
         } catch (error) {
@@ -47,14 +49,15 @@ export default function Login() {
         }
     };
 
-
+    // close the form when login is successfull
     useEffect(() => {
         if (isAuthenticated) {
             closeForm();
         }
     }, [isAuthenticated]);
 
-    // focus on email field when is shown
+
+    // focus on email field when the form is shown
     const emailRef = useRef(null);
     const modalRef = useRef(null);
 
@@ -79,31 +82,43 @@ export default function Login() {
         };
     }, []);
 
-    const loginInputValidator = () => {
-        if (values.email === '') {
-            setLoginInputError('*email is required!')
-        } else if (!emailValidator(values.email)) {
-            setLoginInputError('*email is not valid!')
-        }
-    }
+    const handleBlur = () => {
+        setTouched(true);
+    };
+
+    // input validators
+    useEffect(() => {
+        if (!touched) return;
+        const timeoutId = setTimeout(() => {
+            if (values.email === '') {
+                setEmailInputError('*email is required!');
+            } else if (!emailValidator(values.email)) {
+                setEmailInputError('*email is not valid!');
+            } else {
+                setEmailInputError('');
+            }
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [touched]);
 
     const passwordInputValidator = () => {
         if (values.password === '') {
             setPasswordInputError('*password is required')
-        } else if (values.password.length <= 8) {
-            setPasswordInputError('*password must have 8 symbols at least')
         }
     }
 
     const clearErrors = (e) => {
         // console.log(e.target.name);
         if (e.target.name === 'email') {
-            setLoginInputError('');
+            setEmailInputError('');
+            setTouched(false);
         } else if (e.target.name === 'password') {
             setPasswordInputError('');
         } else if (e.target.name === 'closeBtn') {
-            setLoginInputError('');
+            setEmailInputError('');
             setPasswordInputError('');
+            setTouched(false);
         }
     }
 
@@ -145,17 +160,17 @@ export default function Login() {
                                 </label>
                                 <div className={`${styles.emailInput} col-sm-9`}>
                                     <input type="email"
-                                        className={`form-control ${loginInputError ? 'is-invalid' : ''}`}
+                                        className={`form-control ${emailInputError ? 'is-invalid' : ''}`}
                                         id="inputEmail3"
                                         name={LoginFormKeys.Email}
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Email]}
                                         autoComplete="on"
-                                        onBlur={loginInputValidator}
+                                        onBlur={handleBlur}
                                         onFocus={clearErrors}
                                         ref={emailRef} />
-                                    {loginInputError && (
-                                        <p className={styles.loginError}>{loginInputError}</p>
+                                    {emailInputError && (
+                                        <p className={styles.emailError}>{emailInputError}</p>
                                     )}
 
                                 </div>
@@ -187,7 +202,7 @@ export default function Login() {
 
                         <p style={{ textAlign: 'center', marginTop: '-50px', marginBottom: '-40px' }}>
                             Not have an account?&nbsp;&nbsp;<span>
-                                <a style={{ color: 'blue', fontSize: '1.1em', marginBottom: '5px' }} className="btn" data-bs-toggle="modal"
+                                <a name="registerLink" style={{ color: 'blue', fontSize: '1.1em', marginBottom: '5px' }} className="btn" data-bs-toggle="modal"
                                     data-bs-target="#Register" onClick={closeForm}>Register</a></span></p>
                     </div>
                 </div>

@@ -12,8 +12,8 @@ export const login = async (email, password) => {
         return result;
 
     } catch (error) {
-        alert(error.message);
-        throw new Error(error.message);
+        // alert(error.message);
+        return new Error(error.message);
     }
 }
 
@@ -27,7 +27,7 @@ export const register = (email, password) => {
         });
         return result;
     } catch (error) {
-        console.log('register error', error);
+        // console.log('register error', error);
         return error;
     }
 }
@@ -35,16 +35,5 @@ export const register = (email, password) => {
 
 export const logout = async () => {
      request.get(`${baseUrl}/logout`)
-
-    // const options = {};
-    // const userData = localService.getItem('userData');
-    // const token = userData.accessToken;
-    
-    // options.headers = {
-    //     'X-Authorization':  token
-    // }
-    // console.log(options);
-    // const result = await fetch(`${baseUrl}/logout/`, { method: 'GET', options });
-
-    // console.log(result);
+   
 }

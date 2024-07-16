@@ -38,6 +38,7 @@ function App() {
       loginValidator(values);
 
       const result = await authService.login(values.email, values.password);
+      if(result.name === 'Error') throw new Error(result.message);
 
       setAuth(result);
       localService.setItem(result);
@@ -46,7 +47,7 @@ function App() {
 
     } catch (error) {
       alert(error.message);
-      return null
+      return 
     }
   };
 
@@ -55,7 +56,9 @@ function App() {
 
       registerValidator(values);
 
-      const result = await authService.register(values.email, values.password)
+      const result = await authService.register(values.email, values.password);
+      if (result.name === 'Error') throw new Error(result.message);
+
       setAuth(result);
       localService.setItem(result);
       navigate('/');
