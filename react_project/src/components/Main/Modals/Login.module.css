@@ -37,3 +37,21 @@
     text-align: center;
     align-self: center;
 }
+
+.loginError {
+    display: inline-block;
+    position: absolute;
+    color: red;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+}
+
+.passwordError {
+    display: inline-block;
+    position: absolute;
+    color: red;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+}

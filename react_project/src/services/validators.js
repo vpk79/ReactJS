@@ -1,6 +1,6 @@
 
 
-export function loginValidator(values){
+export function loginValidator(values) {
 
     if (values.email == '' || values.password == '') throw new Error('You must fill all fields!');
     // if (values.password.length <= 5) throw new Error('Password too short!');
@@ -13,8 +13,16 @@ export function loginValidator(values){
 
 }
 
+export function emailValidator(email) {
+    const emailRegex = new RegExp(/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/, 'i');
+    const isValid = emailRegex.test(email);
+    if (!isValid) return false;
 
-export function registerValidator(values){
+    return true;
+}
+
+
+export function registerValidator(values) {
     console.log(values);
     if (values.email == '' || values.password == '') throw new Error('You must fill all fields!');
     // if (values.password.length <= 5) throw new Error('Password too short!');

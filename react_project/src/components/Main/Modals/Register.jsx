@@ -108,7 +108,7 @@ export default function Register() {
                             </h3>
                             <div className="row mb-3">
                                 <label htmlFor="registerEmail3" className="col-sm-2 col-form-label">
-                                    Email
+                                    *Email
                                 </label>
                                 <div className={`${styles.emailInput} col-sm-9`}>
                                     <input type="email"
@@ -124,7 +124,7 @@ export default function Register() {
                             </div>
                             <div className={`${styles.formInputs} row mb-3`}>
                                 <label htmlFor="registerPassword3" className="col-sm-2 col-form-label">
-                                    Password
+                                    *Password
                                 </label>
                                 <div className="col-sm-9">
                                     <input type="password"
@@ -137,7 +137,7 @@ export default function Register() {
 
                                 </div>
                                 <label htmlFor="ConfirmPassword3" className="col-sm-2 col-form-label">
-                                    Repeat-Password
+                                    *Repeat-Password
                                 </label>
                                 <div className="col-sm-9">
                                     <input type="password"
