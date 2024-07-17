@@ -82,7 +82,7 @@ export default function AppointmentPage() {
                                                 className="form-select border-0"
                                                 style={{ height: 55 }}
                                             >
-                                                <option selected="">Choose Doctor</option>
+                                                <option value="">Choose Doctor</option>
                                                 <option value={1}>Doctor 1</option>
                                                 <option value={2}>Doctor 2</option>
                                                 <option value={3}>Doctor 3</option>

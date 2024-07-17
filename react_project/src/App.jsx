@@ -125,18 +125,14 @@ function App() {
 
       <AuthContext.Provider value={values}>
 
-        <Topbar />
-        <Navbar />
-        <Header />
-
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<><Topbar /><Navbar /><Header /><HomePage /></>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard> } />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/feature" element={<FeaturePage />} />
-          <Route path="/appointment" element={<AuthGuard><AppointmentPage /></AuthGuard>} />
+          <Route path="/appointment" element={<AuthGuard><Topbar /><Navbar /><Header /><AppointmentPage /></AuthGuard>} />
           <Route path="/testimonial" element={<TestimonialPage />} />
           <Route path="/logout" element={<AuthGuard><Logout /></AuthGuard>} />
 
