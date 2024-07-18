@@ -74,6 +74,14 @@
                 "_createdOn": 1613551388703
             }
         },
+        "services": {
+            "0a272c58-b7ea-4e09-a000-7ec988248f96": {
+                "title":"Cardiology",
+                "icon": "fa fa-heartbeat",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "detailedInfo": "More about Cardiology services, including benefits, treatments, and procedures."
+            }
+        },
         "comments": {
             "0a272c58-b7ea-4e09-a000-7ec988248f66": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
