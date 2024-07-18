@@ -23,6 +23,7 @@ import Logout from './components/Main/Logout';
 import AuthGuard from './components/Guards/AuthGuard';
 import usePersistedState from './hooks/usePersistedState';
 import { loginValidator, registerValidator } from './services/validators';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -124,21 +125,35 @@ function App() {
       {/* Spinner End */}
 
       <AuthContext.Provider value={values}>
+        <Topbar />
+        <Navbar />
+        <Header />
 
         <Routes>
-          <Route path="/" element={<><Topbar /><Navbar /><Header /><HomePage /></>} />
+          <Route path="/" element={<><HomePage /></>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard> } />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/feature" element={<FeaturePage />} />
-          <Route path="/appointment" element={<AuthGuard><Topbar /><Navbar /><Header /><AppointmentPage /></AuthGuard>} />
+          <Route path="/appointment" element={<AuthGuard><AppointmentPage /></AuthGuard>} />
           <Route path="/testimonial" element={<TestimonialPage />} />
           <Route path="/logout" element={<AuthGuard><Logout /></AuthGuard>} />
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-
+        <ToastContainer
+          position="top-center"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition:Bounce/>
         <Footer />
 
       </AuthContext.Provider>
