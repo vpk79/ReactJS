@@ -1,6 +1,6 @@
 import Header from '../Main/HomeHeader'
 import About from '../Main/About'
-import Service from '../Main/Service'
+import Service from '../Main/ServiceComponent/ServiceComponent'
 import Feature from '../Main/Feature'
 import Team from '../Main/Team'
 import Appointment from '../Main/Appointment'

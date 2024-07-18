@@ -75,11 +75,41 @@
             }
         },
         "services": {
-            "0a272c58-b7ea-4e09-a000-7ec988248f96": {
-                "title":"Cardiology",
+            "s01": {
+                "title": "Cardiology",
                 "icon": "fa fa-heartbeat",
                 "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
-                "detailedInfo": "More about Cardiology services, including benefits, treatments, and procedures."
+                "description": "More about Cardiology services, including benefits, treatments, and procedures."
+            },
+            "s02": {
+                "title": "Pulmonary",
+                "icon": "fa fa-x-ray",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "description": "More about Pulmonary services, including benefits, treatments, and procedures."
+            },
+            "s03": {
+                "title": "Neurology",
+                "icon": "fa fa-brain",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "description": "More about Neurology services, including benefits, treatments, and procedures."
+            },
+            "s04": {
+                "title": "Orthopedics",
+                "icon": "fa fa-wheelchair",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "description": "More about Orthopedics services, including benefits, treatments, and procedures."
+            },
+            "s05": {
+                "title": "Dental Surgery",
+                "icon": "fa fa-tooth",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "description": "More about Dental Surgery services, including benefits, treatments, and procedures."
+            },
+            "s06": {
+                "title": "Laboratory",
+                "icon": "fa fa-vials",
+                "info": "Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.",
+                "description": "More about Laboratory services, including benefits, treatments, and procedures."
             }
         },
         "comments": {

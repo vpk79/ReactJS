@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import * as authService from './services/authService'
