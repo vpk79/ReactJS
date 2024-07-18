@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './ServiceCard.css';
 import * as urls from '../../../const/const.js';
 import * as request from '../../../lib/request.js'
 import ServiceCard from './ServiceCard.jsx';
@@ -28,13 +27,14 @@ export default function ServiceComponent(){
                     </div>
                     <div className="row g-4">
 
-                        {serviceData.map(data => (
+                        {serviceData.map((data, index) => (
                             <ServiceCard
                                 key={data._id}
                                 title={data.title}
                                 icon={data.icon}
                                 info={data.info}
                                 description={data.description}
+                                delay={index * 200}
 
                             />
                         ))}
