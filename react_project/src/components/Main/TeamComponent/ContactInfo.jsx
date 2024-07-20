@@ -9,8 +9,6 @@ export default function ContactInfo({ data }) {
         setPersonData(data);
     }, [data]);
 
-    console.log(personData);
-    console.log(personData.info);
     return (
         <>
             {personData && (

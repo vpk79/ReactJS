@@ -3,7 +3,6 @@ import './TeamComponent.css'
 export default function TeamCard({ data, delay, personDetails }) {
 
 
-
     return (
         <>
             <div className="col-3">
