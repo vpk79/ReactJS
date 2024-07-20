@@ -108,8 +108,8 @@ export default function Register() {
     const passwordInputValidator = () => {
         if (values.password === '') {
             setPasswordInputError('*password is required!')
-        } else if (values.password.length <= 7) {
-            setPasswordInputError('*password must have 8 symbols at least!')
+        } else if (values.password.length <= 5) {
+            setPasswordInputError('*password must have 6 symbols at least!')
         }
     }
 

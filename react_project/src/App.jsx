@@ -23,14 +23,11 @@ import AuthGuard from './Guards/AuthGuard';
 import usePersistedState from './hooks/usePersistedState';
 import { loginValidator, registerValidator } from './services/validators';
 import { ToastContainer } from 'react-toastify';
-
+import * as toast from "./Toasts/toastsMsg";
 
 function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = usePersistedState({})
-  // localService.removeItem('userData');
-  // return {};
-
 
   const loginSubmitHandler = async (values) => {
     try {
@@ -46,7 +43,8 @@ function App() {
       navigate('/');
 
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
+      toast.showErrorToast(error.message);
       return
     }
   };
@@ -64,7 +62,8 @@ function App() {
       navigate('/');
 
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
+      toast.showErrorToast(error.message);
       return null
     }
   }
