@@ -1,10 +1,20 @@
 import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../../contexts/authContext";
+import * as toast from "../../Toasts/toastsMsg"
 
 export default function Navbar() {
 
-    const { isAuthenticated, email} = useContext(AuthContext);
+    const { isAuthenticated} = useContext(AuthContext);
+
+    const authCheck = () => {
+        if(!isAuthenticated){
+            toast.showInfoToast("You must login or register first!")
+            return null;
+        }
+        return;
+    }
+    
 
     return (
         <>
@@ -70,8 +80,9 @@ export default function Navbar() {
                         
                       
                     </div>
-                    <Link to="/appointment"
+                    <Link to={isAuthenticated ? "/appointment": ''}
                         className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
+                        onClick={authCheck}
                     >
                         Appointment
                         <i className="fa fa-arrow-right ms-3" />

@@ -83,7 +83,8 @@
 }
 
 .person-about p {
-    text-indent: 3ch;
+    padding: 0 20px 0 20px;
+    /* text-indent: 3ch; */
     font-weight: 600;
 }
 

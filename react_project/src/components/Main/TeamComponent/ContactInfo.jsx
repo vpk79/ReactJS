@@ -116,7 +116,7 @@ export default function ContactInfo({ data }) {
                                     >
                                         {
                                             personData.info && (
-                                                <p>{personData.info['about']}</p>
+                                                <p><i className="fas fa-info-circle"></i>&nbsp;{personData.info['about']}</p>
                                             )
                                         }
                                         <ul>

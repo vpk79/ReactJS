@@ -4,6 +4,7 @@ import { useContext } from "react";
 import AuthContext from "../../contexts/authContext.js";
 import Register from "./Modals/Register.jsx";
 
+
 export default function Topbar() {
 
     const { isAuthenticated, email } = useContext(AuthContext);

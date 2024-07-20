@@ -69,19 +69,19 @@ export default function HomeHeader() {
                     <div className="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                         <OwlCarousel className="owl-carousel header-carousel owl-theme" {...options}>
                             <div className="owl-carousel-item item">
-                                <img className="img-fluid" src="img/carousel-1.jpg" alt="Cardiology" />
+                                <img className="img-fluid" src="img/carousel-1.jpg" alt="Cardiology"></img>
                                 <div className="owl-carousel-text">
                                     <h1 className="display-1 text-white mb-0">Cardiology</h1>
                                 </div>
                             </div>
                             <div className="owl-carousel-item item">
-                                <img className="img-fluid" src="img/carousel-2.jpg" alt="Neurology" />
+                                <img className="img-fluid" src="img/carousel-2.jpg" alt="Neurology"></img>
                                 <div className="owl-carousel-text">
                                     <h1 className="display-1 text-white mb-0">Neurology</h1>
                                 </div>
                             </div>
                             <div className="owl-carousel-item item">
-                                <img className="img-fluid" src="img/carousel-3.jpg" alt="Pulmonary" />
+                                <img className="img-fluid" src="img/carousel-3.jpg" alt="Pulmonary"></img>
                                 <div className="owl-carousel-text">
                                     <h1 className="display-1 text-white mb-0">Pulmonary</h1>
                                 </div>

@@ -4,7 +4,6 @@ import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
 import { emailValidator } from '../../../services/validators';
 
-
 const LoginFormKeys = {
     Email: 'email',
     Password: 'password'

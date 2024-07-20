@@ -22,23 +22,23 @@ import Logout from './components/Main/Logout';
 import AuthGuard from './Guards/AuthGuard';
 import usePersistedState from './hooks/usePersistedState';
 import { loginValidator, registerValidator } from './services/validators';
-import { ToastContainer, toast, Slide } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = usePersistedState({})
-    // localService.removeItem('userData');
-    // return {};
+  // localService.removeItem('userData');
+  // return {};
 
 
   const loginSubmitHandler = async (values) => {
     try {
-      
+
       loginValidator(values);
 
       const result = await authService.login(values.email, values.password);
-      if(result.name === 'Error') throw new Error(result.message);
+      if (result.name === 'Error') throw new Error(result.message);
 
       setAuth(result);
       localService.setItem(result);
@@ -47,7 +47,7 @@ function App() {
 
     } catch (error) {
       alert(error.message);
-      return 
+      return
     }
   };
 
@@ -124,6 +124,7 @@ function App() {
       {/* Spinner End */}
 
       <AuthContext.Provider value={values}>
+
         <Topbar />
         <Navbar />
         <Header />
@@ -131,7 +132,7 @@ function App() {
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard> } />
+          <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard>} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/feature" element={<FeaturePage />} />
@@ -141,20 +142,9 @@ function App() {
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-        <ToastContainer
-          position="top-center"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition: Slide />
-        <Footer />
 
+        <Footer />
+        <ToastContainer />
       </AuthContext.Provider>
 
       {/* Back to Top Arrow*/}
