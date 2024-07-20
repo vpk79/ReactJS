@@ -1,8 +1,28 @@
+import { useEffect, useState } from 'react'
 import ContactInfo from '../Modals/ContactInfo'
 import './TeamComponent.css'
+import * as request from '../../../lib/request.js'
+import * as urls from '../../../const/const.js';
+import TeamCard from './TeamCard.jsx';
+
 
 
 export default function TeamComponent() {
+
+    const [employers, setEmployers] = useState([]);
+    const [personData, setPersonData] = useState({});
+
+    useEffect(() => {
+        const getData = request.get(urls.EMPLOYERS)
+            .then(data => setEmployers(data))
+            .catch(err => console.log(err))
+    }, []);
+
+    const personDetails = (data) => {
+       setPersonData(data);
+    }
+
+
     return (
         <>
             {/* Team Start */}
@@ -21,202 +41,16 @@ export default function TeamComponent() {
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
                                     <div className="row">
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" type="btn" data-bs-toggle="modal" data-bs-target="#contactInfoModal" src="img/team-1.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-2.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-3.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-4.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {employers.slice(0,4).map((data, index) => (
+                                            <TeamCard key={data._id} data={data} delay={index * 200} personDetails={personDetails} />
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="carousel-item">
                                     <div className="row">
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-4.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-3.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-2.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-3">
-                                            <div className="col-lg-12 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                                                <div className="team-item position-relative rounded overflow-hidden">
-                                                    <div className="overflow-hidden">
-                                                        <img className="img-fluid" src="img/team-1.jpg" alt="" />
-                                                    </div>
-                                                    <div className="team-text bg-light text-center p-4">
-                                                        <h5>Doctor Name</h5>
-                                                        <p className="text-primary">Department</p>
-                                                        <div className="team-social text-center">
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-twitter" />
-                                                            </a>
-                                                            <a className="btn btn-square" href="">
-                                                                <i className="fab fa-instagram" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {employers.slice(4, 8).reverse().map((data, index) => (
+                                            <TeamCard key={data._id} data={data} delay={index * 200} personDetails={personDetails} />
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +70,7 @@ export default function TeamComponent() {
                 </div>
             </div >
             {/* Team End */}
-            <ContactInfo />
+            <ContactInfo data={personData}/>
         </>
     )
 }

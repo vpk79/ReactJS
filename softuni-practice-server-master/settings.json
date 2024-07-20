@@ -112,6 +112,300 @@
                 "description": "More about Laboratory services, including benefits, treatments, and procedures."
             }
         },
+        "employers": {
+            "01": {
+                "name": "Lisa King",
+                "title": "M.D.",
+                "department": "Internal Medicine",
+                "imageUrl": "img/team-1.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Internal Medicine",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "lisazking@gmail.com",
+                        "linkedin": "linkedin.com/in/lisazking",
+                        "twitter": "twitter.com/lisazking"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "01"
+            },
+            "02": {
+                "name": "John Anderson",
+                "title": "M.D.",
+                "department": "Cardiology",
+                "imageUrl": "img/team-2.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Cardiology",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "johnanderson@gmail.com",
+                        "linkedin": "linkedin.com/in/johnanderson",
+                        "twitter": "twitter.com/johnanderson"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "02"
+            },
+            "03": {
+                "name": "Jessica Miller",
+                "title": "M.D.",
+                "department": "Gynecology",
+                "imageUrl": "img/team-3.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Gynecology",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "jessicamiller@gmail.com",
+                        "linkedin": "linkedin.com/in/jessicamiller",
+                        "twitter": "twitter.com/jessicamiller"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "03"
+            },
+            "04": {
+                "name": "Michael Roberts",
+                "title": "M.D.",
+                "department": "Orthopaedy",
+                "imageUrl": "img/team-4.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Orthopaedy",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "michaelroberts@gmail.com",
+                        "linkedin": "linkedin.com/in/michaelroberts",
+                        "twitter": "twitter.com/michaelroberts"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "04"
+            },"05": {
+                "name": "Emily Harris",
+                "title": "M.D.",
+                "department": "Pediatrics",
+                "imageUrl": "img/team-1.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Pediatrics",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "emilyharris@gmail.com",
+                        "linkedin": "linkedin.com/in/emilyharris",
+                        "twitter": "twitter.com/emilyharris"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "05"
+            },"06": {
+                "name": "David Johnson",
+                "title": "M.D.",
+                "department": "Neurology",
+                "imageUrl": "img/team-2.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Neurology",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "davidjohnson@gmail.com",
+                        "linkedin": "linkedin.com/in/davidjohnson",
+                        "twitter": "twitter.com/davidjohnson"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "06"
+            },"07": {
+                "name": "Laura Davis",
+                "title": "M.D.",
+                "department": "Ophthalmology",
+                "imageUrl": "img/team-3.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Ophthalmology",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "lauradavis@gmail.com",
+                        "linkedin": "linkedin.com/in/lauradavis",
+                        "twitter": "twitter.com/lauradavis"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "07"
+            },"08": {
+                "name": "James Williams",
+                "title": "M.D.",
+                "department": "Surgery",
+                "imageUrl": "img/team-4.jpg",
+                "info": {
+                    "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
+                    "facts": [
+                        "Achieved 22% reduction in surgeries by working with patients, admin, and nurse practitioners to suggest alternative treatments.",
+                        "Increased referrals by 17% through networking with other physicians and medical staff in the area.",
+                        "Helped raise reimbursements by $550,000 per year by collaborating with billing staff and insurance companies to explain treatments."
+                    ],
+                    "summary": {
+                        "speciality": "Physician, Surgery",
+                        "education": "Doctor of Medicine, Loma Linda University, CA",
+                        "certifications": [
+                            "Advanced Cardiovascular Life Support (ACLS), American Heart Association, 2018",
+                            "Board certified, Medical Board of California, 2019"
+                        ],
+                        "skills": "Patient Care, Patient Communication, Assessing symptoms, Interpersonal communication, Administering medical treatments, Analysing laboratory results, Teamwork, Leadership"
+                    },
+                    "contacts": {
+                        "phone": "714-330-6341",
+                        "email": "jameswilliams@gmail.com",
+                        "linkedin": "linkedin.com/in/jameswilliams",
+                        "twitter": "twitter.com/jameswilliams"
+                    }
+                },
+                "messages": [],
+                "responses": [
+                    "Hello, nice to meet you",
+                    "How can i help you?",
+                    "I`m busy right now, call you back later"
+                ],
+                "favorities": [],
+                "_id": "08"
+            }
+        },
         "comments": {
             "0a272c58-b7ea-4e09-a000-7ec988248f66": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",

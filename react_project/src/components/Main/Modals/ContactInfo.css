@@ -1,12 +1,10 @@
-
-
 .modal-content {
     width: 600px;
     height: 800px;
 }
 
 
-.modal-header{
+.modal-header {
     width: auto;
     height: 250px;
     display: flex;
@@ -14,6 +12,8 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
+    border-bottom: none;
+
 }
 
 .image-section {
@@ -23,10 +23,24 @@
     justify-content: center;
 }
 
-.image-section p {
+.image-section .person-name {
+    width: auto;
+    flex-grow: 1;
     font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 20px;
+    text-align: center;
+
+}
+
+.image-section .person-department {
+    font-size: 14px;
+    font-weight: bold;
     margin: 0;
     margin-top: 10px;
+    text-align: center;
+
 }
 
 .image-wrapper {
@@ -35,7 +49,7 @@
     border-radius: 50%;
     overflow: hidden;
     border: 1px white solid;
-    outline: 6px rgba(0,0,0,0.3) solid;
+    outline: 6px rgba(0, 0, 0, 0.3) solid;
 }
 
 .image-wrapper img {
@@ -49,8 +63,113 @@
 
 .messages-wrapper textarea {
     /* border: none; */
+    flex-shrink: 1;
     width: auto;
     height: 200px;
-    overflow: scroll;
+    overflow-y: scroll;
+    word-wrap: normal;
 }
 
+.nav-link {
+    font-size: 16px;
+}
+
+/* About Tab */
+
+.person-about {
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.person-about p {
+    text-indent: 3ch;
+    font-weight: 600;
+}
+
+
+.person-about li {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+/* Summary Tab */
+
+.person-summary {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.person-summary p {
+    border-bottom: 1px solid black;
+}
+
+/* Contacts Tab */
+
+.person-contact {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 20px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.person-contact ul {
+  margin-top: 50px;
+}
+
+.person-contact li {
+    list-style: none;
+    margin-top: 35px;
+}
+
+.person-contact li i {
+    color: blue;
+    border: 1px black groove;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 255, .2);
+    padding: 10px;
+}
+
+/* Message Tab */
+
+.person-message {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+}
+
+.person-message-wrapper {
+    width: 100%;
+    height: auto;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px
+}
+.person-message-wrapper p {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.person-message-wrapper .btn{
+    padding: 10px 30px 10px 30px;
+}
+
+/* Add-to-favorites */
+
+.add-to-favorites {
+    margin: 0px;
+    padding: 0px
+}
+.add-to-favorites-btn{
+    font-size: 13px;
+    padding: 10px 10px 10px 10px;
+}
