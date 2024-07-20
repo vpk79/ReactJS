@@ -183,8 +183,8 @@ export default function ContactInfo({ data }) {
                                             <ul>
                                                 <li><i className="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;<a href={`tel:${personData.info.contacts.phone}`}>{personData.info.contacts.phone}</a></li>
                                                 <li><i className="far fa-envelope"></i>&nbsp;&nbsp;&nbsp;<a href={`mailto:${personData.info.contacts.email}`} target="_blank">{personData.info.contacts.email}</a></li>
-                                                <li><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;<a href="http://linkedin.com" target="_blank">linkedin.com/in/lisazking</a></li>
-                                                <li><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;<a href="http://twitter.com" target="_blank">twitter.com/lisazking</a></li>
+                                                <li><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;<a href="http://linkedin.com" target="_blank">{personData.info.contacts.linkedin}</a></li>
+                                                <li><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;<a href="http://twitter.com" target="_blank">{personData.info.contacts.twitter}</a></li>
                                             </ul>
                                         )
                                             
