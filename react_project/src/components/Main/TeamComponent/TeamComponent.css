@@ -12,15 +12,25 @@
     height: auto;
 } */
 
+
 .team-item img {
     position: relative;
     top: 0;
     transition: .5s;
 }
 
+.team-item:hover img:active {
+    scale: 0.9;
+}
+
+.team-item:hover {
+    /* border: 2px transparent; */
+    border: 3px rgba(87, 87, 170, 0.2) groove;
+}
+
 .team-item:hover img {
     top: -30px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .team-item .team-text {
@@ -78,3 +88,4 @@
     background: var(--primary); 
     border-color: var(--primary); 
 }
+

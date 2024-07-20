@@ -81,7 +81,7 @@ export default function Navbar() {
                       
                     </div>
                     <Link to={isAuthenticated ? "/appointment": ''}
-                        className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
+                        className={`btn appointment btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block ${isAuthenticated ? "allowed": "not-allowed"}`}
                         onClick={authCheck}
                     >
                         Appointment
