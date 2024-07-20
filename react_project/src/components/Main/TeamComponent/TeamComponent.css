@@ -1,0 +1,80 @@
+/* .carousel-item .row {
+    display: flex;
+}
+
+.carousel-item .col-3 {
+    flex: 1;
+    padding: 0 5px;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+} */
+
+.team-item img {
+    position: relative;
+    top: 0;
+    transition: .5s;
+}
+
+.team-item:hover img {
+    top: -30px;
+    cursor: pointer;
+}
+
+.team-item .team-text {
+    position: relative;
+    height: 100px;
+    transition: .5s;
+}
+
+.team-item:hover .team-text {
+    margin-top: -60px;
+    height: 160px;
+}
+
+.team-item .team-text .team-social {
+    opacity: 0;
+    transition: .5s;
+}
+
+.team-item:hover .team-text .team-social {
+    opacity: 1;
+}
+
+.team-item .team-social .btn {
+    display: inline-flex;
+    color: var(--primary);
+    background: #FFFFFF;
+    border-radius: 40px;
+}
+
+.team-item .team-social .btn:hover {
+    color: #FFFFFF;
+    background: var(--primary);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 60px; 
+    height: 60px; 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF; 
+    background: transparent;
+    background-color: rgba(0,0,0,0.2); 
+    border: 1px solid #FFFFFF; 
+    border-radius: 45px; 
+    font-size: 22px; 
+    transition: .5s; 
+    top: 200px;
+    padding: 10px;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background: var(--primary); 
+    border-color: var(--primary); 
+}

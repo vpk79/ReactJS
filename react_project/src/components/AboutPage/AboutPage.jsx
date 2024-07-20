@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import About from "../Main/About";
 import Feature from "../Main/Feature";
-import Team from "../Main/Team";
 import AboutHeader from "./AboutHeader";
+import TeamComponent from "../Main/TeamComponent/TeamComponent";
 
 export default function AboutPage() {
     return (
@@ -21,7 +21,7 @@ export default function AboutPage() {
                 {/* Feature End */}
 
                 {/* Team Start */}
-                    <Team />
+                    <TeamComponent />
                 {/* Team End */}
 
             </>

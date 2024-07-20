@@ -19,10 +19,10 @@ import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
 import DefaultHeader from './components/Main/DefaultHeader';
 import Logout from './components/Main/Logout';
-import AuthGuard from './components/Guards/AuthGuard';
+import AuthGuard from './Guards/AuthGuard';
 import usePersistedState from './hooks/usePersistedState';
 import { loginValidator, registerValidator } from './services/validators';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast, Slide } from 'react-toastify';
 
 
 function App() {
@@ -152,7 +152,7 @@ function App() {
           draggable
           pauseOnHover
           theme="light"
-          transition:Bounce/>
+          transition: Slide />
         <Footer />
 
       </AuthContext.Provider>

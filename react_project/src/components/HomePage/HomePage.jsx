@@ -1,10 +1,10 @@
 import Header from '../Main/HomeHeader'
 import About from '../Main/About'
-import Service from '../Main/ServiceComponent/ServiceComponent'
 import Feature from '../Main/Feature'
-import Team from '../Main/Team'
 import Appointment from '../Main/Appointment'
 import Testemonial from '../Main/Testimonial'
+import TeamComponent from '../Main/TeamComponent/TeamComponent'
+import ServiceComponent from '../Main/ServiceComponent/ServiceComponent'
 
 export default function HomePage(){
     return(
@@ -13,11 +13,11 @@ export default function HomePage(){
 
             <About />
 
-            <Service />
+            <ServiceComponent />
 
             <Feature />
 
-            <Team />
+            <TeamComponent />
 
             <Appointment />
 
