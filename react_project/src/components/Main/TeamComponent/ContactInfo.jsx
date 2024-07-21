@@ -1,13 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './ContactInfo.css'
+import AuthContext from '../../../contexts/authContext';
 
 export default function ContactInfo({ data }) {
-
+    const { isAuthenticated, email, userId } = useContext(AuthContext);
     const [personData, setPersonData] = useState(data);
 
     useEffect(() => {
         setPersonData(data);
     }, [data]);
+
+
+    function messageHandler(e){
+        e.preventDefault();
+
+        const textarea = e.target.elements.msgArea;
+        const msg = textarea.value;
+
+        
+        console.log(userId);
+        console.log(textarea.value);
+    }
 
     return (
         <>
@@ -196,8 +209,11 @@ export default function ContactInfo({ data }) {
                                     >
                                         <div className='person-message-wrapper'>
                                             <p>You can leave me a message. I`ll respond ASAP.</p>
-                                            <textarea name="" id="" cols="40" rows="5"></textarea>
-                                            <button type="btn" className='btn  btn-primary'>Send</button>
+                                            <form className='msgForm' onSubmit={messageHandler}>
+                                                <textarea name="msgArea" id="msgArea" cols="40" rows="5"></textarea>
+                                                <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
+                                            </form>
+                                            
                                         </div>
                                     </div>
                                 </div>
