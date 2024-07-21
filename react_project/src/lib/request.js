@@ -19,7 +19,7 @@ const buildOptions = (data) => {
 
     if(token){
         options.headers = {
-            ...options,
+            ...options.headers,
             'X-Authorization': token
         }
     }

@@ -20,7 +20,7 @@ export default function ContactInfo({ data }) {
 
         const receiverId = personData._id;
         const user_Id = userId;
-        const oldData = await request.get(`${url.EMPLOYERS}/${receiverId}?select=messages`);
+        const oldData = await request.get(`${url.MESSAGES}`);
 
         console.log(oldData.messages);
         console.log(oldData.user_Id);
@@ -31,8 +31,9 @@ export default function ContactInfo({ data }) {
         console.log(oldData.messages[user_Id]);
         oldData.messages[user_Id].push(msg);
 
-        console.log(oldData.messages);
-        const data = await request.post(`${url.EMPLOYERS}/`, { receiverId: oldData })
+        // console.log(oldData.messages);
+        // const data = await request.post(`${url.EMPLOYERS}/01`, oldData )
+        // const data = await request.post(`http://localhost:3030/data/employers/`, { messages: [] })
         // console.log(data);
         // console.log(user_Id);
         // console.log(textarea.value);
