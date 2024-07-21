@@ -1,0 +1,43 @@
+.Toastify__toast-container{
+    width: 400px;
+    font-weight: 500;
+   z-index: 20000 !important;
+}
+
+.Toastify--animate-icon {
+    width: 40px;
+    margin-right: 15px;
+}
+
+.Toastify__toast--info {
+    background: #FFE8BC !important;
+    padding-left: 20px;
+    /* border: 1px solid black; */
+        /* border-radius: 50px; */
+}
+
+.Toastify__toast--error {
+    background: #FFE8BC !important;
+    /* background: #FCA7A9 !important; */
+    padding-left: 20px;
+}
+
+.Toastify__toast--success {
+    background: #e3ecec !important;
+    /* background: #FCA7A9 !important; */
+    padding-left: 20px;
+}
+
+.toastBody {
+    height: 80px;
+    font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
+    color: #10171D;
+    /* #10171D */
+    text-wrap: wrap;
+    font-size: 1.rem !important;
+}
+
+.toastProgress {
+    background: #333F48 !important;
+}
+

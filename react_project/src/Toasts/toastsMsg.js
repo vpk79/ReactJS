@@ -1,10 +1,11 @@
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './toasts.css'
 
 export const showInfoToast = (message, {toastId}) => {
     toast.info(message, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 2200,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -17,10 +18,10 @@ export const showInfoToast = (message, {toastId}) => {
     
 };
 
-export const showSuccessToast = (message) => {
+export const showSuccessToast = (message, { toastId }) => {
     toast.success(message, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 2200,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -28,13 +29,14 @@ export const showSuccessToast = (message) => {
         progress: undefined,
         theme: "light",
         transition: Slide,
+        toastId: toastId
     });
 };
 
-export const showErrorToast = (message) => {
+export const showErrorToast = (message, { toastId }) => {
     toast.error(message, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 2200,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -42,5 +44,6 @@ export const showErrorToast = (message) => {
         progress: undefined,
         theme: "light",
         transition: Slide,
+        toastId: toastId
     });
 };

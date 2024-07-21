@@ -35,16 +35,16 @@ function App() {
       loginValidator(values);
 
       const result = await authService.login(values.email, values.password);
-      if (result.name === 'Error') throw new Error(result.message);
+      if (result.name === 'Error') throw new Error(result.message, { toastId: "loginError" });
 
       setAuth(result);
       localService.setItem(result);
-
+      toast.showSuccessToast("Login Successfull!", { toastId: "loginSuccess" });
       navigate('/');
 
     } catch (error) {
       // alert(error.message);
-      toast.showErrorToast(error.message);
+      toast.showErrorToast(error.message, {toastId: "loginError"});
       return
     }
   };
@@ -55,16 +55,18 @@ function App() {
       registerValidator(values);
 
       const result = await authService.register(values.email, values.password);
-      if (result.name === 'Error') throw new Error(result.message);
+      if (result.name === 'Error') throw new Error(result.message, { toastId: "registerError" });
 
       setAuth(result);
       localService.setItem(result);
+      toast.showSuccessToast("Register Successfull!", { toastId: "registerSuccess" });
+
       navigate('/');
 
     } catch (error) {
       // alert(error.message);
-      toast.showErrorToast(error.message);
-      return null
+      toast.showErrorToast(error.message,{ toastId: "registerError" });
+      return
     }
   }
 
@@ -143,7 +145,10 @@ function App() {
         </Routes>
 
         <Footer />
-        <ToastContainer />
+        <ToastContainer 
+          progressClassName="toastProgress"
+          bodyClassName="toastBody"
+        />
       </AuthContext.Provider>
 
       {/* Back to Top Arrow*/}

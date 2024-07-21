@@ -141,11 +141,13 @@
                         "twitter": "twitter.com/lisazking"
                     }
                 },
-                "messages": [],
+                "messages": {},
                 "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
+                    "Hello, how can i help you?",
+                    "Please, describe you problem here.",
+                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I`m busy right now, come to visit us and we will help you.",
+                    "Bye! Have, a nice day!"
                 ],
                 "favorities": [],
                 "_id": "01"
