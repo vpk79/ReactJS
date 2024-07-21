@@ -9,7 +9,9 @@ export default function Navbar() {
 
     const authCheck = () => {
         if(!isAuthenticated){
-            toast.showInfoToast("You must login or register first!")
+            toast.showInfoToast("You must login or register first!", {
+                toastId: "login"
+            })
             return null;
         }
         return;

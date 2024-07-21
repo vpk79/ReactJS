@@ -1,7 +1,7 @@
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const showInfoToast = (message) => {
+export const showInfoToast = (message, {toastId}) => {
     toast.info(message, {
         position: "top-center",
         autoClose: 2000,
@@ -12,7 +12,9 @@ export const showInfoToast = (message) => {
         progress: undefined,
         theme: "light",
         transition: Slide,
+        toastId: toastId
     });
+    
 };
 
 export const showSuccessToast = (message) => {

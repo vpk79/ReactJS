@@ -43,7 +43,9 @@ export default function TeamComponent() {
 
     const personDetails = (data) => {
         if(!isAuthenticated){
-            toast.showInfoToast("You must login or register first!")
+            toast.showInfoToast("You must login or register first!", {
+                toastId: "login"
+            })
             return;
         }
         setPersonData(data);

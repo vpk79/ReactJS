@@ -8,7 +8,9 @@ export default function AuthGuard(props) {
     const { isAuthenticated } = useContext(AuthContext);
 
     if (!isAuthenticated) {
-        toast.showInfoToast("You must login or register first!");
+        toast.showInfoToast("You must login or register first!", {
+            toastId: "login"
+        });
         return (
             <>
                 (<Navigate to="/" />)
