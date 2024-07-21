@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
+import * as request from '../../../lib/request'
+import * as url from '../../../const/const'
 
 export default function ContactInfo({ data }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
@@ -11,15 +13,30 @@ export default function ContactInfo({ data }) {
     }, [data]);
 
 
-    function messageHandler(e){
+    async function messageHandler(e) {
         e.preventDefault();
-
         const textarea = e.target.elements.msgArea;
         const msg = textarea.value;
 
-        
-        console.log(userId);
-        console.log(textarea.value);
+        const receiverId = personData._id;
+        const user_Id = userId;
+        const oldData = await request.get(`${url.EMPLOYERS}/${receiverId}?select=messages`);
+
+        console.log(oldData.messages);
+        console.log(oldData.user_Id);
+
+        if (oldData.messages[user_Id] == undefined) {
+            oldData.messages[user_Id] = [];
+        }
+        console.log(oldData.messages[user_Id]);
+        oldData.messages[user_Id].push(msg);
+
+        console.log(oldData.messages);
+        const data = await request.post(`${url.EMPLOYERS}/`, { receiverId: oldData })
+        // console.log(data);
+        // console.log(user_Id);
+        // console.log(textarea.value);
+        // console.log(personData._id);
     }
 
     return (
@@ -198,7 +215,7 @@ export default function ContactInfo({ data }) {
                                                 <li><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;<a href="http://twitter.com" target="_blank">{personData.info.contacts.twitter}</a></li>
                                             </ul>
                                         )
-                                            
+
                                         }
                                     </div>
                                     <div
@@ -213,7 +230,7 @@ export default function ContactInfo({ data }) {
                                                 <textarea name="msgArea" id="msgArea" cols="40" rows="5"></textarea>
                                                 <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
                                             </form>
-                                            
+
                                         </div>
                                     </div>
                                 </div>

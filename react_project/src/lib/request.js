@@ -24,7 +24,7 @@ const buildOptions = (data) => {
         }
     }
 
-    
+    console.log(options);
 
     return options;
 }
