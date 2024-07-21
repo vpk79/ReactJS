@@ -112,11 +112,11 @@ function get(context, tokens, query, body) {
          
             if (query.distinct) {
                 const distinctValue = query.distinct.trim();
-                console.log("Distinct value:", distinctValue);
+                // console.log("Distinct value:", distinctValue);
 
                 // Филтрираме обектите, които имат същото значение на `_ownerId`
                 responseData = responseData.filter(item => item._ownerId === distinctValue);
-                console.log("Distinct responseData:", responseData);
+                // console.log("Distinct responseData:", responseData);
                 return responseData;
             }
         
