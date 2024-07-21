@@ -17,27 +17,76 @@ export default function ContactInfo({ data }) {
         e.preventDefault();
         const textarea = e.target.elements.msgArea;
         const msg = textarea.value;
+        if (msg === '') return;
 
         const receiverId = personData._id;
         const user_Id = userId;
-        const oldData = await request.get(`${url.MESSAGES}`);
+        const oldData = await request.get(`${url.MESSAGES}?distinct=${user_Id}`);
 
-        console.log(oldData.messages);
-        console.log(oldData.user_Id);
+        console.log(userId);
+        console.log(oldData);
+        // console.log(oldData[0]._ownerId);
+  
+        if (oldData.length == 0 || oldData[0]._ownerId != userId) {
+            createNewChat(msg, receiverId)
+        } else {
+            const chatId = oldData[0]._id;
+            const oldMessages = oldData[0].messages;
+            const index = oldMessages.findIndex(x => x.receiverId == receiverId);
+            console.log(index);
 
-        if (oldData.messages[user_Id] == undefined) {
-            oldData.messages[user_Id] = [];
+            // const oldDataFiltered = oldMessages.filter(x => x.receiverId == receiverId);
+
+            if (index == -1) {
+                addNewChat(oldMessages, receiverId, msg, chatId)
+            } else {
+                const sentMsg = oldMessages[index].sentMsg;
+                sentMsg.push(msg);
+
+                const newMsg = {
+
+                        receiverId: receiverId,
+                        sentMsg: sentMsg,
+                        receivedMsg: []
+                }
+
+                // oldData.push(newMsg);
+                // console.log(oldMessages);
+                oldData[0].messages[index] = newMsg;
+                // oldMessages[index] = newMsg;
+                // console.log(oldMessages);
+                console.log(oldData);
+                const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
+                // console.log(newData);
+            }
         }
-        console.log(oldData.messages[user_Id]);
-        oldData.messages[user_Id].push(msg);
 
-        // console.log(oldData.messages);
-        // const data = await request.post(`${url.EMPLOYERS}/01`, oldData )
-        // const data = await request.post(`http://localhost:3030/data/employers/`, { messages: [] })
-        // console.log(data);
-        // console.log(user_Id);
-        // console.log(textarea.value);
-        // console.log(personData._id);
+        async function createNewChat(msg, receiverId) {
+            const newMsg = {
+                messages: [{
+                    receiverId: receiverId,
+                    sentMsg: [msg],
+                    receivedMsg: []
+                }]
+            }
+            const data = await request.post(`${url.MESSAGES}`, newMsg);
+            // console.log(data);
+
+        }
+
+        async function addNewChat(messages, receiverId, msg, chatId) {
+            const newMsg = {
+                receiverId: receiverId,
+                sentMsg: [msg],
+                receivedMsg: []
+            }
+
+            messages.push(newMsg);
+            // console.log(messages);
+            const data = await request.put(`${url.MESSAGES}/${chatId}`, { messages });
+            // console.log(data);
+
+        }
     }
 
     return (
