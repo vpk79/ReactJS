@@ -1,7 +1,7 @@
 .modal-content {
     width: 600px;
     height: 850px;
-    
+
 }
 
 /* Header section */
@@ -76,18 +76,18 @@
     font-size: 16px;
 }
 
-.close-modal{
+.close-modal {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between;
     align-content: space-between; */
 }
 
-.close-modal .btn-close{
+.close-modal .btn-close {
     margin-left: -1px;
 }
 
-.add-to-favorities{
+.add-to-favorities {
     margin-top: 10px;
     font-size: 12px;
 }
@@ -140,7 +140,7 @@
 }
 
 .person-contact ul {
-  margin-top: 50px;
+    margin-top: 50px;
 }
 
 .person-contact li {
@@ -157,12 +157,12 @@
 
 /* Message Tab */
 
-.person-message, 
+.person-message,
 .person-comments {
     width: 100%;
     height: auto;
     padding: 20px;
-   
+
 }
 
 .person-message-wrapper,
@@ -176,6 +176,7 @@
     align-items: center;
     gap: 30px
 }
+
 .person-message-wrapper p,
 .person-comments-wrapper p {
     font-weight: 600;
@@ -183,7 +184,7 @@
 }
 
 .person-message-wrapper .btn,
-.person-comments-wrapper .btn{
+.person-comments-wrapper .btn {
     padding: 10px 30px 10px 30px;
 }
 
@@ -195,13 +196,15 @@
     align-items: center;
     gap: 40px;
 }
+
 /* Add-to-favorites */
 
 .add-to-favorites {
     margin: 0px;
     padding: 0px
 }
-.add-to-favorites-btn{
+
+.add-to-favorites-btn {
     font-size: 13px;
     padding: 10px 10px 10px 10px;
 }
@@ -211,15 +214,42 @@
 .displayMsg {
     width: 350px;
     height: 240px;
-    text-align: right;
+    padding-top: 20px;
+
+    /* text-align: right; */
     color: blue;
     font-size: 14px;
     border: 1px solid grey;
-    overflow: auto;
+    overflow-Y: auto;
+    overflow-x: hidden;
     resize: none;
     /* direction: rtl; */
 }
 
 .displayMsg li {
+    text-align: right;
+    width: 230px;
     list-style: none;
+    /* border: 1px solid black; */
+    /* margin-right: -130px; */
+    margin-bottom: 10px;
+    /* line-height: 2.2; */
+}
+
+.displayMsg .yourMsg {
+    font-weight: 560;
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 5px 10px 5px 10px;
+    display: inline-block;
+}
+
+.displayMsg .yourName {
+    font-size: 18px;
+    color: rgb(63, 94, 104);
+    margin-right: -60px;
+    /* border: 1px solid black; */
+    padding: 5px;
+    font-weight: 600;
 }

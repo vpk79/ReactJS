@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
 import * as request from '../../../lib/request'
@@ -8,13 +8,13 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
     const [personData, setPersonData] = useState(data);
     const [sentMessages, setSentMessages] = useState([])
-    const [text, setText] = useState('');
-    
-    const displayMsg = useRef(null);
 
     useEffect(() => {
         setPersonData(data);
     }, [data]);
+
+    const userName = email.split('@')[0];
+    // console.log(userName);
 
     useEffect(() => {
         const oldMessages = request.get(`${url.MESSAGES}?distinct=${userId}`)
@@ -139,7 +139,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <ul>    
                                             {sentMessages.map((data, index) => (
                                                 
-                                                    <li key={index}>{`${data} <---- You`}</li>
+                                                <li key={index}><span className='yourMsg'>{data}</span><span className='yourName'>{userName}</span></li>
                                              
                                               
                                             ))}
