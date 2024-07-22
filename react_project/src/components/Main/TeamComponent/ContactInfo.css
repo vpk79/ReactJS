@@ -4,9 +4,9 @@
 
 }
 
-/* Header section */
+/* Header section with-form*/
 
-.modal-header {
+.modal-header.with-form {
     width: auto;
     height: 250px;
     display: flex;
@@ -15,17 +15,18 @@
     align-items: flex-start;
     gap: 20px;
     border-bottom: none;
-    margin-bottom: 30px;
+    margin-bottom: 71px;
 }
 
-.image-section {
+
+.modal-header.with-form .image-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.image-section .person-name {
+.modal-header.with-form .image-section .person-name {
     width: auto;
     flex-grow: 1;
     font-size: 16px;
@@ -36,7 +37,7 @@
 
 }
 
-.image-section .person-department {
+.modal-header.with-form .image-section .person-department {
     font-size: 14px;
     font-weight: bold;
     margin: 0;
@@ -45,7 +46,7 @@
 
 }
 
-.image-wrapper {
+.modal-header.with-form .image-wrapper {
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -54,7 +55,7 @@
     outline: 6px rgba(0, 0, 0, 0.3) solid;
 }
 
-.image-wrapper img {
+.modal-header.with-form .image-wrapper img {
     width: 120px;
     height: auto;
     object-fit: cover;
@@ -63,7 +64,7 @@
 
 }
 
-.messages-wrapper textarea {
+.modal-header.with-form .messages-wrapper textarea {
     /* border: none; */
     flex-shrink: 1;
     width: 340px;
@@ -72,24 +73,128 @@
     word-wrap: normal;
 }
 
-.nav-link {
+.modal-header.with-form .nav-link {
     font-size: 16px;
 }
 
-.close-modal {
+.modal-header.with-form .close-modal {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between;
     align-content: space-between; */
 }
 
-.close-modal .btn-close {
+.modal-header.with-form .close-modal .btn-close {
     margin-left: -1px;
 }
 
-.add-to-favorities {
+.modal-header.with-form .add-to-favorities {
     margin-top: 10px;
     font-size: 12px;
+}
+
+/* Header section no-form*/
+
+.modal-header.no-form .modal-container {
+    width: 600px;
+    height: 250px;
+    display: flex;
+    padding: 30px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-bottom: none;
+    margin-bottom: 30px;
+}
+
+
+.modal-header.no-form .image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.modal-header.no-form .person-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    
+    /* justify-content: space-between; */
+    /* align-content: space-between; */
+}
+
+
+.modal-header.no-form .person-name-wrapper .person-name {
+    width: auto;
+    flex-grow: 1;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0;
+    margin-top: 80px;
+    text-align: center;
+    color: black;
+}
+
+.modal-header.no-form .person-name-wrapper button{
+    font-size: 16px;
+}
+
+.modal-header.no-form .person-name-wrapper .person-department {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+
+}
+
+.modal-header.no-form .image-wrapper {
+    width: 220px;
+    height: 220px;
+    margin-top: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px white solid;
+    outline: 6px rgba(0, 0, 0, 0.3) solid;
+}
+
+.modal-header.no-form .image-wrapper img {
+    width: 220px;
+    height: auto;
+    object-fit: cover;
+    overflow: hidden;
+    /* border: 3px white solid; */
+
+}
+
+.modal-header.no-form .messages-wrapper textarea {
+    /* border: none; */
+    flex-shrink: 1;
+    width: 340px;
+    height: 200px;
+    /* overflow-y: scroll; */
+    word-wrap: normal;
+}
+
+
+
+.modal-header.no-form .close-modal {
+  
+   align-self: start;
+   margin-top: -20px;
+   margin-right: -20px;
+}
+
+
+.modal-header.no-form .add-to-favorities {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+/* nav-buttons */
+.nav-link {
+    font-size: 16px;
 }
 
 /* About Tab */
@@ -117,7 +222,7 @@
 .person-summary {
     padding: 10px;
     font-size: 16px;
-    margin-top: 15px;
+    margin-top: 5px;
     font-weight: 600;
 }
 
@@ -162,7 +267,11 @@
     width: 100%;
     height: auto;
     padding: 20px;
+}
 
+.person-message textarea,
+.person-comments textarea {
+    resize: none;
 }
 
 .person-message-wrapper,
@@ -219,11 +328,15 @@
     /* text-align: right; */
     color: blue;
     font-size: 14px;
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     overflow-Y: auto;
     overflow-x: hidden;
     resize: none;
     /* direction: rtl; */
+}
+
+.displayMsg {
+    padding-bottom: 20px;
 }
 
 .displayMsg li {
@@ -233,6 +346,7 @@
     /* border: 1px solid black; */
     /* margin-right: -130px; */
     margin-bottom: 10px;
+    /* padding-bottom: 20px; */
     /* line-height: 2.2; */
 }
 

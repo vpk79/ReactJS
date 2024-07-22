@@ -1,30 +1,38 @@
 import { useContext, useEffect, useState } from 'react';
 import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
+import sendSound from '../../../media/sendMsg.mp3'
+import receiveSound from '../../../media/receiveMsg.mp3'
 import * as request from '../../../lib/request'
 import * as url from '../../../const/const'
+import { Link } from 'react-router-dom';
+
 
 export default function ContactInfo({ data, toggleContactForm }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
     const [personData, setPersonData] = useState(data);
     const [sentMessages, setSentMessages] = useState([])
+    let [msgHeader, setMsgHeader] = useState(false);
+    const userName = email.split('@')[0];
 
     useEffect(() => {
         setPersonData(data);
     }, [data]);
 
-    const userName = email.split('@')[0];
-    // console.log(userName);
+    const playSendSound = () => {
+        const audio = new Audio(sendSound);
+        audio.play();
+    };
 
     useEffect(() => {
         const oldMessages = request.get(`${url.MESSAGES}?distinct=${userId}`)
             .then(data => {
-                if(data.length > 0){
+                if (data.length > 0) {
                     const receiverId = personData._id;
                     // console.log(receiverId);
                     const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
                     // console.log(personMsg);
-                    if(personMsg.length == 0){
+                    if (personMsg.length == 0) {
                         // console.log("enter");
                         setSentMessages([]);
                         return;
@@ -36,25 +44,18 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     }
                     // console.log(messages);
                 }
-               
+
                 return;
             }
-                )
+            )
         // console.log(sentMessages);
     }, [toggleContactForm])
 
 
-    // useEffect(() => {
-
-    //         const formattedText = sentMessages.join('\n');
-    //         setText(formattedText);
-        
-    // }, [sentMessages])
-
     async function messageHandler(e) {
         e.preventDefault();
         const textarea = e.target.elements.msgArea;
-        const msg = textarea.value;
+        const msg = textarea.value.trim();
         if (msg === '') return;
 
         const receiverId = personData._id;
@@ -75,13 +76,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 sentMsg.push(msg);
 
                 const newMsg = {
-
-                        receiverId: receiverId,
-                        sentMsg: sentMsg,
-                        receivedMsg: []
+                    receiverId: receiverId,
+                    sentMsg: sentMsg,
+                    receivedMsg: []
                 }
                 oldData[0].messages[index] = newMsg;
                 const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
+                setSentMessages(sentMsg);
+                playSendSound();
+                textarea.value = '';
             }
         }
 
@@ -122,34 +125,60 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 <div className="modal fade" id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            <div className="modal-header">
-                                <div className="image-section">
-                                    <div className="image-wrapper">
-                                        <img src={personData.imageUrl} alt=""></img>
-                                    </div>
-                                    <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
-                                    <p className='person-department'>{personData.department}</p>
-                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                            {
+                                msgHeader && (
+                                    <div className="modal-header with-form">
+                                        <div className="image-section">
+                                            <div className="image-wrapper">
+                                                <img src={personData.imageUrl} alt=""></img>
+                                            </div>
+                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                            <p className='person-department'>{personData.department}</p>
+                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
 
-                                </div>
+                                        </div>
 
-                                <div className="messages-wrapper">
-                                    {/* <textarea className="displayMsg" name="displayMsg" id="displayMsg" cols="30" rows="10"  value={text} disabled={true}></textarea> */}
-                                    <div className='displayMsg'>
-                                            <ul>    
-                                            {sentMessages.map((data, index) => (
-                                                
-                                                <li key={index}><span className='yourMsg'>{data}</span><span className='yourName'>{userName}</span></li>
-                                             
-                                              
-                                            ))}
-                                            </ul>
+                                        <div className="messages-wrapper">
+                                            {/* <textarea className="displayMsg" name="displayMsg" id="displayMsg" cols="30" rows="10"  value={text} disabled={true}></textarea> */}
+                                            <div className='displayMsg'>
+                                                <ul>
+                                                    {sentMessages.map((data, index) => (
+
+                                                        <li key={index}><span className='yourMsg'>{data}</span><span className='yourName'>{userName}</span></li>
+
+
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div className="close-modal">
+                                            <button type="button" onClick={(() => setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="close-modal">
-                                    <button type="button" onClick={(()=>setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                            </div>
+                                )
+                            }
+                            {
+                                !msgHeader && (
+                                    <div className="modal-header no-form">
+                                        <div className='modal-container'>
+                                            <div className='person-name-wrapper'>
+                                                <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                                <p className='person-department'>{personData.department}</p>
+                                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
+                                            </div>
+                                            <div className="image-section">
+                                                <div className="image-wrapper">
+                                                    <img src={personData.imageUrl} alt=""></img>
+                                                </div>
+                                            </div>
+                                            <div className="close-modal">
+                                                <button type="button" onClick={(() => setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                             <div className="modal-body">
                                 {/* Nav tabs */}
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -163,6 +192,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="about"
                                             aria-selected="true"
+                                            onClick={() => setMsgHeader(false)}
                                         >
                                             About
                                         </button>
@@ -177,6 +207,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="summary"
                                             aria-selected="false"
+                                            onClick={() => setMsgHeader(false)}
                                         >
                                             Summary
                                         </button>
@@ -191,8 +222,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="contact"
                                             aria-selected="false"
+                                            onClick={() => setMsgHeader(false)}
                                         >
                                             Contacts
+
                                         </button>
                                     </li>
                                     <li className="nav-item" role="presentation">
@@ -205,6 +238,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="message"
                                             aria-selected="false"
+                                            onClick={() => setMsgHeader(true)}
                                         >
                                             Message
                                         </button>
@@ -311,10 +345,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     >
                                         {personData.info && (
                                             <ul>
-                                                <li><i className="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;<a href={`tel:${personData.info.contacts.phone}`}>{personData.info.contacts.phone}</a></li>
-                                                <li><i className="far fa-envelope"></i>&nbsp;&nbsp;&nbsp;<a href={`mailto:${personData.info.contacts.email}`} target="_blank">{personData.info.contacts.email}</a></li>
-                                                <li><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;<a href="http://linkedin.com" target="_blank">{personData.info.contacts.linkedin}</a></li>
-                                                <li><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;<a href="http://twitter.com" target="_blank">{personData.info.contacts.twitter}</a></li>
+                                                <li><Link to={`tel:${personData.info.contacts.phone}`}><i className="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.phone}</Link></li>
+                                                <li><Link to={`mailto:${personData.info.contacts.email}`} target="_blank"><i className="far fa-envelope"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.email}</Link ></li>
+                                                <li><Link to="http://linkedin.com" target="_blank"><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.linkedin}</Link ></li>
+                                                <li><Link to="http://twitter.com" target="_blank"><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.twitter}</Link ></li>
                                             </ul>
                                         )
 
