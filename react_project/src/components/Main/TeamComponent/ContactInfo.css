@@ -1,6 +1,7 @@
 .modal-content {
     width: 600px;
     height: 850px;
+    
 }
 
 /* Header section */
@@ -65,9 +66,9 @@
 .messages-wrapper textarea {
     /* border: none; */
     flex-shrink: 1;
-    width: auto;
+    width: 340px;
     height: 200px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     word-wrap: normal;
 }
 
@@ -203,4 +204,22 @@
 .add-to-favorites-btn{
     font-size: 13px;
     padding: 10px 10px 10px 10px;
+}
+
+/* message-box */
+
+.displayMsg {
+    width: 350px;
+    height: 240px;
+    text-align: right;
+    color: blue;
+    font-size: 14px;
+    border: 1px solid grey;
+    overflow: auto;
+    resize: none;
+    /* direction: rtl; */
+}
+
+.displayMsg li {
+    list-style: none;
 }

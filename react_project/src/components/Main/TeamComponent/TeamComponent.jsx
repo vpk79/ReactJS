@@ -12,6 +12,7 @@ export default function TeamComponent() {
 
     const [employers, setEmployers] = useState([]);
     const [personData, setPersonData] = useState({});
+    let [toggleContact, setToggleContact] = useState(false);
     const carouselRef = useRef(null);
 
     useEffect(() => {
@@ -20,7 +21,12 @@ export default function TeamComponent() {
                 setEmployers(data);
             })
             .catch(err => console.log(err));
-    }, []);
+    }, [toggleContact]);
+
+    const handleContactClick = () => {
+        toggleContact = !toggleContact;
+        setToggleContact(toggleContact);
+    }
 
     // workaround for WOW problem with carousel - elements not show up until scrolling
     useEffect(() => {
@@ -42,13 +48,14 @@ export default function TeamComponent() {
     }, []);
 
     const personDetails = (data) => {
-        if(!isAuthenticated){
+        if (!isAuthenticated) {
             toast.showInfoToast("You must login or register first!", {
                 toastId: "login"
             })
             return;
         }
         setPersonData(data);
+        handleContactClick();
     };
 
     return (
@@ -96,7 +103,7 @@ export default function TeamComponent() {
                 </div>
             </div >
             {/* Team End */}
-            <ContactInfo data={personData} />
+            {<ContactInfo data={personData} toggleContactForm={handleContactClick} />}
 
         </>
     )

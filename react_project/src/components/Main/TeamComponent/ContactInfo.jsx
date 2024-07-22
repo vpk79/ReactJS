@@ -1,17 +1,55 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
 import * as request from '../../../lib/request'
 import * as url from '../../../const/const'
 
-export default function ContactInfo({ data }) {
+export default function ContactInfo({ data, toggleContactForm }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
     const [personData, setPersonData] = useState(data);
+    const [sentMessages, setSentMessages] = useState([])
+    const [text, setText] = useState('');
+    
+    const displayMsg = useRef(null);
 
     useEffect(() => {
         setPersonData(data);
     }, [data]);
 
+    useEffect(() => {
+        const oldMessages = request.get(`${url.MESSAGES}?distinct=${userId}`)
+            .then(data => {
+                if(data.length > 0){
+                    const receiverId = personData._id;
+                    // console.log(receiverId);
+                    const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
+                    // console.log(personMsg);
+                    if(personMsg.length == 0){
+                        // console.log("enter");
+                        setSentMessages([]);
+                        return;
+                    } else {
+                        // console.log('set');
+                        const messages = personMsg[0].sentMsg;
+                        setSentMessages(messages);
+                        // console.log(sentMessages);
+                    }
+                    // console.log(messages);
+                }
+               
+                return;
+            }
+                )
+        // console.log(sentMessages);
+    }, [toggleContactForm])
+
+
+    // useEffect(() => {
+
+    //         const formattedText = sentMessages.join('\n');
+    //         setText(formattedText);
+        
+    // }, [sentMessages])
 
     async function messageHandler(e) {
         e.preventDefault();
@@ -20,24 +58,17 @@ export default function ContactInfo({ data }) {
         if (msg === '') return;
 
         const receiverId = personData._id;
-        const user_Id = userId;
-        const oldData = await request.get(`${url.MESSAGES}?distinct=${user_Id}`);
 
-        console.log(userId);
-        console.log(oldData);
-        // console.log(oldData[0]._ownerId);
-  
+        const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
+
         if (oldData.length == 0 || oldData[0]._ownerId != userId) {
             createNewChat(msg, receiverId)
         } else {
             const chatId = oldData[0]._id;
             const oldMessages = oldData[0].messages;
             const index = oldMessages.findIndex(x => x.receiverId == receiverId);
-            console.log(index);
 
-            // const oldDataFiltered = oldMessages.filter(x => x.receiverId == receiverId);
-
-            if (index == -1) {
+            if (index == -1) {                                 // if not chats with this person create new
                 addNewChat(oldMessages, receiverId, msg, chatId)
             } else {
                 const sentMsg = oldMessages[index].sentMsg;
@@ -49,18 +80,12 @@ export default function ContactInfo({ data }) {
                         sentMsg: sentMsg,
                         receivedMsg: []
                 }
-
-                // oldData.push(newMsg);
-                // console.log(oldMessages);
                 oldData[0].messages[index] = newMsg;
-                // oldMessages[index] = newMsg;
-                // console.log(oldMessages);
-                console.log(oldData);
                 const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
-                // console.log(newData);
             }
         }
 
+        // create new chat if have none
         async function createNewChat(msg, receiverId) {
             const newMsg = {
                 messages: [{
@@ -74,6 +99,7 @@ export default function ContactInfo({ data }) {
 
         }
 
+        // add a new chat with new person
         async function addNewChat(messages, receiverId, msg, chatId) {
             const newMsg = {
                 receiverId: receiverId,
@@ -108,10 +134,20 @@ export default function ContactInfo({ data }) {
                                 </div>
 
                                 <div className="messages-wrapper">
-                                    <textarea name="" id="" cols="30" rows="10" disabled={true}></textarea>
+                                    {/* <textarea className="displayMsg" name="displayMsg" id="displayMsg" cols="30" rows="10"  value={text} disabled={true}></textarea> */}
+                                    <div className='displayMsg'>
+                                            <ul>    
+                                            {sentMessages.map((data, index) => (
+                                                
+                                                    <li key={index}>{`${data} <---- You`}</li>
+                                             
+                                              
+                                            ))}
+                                            </ul>
+                                    </div>
                                 </div>
                                 <div className="close-modal">
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" onClick={(()=>setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                             </div>
                             <div className="modal-body">
