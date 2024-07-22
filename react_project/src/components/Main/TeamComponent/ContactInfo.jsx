@@ -6,6 +6,7 @@ import receiveSound from '../../../media/receiveMsg.mp3'
 import * as request from '../../../lib/request'
 import * as url from '../../../const/const'
 import { Link } from 'react-router-dom';
+import { showErrorToast } from '../../../Toasts/toastsMsg';
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
@@ -13,7 +14,13 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [personData, setPersonData] = useState(data);
     const [sentMessages, setSentMessages] = useState([])
     let [msgHeader, setMsgHeader] = useState(false);
-    const userName = email.split('@')[0];
+    let userName = 'You';
+
+    if(email){
+        const userName = email.split('@')[0];
+    }
+    
+  
 
     useEffect(() => {
         setPersonData(data);
@@ -54,21 +61,27 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     async function messageHandler(e) {
         e.preventDefault();
+       
+        console.log('entered');
         const textarea = e.target.elements.msgArea;
         const msg = textarea.value.trim();
-        if (msg === '') return;
-
+        if (msg === ''){
+            showErrorToast('Message cannot be empty!', { toastId: "messageError"})
+             return;
+        } 
+       
         const receiverId = personData._id;
 
         const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
-
+         console.log(oldData);
         if (oldData.length == 0 || oldData[0]._ownerId != userId) {
             createNewChat(msg, receiverId)
+            console.log('new');
         } else {
             const chatId = oldData[0]._id;
             const oldMessages = oldData[0].messages;
             const index = oldMessages.findIndex(x => x.receiverId == receiverId);
-
+            console.log('old');
             if (index == -1) {                                 // if not chats with this person create new
                 addNewChat(oldMessages, receiverId, msg, chatId)
             } else {
@@ -98,8 +111,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 }]
             }
             const data = await request.post(`${url.MESSAGES}`, newMsg);
-            // console.log(data);
-
+            console.log('newchat',data);
+            setSentMessages([msg]);
+            playSendSound();
+            textarea.value = '';
         }
 
         // add a new chat with new person
@@ -114,6 +129,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
             // console.log(messages);
             const data = await request.put(`${url.MESSAGES}/${chatId}`, { messages });
             // console.log(data);
+            setSentMessages([msg]);
+            playSendSound();
+            textarea.value = '';
 
         }
     }

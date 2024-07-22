@@ -144,8 +144,9 @@
                 "messages": {},
                 "responses": [
                     "Hello, how can i help you?",
-                    "Please, describe you problem here.",
+                    "Please, describe your problem here.",
                     "I undestand, please, make an appointment and I will see what can I do.",
+                    "I need more information",
                     "I`m busy right now, come to visit us and we will help you.",
                     "Bye! Have, a nice day!"
                 ],
@@ -181,11 +182,14 @@
                     }
                 },
                 "messages": [],
-                "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
-                ],
+               "responses": [
+                "Hello, how can i help you?",
+                "Please, describe your problem here.",
+                "I undestand, please, make an appointment and I will see what can I do.",
+                "I need more information",
+                "I`m busy right now, come to visit us and we will help you.",
+                "Bye! Have, a nice day!"
+            ],
                 "favorities": [],
                 "_id": "02"
             },
@@ -219,9 +223,12 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I need more information",
+                    "I`m busy right now, come to visit us and we will help you.",
+                    "Bye! Have, a nice day!"
                 ],
                 "favorities": [],
                 "_id": "03"
@@ -256,9 +263,12 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I need more information",
+                    "I`m busy right now, come to visit us and we will help you.",
+                    "Bye! Have, a nice day!"
                 ],
                 "favorities": [],
                 "_id": "04"
@@ -266,7 +276,7 @@
                 "name": "Emily Harris",
                 "title": "M.D.",
                 "department": "Pediatrics",
-                "imageUrl": "img/team-1.jpg",
+                "imageUrl": "img/team-5.jpg",
                 "info": {
                     "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
                     "facts": [
@@ -292,9 +302,12 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I need more information",
+                    "I`m busy right now, come to visit us and we will help you.",
+                    "Bye! Have, a nice day!"
                 ],
                 "favorities": [],
                 "_id": "05"
@@ -302,7 +315,7 @@
                 "name": "David Johnson",
                 "title": "M.D.",
                 "department": "Neurology",
-                "imageUrl": "img/team-2.jpg",
+                "imageUrl": "img/team-6.jpg",
                 "info": {
                     "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
                     "facts": [
@@ -327,18 +340,21 @@
                     }
                 },
                 "messages": [],
-                "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
-                ],
+               "responses": [
+                "Hello, how can i help you?",
+                "Please, describe your problem here.",
+                "I undestand, please, make an appointment and I will see what can I do.",
+                "I need more information",
+                "I`m busy right now, come to visit us and we will help you.",
+                "Bye! Have, a nice day!"
+            ],
                 "favorities": [],
                 "_id": "06"
             },"07": {
                 "name": "Laura Davis",
                 "title": "M.D.",
                 "department": "Ophthalmology",
-                "imageUrl": "img/team-3.jpg",
+                "imageUrl": "img/team-7.jpg",
                 "info": {
                     "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
                     "facts": [
@@ -363,18 +379,21 @@
                     }
                 },
                 "messages": [],
-                "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
-                ],
+               "responses": [
+                "Hello, how can i help you?",
+                "Please, describe your problem here.",
+                "I undestand, please, make an appointment and I will see what can I do.",
+                "I need more information",
+                "I`m busy right now, come to visit us and we will help you.",
+                "Bye! Have, a nice day!"
+            ],
                 "favorities": [],
                 "_id": "07"
             },"08": {
                 "name": "James Williams",
                 "title": "M.D.",
                 "department": "Surgery",
-                "imageUrl": "img/team-4.jpg",
+                "imageUrl": "img/team-8.jpg",
                 "info": {
                     "about": "Responsible physician with 9 years of experience maximizing patient wellness and facility profitability. Seeking to deliver healthcare excellence at Mercy Hospital. At CRMC, maintained 5-star healthgrades score for 112 reviews and 85% patient success.",
                     "facts": [
@@ -400,9 +419,12 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, nice to meet you",
-                    "How can i help you?",
-                    "I`m busy right now, call you back later"
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I need more information",
+                    "I`m busy right now, come to visit us and we will help you.",
+                    "Bye! Have, a nice day!"
                 ],
                 "favorities": [],
                 "_id": "08"

@@ -15,7 +15,7 @@
 }
 
 .registerForm {
-    margin-top: -200px;
+    /* margin-top: -200px; */
     padding: 30px;
     display: flex;
     flex-direction: column;

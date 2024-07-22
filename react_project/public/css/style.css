@@ -94,6 +94,9 @@
     font-weight: normal;
 }
 
+.btn:active{
+    scale: 0.9;
+}
 
 /*** Navbar ***/
 .navbar .dropdown-toggle::after {

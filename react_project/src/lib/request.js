@@ -31,21 +31,23 @@ const buildOptions = (data) => {
 
 export const request = async (method, url, data) => {
 
+    
     try {
-        const response = await fetch(url, {
-            method,
-            ...buildOptions(data),
-        });
-
+        let response = null;
+        
+            response = await fetch(url, {
+                method,
+                ...buildOptions(data),
+            });
         // console.log(response.status);
 
         if(response.status === 204) {
             return {};
         }
 
-
         if (response.status === 403 || response.status === 401) {
             // alert('No such user or password!');
+            localService.removeItem('userData')
             return new Error('No such user or password!');
         } else if (response.status === 409){
             // alert('User already exist!');
@@ -56,6 +58,7 @@ export const request = async (method, url, data) => {
 
         } else {
             // alert('Something went wrong')
+            localService.removeItem('userData')
             return new Error('Something went wrong')
         };
 

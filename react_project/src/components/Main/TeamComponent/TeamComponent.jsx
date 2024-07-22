@@ -83,7 +83,7 @@ export default function TeamComponent() {
                                 </div>
                                 <div className="carousel-item">
                                     <div className="row">
-                                        {employers.slice(4, 8).reverse().map((data, index) => (
+                                        {employers.slice(4, 8).map((data, index) => (
                                             <TeamCard key={data._id} data={data} delay={index * 200} personDetails={personDetails} />
                                         ))}
                                     </div>

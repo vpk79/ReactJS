@@ -31,7 +31,6 @@ function App() {
 
   const loginSubmitHandler = async (values) => {
     try {
-
       loginValidator(values);
 
       const result = await authService.login(values.email, values.password);
@@ -71,9 +70,17 @@ function App() {
   }
 
   const logoutHandler = () => {
-    setAuth({});
-    localStorage.removeItem('userData');
-    navigate('/');
+    try{
+      setAuth({});
+      localStorage.removeItem('userData');
+      toast.showSuccessToast("Logout Successfull!", { toastId: "logoutSuccess" });
+      navigate('/');
+    } catch(error) {
+      toast.showErrorToast(error.message, { toastId: "logoutError" });
+      localStorage.removeItem('userData');
+      navigate('/');
+    }
+   
   }
 
 
