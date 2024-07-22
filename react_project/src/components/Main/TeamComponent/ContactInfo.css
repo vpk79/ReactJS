@@ -1,8 +1,9 @@
 .modal-content {
     width: 600px;
-    height: 800px;
+    height: 850px;
 }
 
+/* Header section */
 
 .modal-header {
     width: auto;
@@ -13,7 +14,7 @@
     align-items: flex-start;
     gap: 20px;
     border-bottom: none;
-
+    margin-bottom: 30px;
 }
 
 .image-section {
@@ -72,6 +73,22 @@
 
 .nav-link {
     font-size: 16px;
+}
+
+.close-modal{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between;
+    align-content: space-between; */
+}
+
+.close-modal .btn-close{
+    margin-left: -1px;
+}
+
+.add-to-favorities{
+    margin-top: 10px;
+    font-size: 12px;
 }
 
 /* About Tab */
@@ -139,13 +156,16 @@
 
 /* Message Tab */
 
-.person-message {
+.person-message, 
+.person-comments {
     width: 100%;
     height: auto;
     padding: 20px;
+   
 }
 
-.person-message-wrapper {
+.person-message-wrapper,
+.person-comments-wrapper {
     width: 100%;
     height: auto;
     margin-top: 40px;
@@ -155,15 +175,25 @@
     align-items: center;
     gap: 30px
 }
-.person-message-wrapper p {
+.person-message-wrapper p,
+.person-comments-wrapper p {
     font-weight: 600;
     font-style: italic;
 }
 
-.person-message-wrapper .btn{
+.person-message-wrapper .btn,
+.person-comments-wrapper .btn{
     padding: 10px 30px 10px 30px;
 }
 
+.msgForm,
+.commentForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
 /* Add-to-favorites */
 
 .add-to-favorites {

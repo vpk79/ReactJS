@@ -103,6 +103,8 @@ export default function ContactInfo({ data }) {
                                     </div>
                                     <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                     <p className='person-department'>{personData.department}</p>
+                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+
                                 </div>
 
                                 <div className="messages-wrapper">
@@ -171,7 +173,21 @@ export default function ContactInfo({ data }) {
                                             Message
                                         </button>
                                     </li>
-                                    <li className="nav-item add-to-favorites" role="presentation">
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className="nav-link"
+                                            id="comments-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#comments"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="comments"
+                                            aria-selected="false"
+                                        >
+                                            Comments
+                                        </button>
+                                    </li>
+                                    {/* <li className="nav-item add-to-favorites" role="presentation">
                                         <button
                                             className="btn btn-primary add-to-favorites-btn"
                                             id="add-to-favorites-tab"
@@ -184,7 +200,7 @@ export default function ContactInfo({ data }) {
                                         >
                                             Add to favorites
                                         </button>
-                                    </li>
+                                    </li> */}
                                 </ul>
                                 {/* Tab panes */}
                                 <div className="tab-content" id="myTabContent">
@@ -283,13 +299,23 @@ export default function ContactInfo({ data }) {
 
                                         </div>
                                     </div>
+                                    <div
+                                        className="tab-pane fade person-comments"
+                                        id="comments"
+                                        role="tabpanel"
+                                        aria-labelledby="comments-tab"
+                                    >
+                                        <div className='person-comments-wrapper'>
+                                            <p>You can leave a comment.</p>
+                                            <form className='commentForm' >
+                                                <textarea name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
+                                                <button type="btn btn-submit" className='btn  btn-primary'>Post</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
-                        </div> */}
                         </div>
                     </div>
                 </div>
