@@ -376,7 +376,9 @@
     border-radius: 50px;
     padding: 5px 10px 5px 10px;
     display: inline-block;
+    background-color: white;
 }
+
 
 .displayMsg .userName {
     font-size: 14px;
@@ -398,6 +400,7 @@
     border-radius: 50px;
     padding: 5px 5px 5px 10px;
     display: inline-block;
+    background-color: white;
     
 }
 
@@ -412,6 +415,9 @@
     display: inline;
 }
 
+
+
+/* dot animation */
 @keyframes blink {
     50% {
         fill: transparent
