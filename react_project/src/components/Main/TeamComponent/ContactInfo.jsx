@@ -20,6 +20,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let personName = 'Dr.'
     const formRef = useRef(null);
     const modalRef = useRef(null);
+    const timeoutIdRef = useRef(null);
+
 
     // console.log(activeTab);
 
@@ -33,12 +35,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     // handle tabs
     const handleTabClick = (tabId) => {
+        if (timeoutIdRef.current) {
+            clearTimeout(timeoutIdRef.current);
+            timeoutIdRef.current = null;
+        }
         if (tabId !== 'message') {
             setMsgHeader(false);
         } else {
             setMsgHeader(true);
         }
         setActiveTab(tabId);
+       
     };
 
     // chat sounds 
@@ -68,7 +75,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }
     }
 
-    function intitialChat() {
+    function intitiateChat() {
         setChat([]);
         const responses = personData.responses;
         const greetings = responses[0];
@@ -80,11 +87,23 @@ export default function ContactInfo({ data, toggleContactForm }) {
         console.log(newMsg);
         console.log(chat);
 
-        setTimeout(() => {
+        timeoutIdRef.current = setTimeout(() => {
             setChat((chat)=>[...chat, newMsg]);
             playSound(receiveSound);
         }, 1000);
         
+    }
+
+
+    function userChatMsg(e){
+        e.preventDefault();
+        let textarea = e.target.value || e.target.elements.msgArea.value;
+        const msg = textarea.trim();
+        if (msg === '') {
+            showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+            return;
+        }
+        console.log(msg);
     }
 
     function chatManager(name, msg) {
@@ -111,46 +130,42 @@ export default function ContactInfo({ data, toggleContactForm }) {
     async function messageHandler(e) {
         e.preventDefault();
 
-        // console.log('entered');
-        // console.log(e.target.value);
-        let textarea = e.target.value || e.target.elements.msgArea.value;
-        // console.log(textarea.value);
-        const msg = textarea.trim();
-        if (msg === '') {
-            showErrorToast('Message cannot be empty!', { toastId: "messageError" })
-            return;
-        }
+        
+        // let textarea = e.target.value || e.target.elements.msgArea.value;
+        // const msg = textarea.trim();
+        // if (msg === '') {
+        //     showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+        //     return;
+        // }
 
-        const receiverId = personData._id;
+        // const receiverId = personData._id;
 
-        const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
-        console.log(oldData);
-        if (oldData.length == 0 || oldData[0]._ownerId != userId) {
-            createNewChat(msg, receiverId, e)
-            // console.log('new');
-        } else {
-            const chatId = oldData[0]._id;
-            const oldMessages = oldData[0].messages;
-            const index = oldMessages.findIndex(x => x.receiverId == receiverId);
-            // console.log('old');
-            if (index == -1) {                                 // if not chats with this person create new
-                addNewChat(oldMessages, receiverId, msg, chatId, e)
-            } else {
-                const sentMsg = oldMessages[index].sentMsg;
-                sentMsg.push(msg);
+        // const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
+        // console.log(oldData);
+        // if (oldData.length == 0 || oldData[0]._ownerId != userId) {
+        //     createNewChat(msg, receiverId, e)
+        // } else {
+        //     const chatId = oldData[0]._id;
+        //     const oldMessages = oldData[0].messages;
+        //     const index = oldMessages.findIndex(x => x.receiverId == receiverId);
+        //     if (index == -1) {                                 // if not chats with this person create new
+        //         addNewChat(oldMessages, receiverId, msg, chatId, e)
+        //     } else {
+        //         const sentMsg = oldMessages[index].sentMsg;
+        //         sentMsg.push(msg);
 
-                const newMsg = {
-                    receiverId: receiverId,
-                    sentMsg: sentMsg,
-                    receivedMsg: []
-                }
-                oldData[0].messages[index] = newMsg;
-                const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
-                setSentMessages(sentMsg);
-                playSound(sendSound);
-                e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
-            }
-        }
+        //         const newMsg = {
+        //             receiverId: receiverId,
+        //             sentMsg: sentMsg,
+        //             receivedMsg: []
+        //         }
+        //         oldData[0].messages[index] = newMsg;
+        //         const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
+        //         setSentMessages(sentMsg);
+        //         playSound(sendSound);
+        //         e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
+        //     }
+        // }
     }
 
     // create new chat if have none
@@ -352,7 +367,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="message"
                                             aria-selected={activeTab === 'message'}
-                                            onClick={() => { handleTabClick('message'); intitialChat() }}
+                                            onClick={() => { handleTabClick('message'); intitiateChat() }}
                                         >
                                             Message
                                         </button>
@@ -464,7 +479,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     >
                                         <div className='person-message-wrapper'>
                                             <p>You can leave me a message. I`ll respond ASAP.</p>
-                                            <form ref={formRef} className='msgForm' onSubmit={messageHandler}>
+                                            <form ref={formRef} className='msgForm' onSubmit={userChatMsg}>
                                                 <textarea name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
                                                 <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
                                             </form>
