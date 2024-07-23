@@ -14,9 +14,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
     const [chat, setChat] = useState([]);
-    let [userCounter, setUserCounter] = useState(0);
+    let [moreInfoCounter, setMoreInfoCounter] = useState(5);
     let [doctorCounter, setDoctorCounter] = useState(0);
     let [msgHeader, setMsgHeader] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState(null);
+
     let userName = 'Patient';
     let personName = 'Dr.'
     const formRef = useRef(null);
@@ -42,7 +45,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setMsgHeader(true);
         }
         setActiveTab(tabId);
-
+        setDoctorCounter(0);
+        setMoreInfoCounter(5);
     };
 
     // chat sounds 
@@ -63,12 +67,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
             user: 'doctor'
         }
 
+        setLoading(true);
+        setLoadingMessage({ name: personName, message: '', user: 'doctor' });
+
         timeoutIdRef.current = setTimeout(() => {
             setChat((chat) => [...chat, newMsg]);
             playSound(receiveSound);
             setDoctorCounter((state) => state + 1);
-        }, 1000);
-        console.log(doctorCounter);
+            setLoading(false);
+            setLoadingMessage(null);
+        }, 2200);
     }
 
 
@@ -90,27 +98,39 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         setChat([...chat, newMsg]);
         playSound(sendSound);
-        setUserCounter((state) => state + 1);
         chatManager(name, msg);
-        e.target.value = '';
-        e.target.elements.msgArea.value = '';
+        e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
+
     }
 
+    //  greetings =   responses[0];
+    //  describe =    responses[1];
+    //  appointment = responses[2];
+    //  busy =        responses[3];
+    //  bye =         responses[4];
+    //  moreInfo1 =   responses[5];
+    //  moreInfo2 =   responses[6];
+    //  moreInfo3 =   responses[7];
+    //  moreInfo4 =   responses[8];
+
     function chatManager(name, msg) {
-        setUserCounter(doctorCounter);
+        let response = 'Ok.';
+        if (doctorCounter > 4) return;
 
-        if (doctorCounter > 5) return;
-
-        
         const responses = personData.responses;
-        const greetings = responses[0];
-        const describe = responses[1];
-        const appointment = responses[2];
-        const moreInfo = responses[3];
-        const busy = responses[4];
-        const bye = responses[5];
 
-        const response = responses[doctorCounter];
+        if (doctorCounter == 2 && msg.length < 20 ) {
+            if(moreInfoCounter > 8){
+                response = responses[3];
+                setDoctorCounter((state) => state + 1);
+            } else {
+                setDoctorCounter((state) => state - 1);
+                setMoreInfoCounter((state) => state + 1);
+                response = responses[moreInfoCounter];
+            }
+        } else {
+            response = responses[doctorCounter];
+        }
 
         const newMsg = {
             name: personName,
@@ -118,11 +138,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
             user: 'doctor'
         }
 
+        setLoading(true);
+        setLoadingMessage({ name: personName, message: '', user: 'doctor' });
+
         timeoutIdRef.current = setTimeout(() => {
             setChat((chat) => [...chat, newMsg]);
             playSound(receiveSound);
             setDoctorCounter((state) => state + 1);
-        }, 1000);
+            setLoading(false);
+            setLoadingMessage(null);
+        }, 2200);
     }
 
 
@@ -142,7 +167,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setActiveTab('about');
         setMsgHeader(false);
         setDoctorCounter(0);
-        setUserCounter(0);
+        setMoreInfoCounter(5);
         toggleContactForm();
     };
 
@@ -189,11 +214,13 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <div className="messages-wrapper">
                                             <div className='displayMsg'>
                                                 <ul>
-                                                    {chat.length > 0 && chat.map((data, index) => (
+                                                    {chat.map((data, index) => (
                                                         data.user == 'doctor' ?
-                                                            <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
-                                                                <span className='doctorText'>{data.message}</span>
-                                                            </li>
+
+                                                                <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
+                                                                    <span className='doctorText'>{data.message}</span>
+                                                                </li>
+                                                           
                                                             :
                                                             <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
                                                                 <span className='userName'>{data.name}</span>
@@ -201,6 +228,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     ))
 
                                                     }
+                                                    {loadingMessage && (
+                                                        <li>
+                                                            <span className='doctorName'>{loadingMessage.name}</span>
+                                                            <svg height={40} width={40} className="loader">
+                                                                <circle className="dot" cx={10} cy={20} r={3} style={{ fill: "grey" }} />
+                                                                <circle className="dot" cx={20} cy={20} r={3} style={{ fill: "grey" }} />
+                                                                <circle className="dot" cx={30} cy={20} r={3} style={{ fill: "grey" }} />
+                                                            </svg>
+                                                        </li>
+
+                                                    )}
                                                 </ul>
                                             </div>
                                         </div>

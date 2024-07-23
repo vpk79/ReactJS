@@ -145,10 +145,13 @@
                 "responses": [
                     "Hello, how can i help you?",
                     "Please, describe your problem here.",
-                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
                     "I need more information",
-                    "I`m busy right now, come to visit us and we will help you.",
-                    "Bye! Have, a nice day!"
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "01"
@@ -185,10 +188,13 @@
                "responses": [
                 "Hello, how can i help you?",
                 "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I will see what can I do.",
+                "I undestand, please, make an appointment and I shall see what can I do.",
+                "Sorry, I got to go. Come, visit us and we shall help you.",
+                "Have, a nice day!",
                 "I need more information",
-                "I`m busy right now, come to visit us and we will help you.",
-                "Bye! Have, a nice day!"
+                "Please, give me more details",
+                "Please, i need to hear more",
+                "Ok, try using more than 20 letters."
             ],
                 "favorities": [],
                 "_id": "02"
@@ -225,10 +231,13 @@
                 "responses": [
                     "Hello, how can i help you?",
                     "Please, describe your problem here.",
-                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
                     "I need more information",
-                    "I`m busy right now, come to visit us and we will help you.",
-                    "Bye! Have, a nice day!"
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "03"
@@ -265,10 +274,13 @@
                 "responses": [
                     "Hello, how can i help you?",
                     "Please, describe your problem here.",
-                    "I undestand, please, make an appointment and I will see what can I do.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
                     "I need more information",
-                    "I`m busy right now, come to visit us and we will help you.",
-                    "Bye! Have, a nice day!"
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "04"
@@ -302,12 +314,15 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, how can i help you?",
-                    "Please, describe your problem here.",
-                    "I undestand, please, make an appointment and I will see what can I do.",
-                    "I need more information",
-                    "I`m busy right now, come to visit us and we will help you.",
-                    "Bye! Have, a nice day!"
+                "Hello, how can i help you?",
+                "Please, describe your problem here.",
+                "I undestand, please, make an appointment and I shall see what can I do.",
+                "Sorry, I got to go. Come, visit us and we shall help you.",
+                "Have, a nice day!",
+                "I need more information",
+                "Please, give me more details",
+                "Please, i need to hear more",
+                "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "05"
@@ -343,10 +358,13 @@
                "responses": [
                 "Hello, how can i help you?",
                 "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I will see what can I do.",
+                "I undestand, please, make an appointment and I shall see what can I do.",
+                "Sorry, I got to go. Come, visit us and we shall help you.",
+                "Have, a nice day!",
                 "I need more information",
-                "I`m busy right now, come to visit us and we will help you.",
-                "Bye! Have, a nice day!"
+                "Please, give me more details",
+                "Please, i need to hear more",
+                "Ok, try using more than 20 letters."
             ],
                 "favorities": [],
                 "_id": "06"
@@ -382,10 +400,13 @@
                "responses": [
                 "Hello, how can i help you?",
                 "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I will see what can I do.",
+                "I undestand, please, make an appointment and I shall see what can I do.",
+                "Sorry, I got to go. Come, visit us and we shall help you.",
+                "Have, a nice day!",
                 "I need more information",
-                "I`m busy right now, come to visit us and we will help you.",
-                "Bye! Have, a nice day!"
+                "Please, give me more details",
+                "Please, i need to hear more",
+                "Ok, try using more than 20 letters."
             ],
                 "favorities": [],
                 "_id": "07"
@@ -419,12 +440,15 @@
                 },
                 "messages": [],
                 "responses": [
-                    "Hello, how can i help you?",
-                    "Please, describe your problem here.",
-                    "I undestand, please, make an appointment and I will see what can I do.",
-                    "I need more information",
-                    "I`m busy right now, come to visit us and we will help you.",
-                    "Bye! Have, a nice day!"
+                "Hello, how can i help you?",
+                "Please, describe your problem here.",
+                "I undestand, please, make an appointment and I shall see what can I do.",
+                "Sorry, I got to go. Come, visit us and we shall help you.",
+                "Have, a nice day!",
+                "I need more information",
+                "Please, give me more details",
+                "Please, i need to hear more",
+                "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "08"
