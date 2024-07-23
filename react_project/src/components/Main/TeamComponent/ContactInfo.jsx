@@ -251,7 +251,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className={`nav-link ${activeTab === 'about' ? 'active' : ''}`}
+                                            className={`nav-link  ${activeTab === 'about' ? 'active' : ''}`}
                                             id="about-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#about"
@@ -266,7 +266,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className={`nav-link ${activeTab === 'summary' ? 'active' : ''}`}
+                                            className={`nav-link  ${activeTab === 'summary' ? 'active' : ''}`}
                                             id="summary-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#summary"
@@ -281,7 +281,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
+                                            className={`nav-link  ${activeTab === 'contact' ? 'active' : ''}`}
                                             id="contact-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#contact"
@@ -297,7 +297,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className={`nav-link ${activeTab === 'message' ? 'active' : ''}`}
+                                            className={`nav-link  ${activeTab === 'message' ? 'active' : ''}`}
                                             id="message-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#message"
@@ -330,7 +330,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                 {/* Tab panes */}
                                 <div className="tab-content" id="myTabContent">
                                     <div
-                                        className={`tab-pane fade ${activeTab === 'about' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-about ${activeTab === 'about' ? 'show active' : ''}`}
                                         id="about"
                                         role="tabpanel"
                                         aria-labelledby="about-tab"
@@ -351,7 +351,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </ul>
                                     </div>
                                     <div
-                                        className={`tab-pane fade ${activeTab === 'summary' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-summary ${activeTab === 'summary' ? 'show active' : ''}`}
                                         id="summary"
                                         role="tabpanel"
                                         aria-labelledby="summary-tab"
@@ -393,7 +393,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
                                     </div>
                                     <div
-                                        className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-contact ${activeTab === 'contact' ? 'show active' : ''}`}
                                         id="contact"
                                         role="tabpanel"
                                         aria-labelledby="contact-tab"
@@ -410,7 +410,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         }
                                     </div>
                                     <div
-                                        className={`tab-pane fade ${activeTab === 'message' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-message ${activeTab === 'message' ? 'show active' : ''}`}
                                         id="message"
                                         role="tabpanel"
                                         aria-labelledby="message-tab"
@@ -425,7 +425,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </div>
                                     </div>
                                     <div
-                                        className={`tab-pane fade ${activeTab === 'comments' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-comment ${activeTab === 'comments' ? 'show active' : ''}`}
                                         id="comments"
                                         role="tabpanel"
                                         aria-labelledby="comments-tab"
