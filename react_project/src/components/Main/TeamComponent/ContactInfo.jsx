@@ -13,8 +13,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
-    const [sentMessages, setSentMessages] = useState([])
     const [chat, setChat] = useState([]);
+    let [userCounter, setUserCounter] = useState(0);
+    let [doctorCounter, setDoctorCounter] = useState(0);
     let [msgHeader, setMsgHeader] = useState(false);
     let userName = 'Patient';
     let personName = 'Dr.'
@@ -22,12 +23,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
 
-
-    // console.log(activeTab);
-
     if (email) userName = email.split('@')[0];
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0];
-    // console.log(personData);
 
     useEffect(() => {
         setPersonData(data);
@@ -55,26 +52,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     };
 
 
-    // load chat messages on opening
-
-    async function loadChatMessages() {
-        const data = await request.get(`${url.MESSAGES}?distinct=${userId}`)
-
-        if (data.length > 0) {
-            const receiverId = personData._id;
-            const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
-            if (personMsg.length == 0) {
-                setSentMessages([]);
-                return;
-            } else {
-                const messages = personMsg[0].sentMsg;
-                setSentMessages(messages);
-            }
-
-            return;
-        }
-    }
-
+    // start new chat
     function intitiateChat() {
         setChat([]);
         const responses = personData.responses;
@@ -85,14 +63,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
             user: 'doctor'
         }
 
-        console.log(newMsg);
-        console.log(chat);
-
         timeoutIdRef.current = setTimeout(() => {
             setChat((chat) => [...chat, newMsg]);
             playSound(receiveSound);
+            setDoctorCounter((state) => state + 1);
         }, 1000);
-
+        console.log(doctorCounter);
     }
 
 
@@ -114,11 +90,18 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         setChat([...chat, newMsg]);
         playSound(sendSound);
-        chatManager(name, msg)
+        setUserCounter((state) => state + 1);
+        chatManager(name, msg);
+        e.target.value = '';
+        e.target.elements.msgArea.value = '';
     }
 
     function chatManager(name, msg) {
+        setUserCounter(doctorCounter);
 
+        if (doctorCounter > 5) return;
+
+        
         const responses = personData.responses;
         const greetings = responses[0];
         const describe = responses[1];
@@ -127,110 +110,39 @@ export default function ContactInfo({ data, toggleContactForm }) {
         const busy = responses[4];
         const bye = responses[5];
 
-        // const newMsg = {
-        //     name: personName,
-        //     message: greetings
-        // }
-        // console.log(newMsg);
-        // setChat([...chat, newMsg]);
+        const response = responses[doctorCounter];
 
-
-        // setRespondMessage(greetings);
-
-    }
-
-    async function messageHandler(e) {
-        e.preventDefault();
-
-
-        // let textarea = e.target.value || e.target.elements.msgArea.value;
-        // const msg = textarea.trim();
-        // if (msg === '') {
-        //     showErrorToast('Message cannot be empty!', { toastId: "messageError" })
-        //     return;
-        // }
-
-        // const receiverId = personData._id;
-
-        // const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
-        // console.log(oldData);
-        // if (oldData.length == 0 || oldData[0]._ownerId != userId) {
-        //     createNewChat(msg, receiverId, e)
-        // } else {
-        //     const chatId = oldData[0]._id;
-        //     const oldMessages = oldData[0].messages;
-        //     const index = oldMessages.findIndex(x => x.receiverId == receiverId);
-        //     if (index == -1) {                                 // if not chats with this person create new
-        //         addNewChat(oldMessages, receiverId, msg, chatId, e)
-        //     } else {
-        //         const sentMsg = oldMessages[index].sentMsg;
-        //         sentMsg.push(msg);
-
-        //         const newMsg = {
-        //             receiverId: receiverId,
-        //             sentMsg: sentMsg,
-        //             receivedMsg: []
-        //         }
-        //         oldData[0].messages[index] = newMsg;
-        //         const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
-        //         setSentMessages(sentMsg);
-        //         playSound(sendSound);
-        //         e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
-        //     }
-        // }
-    }
-
-    // create new chat if have none
-    async function createNewChat(msg, receiverId, e) {
         const newMsg = {
-            messages: [{
-                receiverId: receiverId,
-                sentMsg: [msg],
-                receivedMsg: []
-            }]
-        }
-        const data = await request.post(`${url.MESSAGES}`, newMsg);
-        // console.log('newchat', data);
-        setSentMessages([msg]);
-        playSound(sendSound);
-        e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
-    }
-
-    // add a new chat with new person
-    async function addNewChat(messages, receiverId, msg, chatId, e) {
-        const newMsg = {
-            receiverId: receiverId,
-            sentMsg: [msg],
-            receivedMsg: []
+            name: personName,
+            message: response,
+            user: 'doctor'
         }
 
-        messages.push(newMsg);
-        // console.log(messages);
-        const data = await request.put(`${url.MESSAGES}/${chatId}`, { messages });
-        // console.log(data);
-        setSentMessages([msg]);
-        playSound(sendSound);
-        e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
-
+        timeoutIdRef.current = setTimeout(() => {
+            setChat((chat) => [...chat, newMsg]);
+            playSound(receiveSound);
+            setDoctorCounter((state) => state + 1);
+        }, 1000);
     }
+
 
     /* submit on press enter */
     function submitOnEnter(event) {
         if (event.key == "Enter") {
             event.preventDefault();
-            messageHandler(event);
-            // console.log(event.target.value);
+            userChatMsg(event);
         }
     }
 
     /* clear on close */
     const clearForm = () => {
-        setSentMessages([]);
         if (formRef.current) {
             formRef.current.reset();
         }
         setActiveTab('about');
         setMsgHeader(false);
+        setDoctorCounter(0);
+        setUserCounter(0);
         toggleContactForm();
     };
 
@@ -289,10 +201,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     ))
 
                                                     }
-                                                    {/* {sentMessages.map((data, index) => (
-
-                                                        <li key={index}><span className='yourMsg'>{data}</span><span className='yourName'>{userName}</span></li>
-                                                    ))} */}
                                                 </ul>
                                             </div>
                                         </div>
