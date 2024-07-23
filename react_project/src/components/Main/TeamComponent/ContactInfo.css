@@ -329,6 +329,7 @@
     color: blue;
     font-size: 14px;
     /* border: 1px solid grey; */
+    background-color: rgb(240, 238, 238);
     overflow-Y: auto;
     overflow-x: hidden;
     resize: none;

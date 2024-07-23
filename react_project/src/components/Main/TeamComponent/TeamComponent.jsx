@@ -103,7 +103,7 @@ export default function TeamComponent() {
                 </div>
             </div >
             {/* Team End */}
-            {<ContactInfo data={personData} toggleContactForm={handleContactClick} />}
+            {handleContactClick && <ContactInfo data={personData} toggleContactForm={handleContactClick} />}
 
         </>
     )

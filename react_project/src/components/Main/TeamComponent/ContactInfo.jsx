@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
 import sendSound from '../../../media/sendMsg.mp3'
@@ -11,79 +11,86 @@ import { showErrorToast } from '../../../Toasts/toastsMsg';
 
 export default function ContactInfo({ data, toggleContactForm }) {
     const { isAuthenticated, email, userId } = useContext(AuthContext);
+    const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
     const [sentMessages, setSentMessages] = useState([])
     let [msgHeader, setMsgHeader] = useState(false);
     let userName = 'You';
+    const formRef = useRef(null);
 
-    if(email){
-        const userName = email.split('@')[0];
+    if (email) {
+        userName = email.split('@')[0];
     }
-    
-  
-
     useEffect(() => {
         setPersonData(data);
     }, [data]);
 
+
+    // set default tab on opening 
+    const handleTabClick = (tabId) => {
+        if(tabId !== 'message') {
+            setMsgHeader(false);
+        } else {
+            setMsgHeader(true);
+        }
+        setActiveTab(tabId);
+    };
+
+    // chat sounds 
     const playSendSound = () => {
         const audio = new Audio(sendSound);
         audio.play();
     };
 
+
+    // load chat messages on opening
     useEffect(() => {
         const oldMessages = request.get(`${url.MESSAGES}?distinct=${userId}`)
             .then(data => {
                 if (data.length > 0) {
                     const receiverId = personData._id;
-                    // console.log(receiverId);
                     const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
-                    // console.log(personMsg);
                     if (personMsg.length == 0) {
-                        // console.log("enter");
                         setSentMessages([]);
                         return;
                     } else {
-                        // console.log('set');
                         const messages = personMsg[0].sentMsg;
                         setSentMessages(messages);
-                        // console.log(sentMessages);
                     }
-                    // console.log(messages);
                 }
-
                 return;
-            }
-            )
-        // console.log(sentMessages);
+            })
     }, [toggleContactForm])
 
 
+    // main chat handler 
     async function messageHandler(e) {
         e.preventDefault();
-       
-        console.log('entered');
-        const textarea = e.target.elements.msgArea;
-        const msg = textarea.value.trim();
-        if (msg === ''){
-            showErrorToast('Message cannot be empty!', { toastId: "messageError"})
-             return;
-        } 
-       
+
+        // console.log('entered');
+        // console.log(e.target.value);
+        let textarea = e.target.value || e.target.elements.msgArea.value;
+        // console.log(textarea.value);
+        const msg = textarea.trim();
+        if (msg === '') {
+            showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+            return;
+        }
+
         const receiverId = personData._id;
 
         const oldData = await request.get(`${url.MESSAGES}?distinct=${userId}`); // load all chat messages by ownerId
-         console.log(oldData);
+        console.log(oldData);
         if (oldData.length == 0 || oldData[0]._ownerId != userId) {
-            createNewChat(msg, receiverId)
-            console.log('new');
+            createNewChat(msg, receiverId, e)
+            // console.log('new');
         } else {
             const chatId = oldData[0]._id;
             const oldMessages = oldData[0].messages;
             const index = oldMessages.findIndex(x => x.receiverId == receiverId);
-            console.log('old');
+            // console.log('old');
             if (index == -1) {                                 // if not chats with this person create new
-                addNewChat(oldMessages, receiverId, msg, chatId)
+                addNewChat(oldMessages, receiverId, msg, chatId, e)
             } else {
                 const sentMsg = oldMessages[index].sentMsg;
                 sentMsg.push(msg);
@@ -97,44 +104,64 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 const newData = await request.put(`${url.MESSAGES}/${chatId}`, oldData[0]);
                 setSentMessages(sentMsg);
                 playSendSound();
-                textarea.value = '';
+                e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
             }
         }
+    }
 
-        // create new chat if have none
-        async function createNewChat(msg, receiverId) {
-            const newMsg = {
-                messages: [{
-                    receiverId: receiverId,
-                    sentMsg: [msg],
-                    receivedMsg: []
-                }]
-            }
-            const data = await request.post(`${url.MESSAGES}`, newMsg);
-            console.log('newchat',data);
-            setSentMessages([msg]);
-            playSendSound();
-            textarea.value = '';
-        }
-
-        // add a new chat with new person
-        async function addNewChat(messages, receiverId, msg, chatId) {
-            const newMsg = {
+    // create new chat if have none
+    async function createNewChat(msg, receiverId, e) {
+        const newMsg = {
+            messages: [{
                 receiverId: receiverId,
                 sentMsg: [msg],
                 receivedMsg: []
-            }
+            }]
+        }
+        const data = await request.post(`${url.MESSAGES}`, newMsg);
+        // console.log('newchat', data);
+        setSentMessages([msg]);
+        playSendSound();
+        e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
+    }
 
-            messages.push(newMsg);
-            // console.log(messages);
-            const data = await request.put(`${url.MESSAGES}/${chatId}`, { messages });
-            // console.log(data);
-            setSentMessages([msg]);
-            playSendSound();
-            textarea.value = '';
+    // add a new chat with new person
+    async function addNewChat(messages, receiverId, msg, chatId, e) {
+        const newMsg = {
+            receiverId: receiverId,
+            sentMsg: [msg],
+            receivedMsg: []
+        }
 
+        messages.push(newMsg);
+        // console.log(messages);
+        const data = await request.put(`${url.MESSAGES}/${chatId}`, { messages });
+        // console.log(data);
+        setSentMessages([msg]);
+        playSendSound();
+        e.target.elements ? e.target.elements.msgArea.value = '' : e.target.value = '';
+
+    }
+
+    /* submit on press enter */
+    function submitOnEnter(event) {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            messageHandler(event);
+            // console.log(event.target.value);
         }
     }
+
+    /* clear on close */
+    const clearForm = () => {
+        setSentMessages([]);
+        if (formRef.current) {
+            formRef.current.reset();
+        }
+        setActiveTab('about');
+        toggleContactForm();
+    };
+
 
     return (
         <>
@@ -170,7 +197,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             </div>
                                         </div>
                                         <div className="close-modal">
-                                            <button type="button" onClick={(() => setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                     </div>
                                 )
@@ -182,8 +209,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <div className='person-name-wrapper'>
                                                 <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                                 <p className='person-department'>{personData.department}</p>
-                                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                                    <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
+                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
                                             </div>
                                             <div className="image-section">
                                                 <div className="image-wrapper">
@@ -191,7 +218,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                 </div>
                                             </div>
                                             <div className="close-modal">
-                                                <button type="button" onClick={(() => setSentMessages([]), toggleContactForm)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                         </div>
                                     </div>
@@ -202,45 +229,45 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className="nav-link active"
+                                            className={`nav-link ${activeTab === 'about' ? 'active' : ''}`}
                                             id="about-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#about"
                                             type="button"
                                             role="tab"
                                             aria-controls="about"
-                                            aria-selected="true"
-                                            onClick={() => setMsgHeader(false)}
+                                            aria-selected={activeTab === 'about'}
+                                            onClick={() => handleTabClick('about')}
                                         >
                                             About
                                         </button>
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className="nav-link"
+                                            className={`nav-link ${activeTab === 'summary' ? 'active' : ''}`}
                                             id="summary-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#summary"
                                             type="button"
                                             role="tab"
                                             aria-controls="summary"
-                                            aria-selected="false"
-                                            onClick={() => setMsgHeader(false)}
+                                            aria-selected={activeTab === 'summary'}
+                                            onClick={() => handleTabClick('summary')}
                                         >
                                             Summary
                                         </button>
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className="nav-link"
+                                            className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
                                             id="contact-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#contact"
                                             type="button"
                                             role="tab"
                                             aria-controls="contact"
-                                            aria-selected="false"
-                                            onClick={() => setMsgHeader(false)}
+                                            aria-selected={activeTab === 'contact'}
+                                            onClick={() => handleTabClick('contact')}
                                         >
                                             Contacts
 
@@ -248,47 +275,34 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className="nav-link"
+                                            className={`nav-link ${activeTab === 'message' ? 'active' : ''}`}
                                             id="message-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#message"
                                             type="button"
                                             role="tab"
                                             aria-controls="message"
-                                            aria-selected="false"
-                                            onClick={() => setMsgHeader(true)}
+                                            aria-selected={activeTab === 'message'}
+                                            onClick={() => handleTabClick('message')}
                                         >
                                             Message
                                         </button>
                                     </li>
                                     <li className="nav-item" role="presentation">
                                         <button
-                                            className="nav-link"
+                                            className={`nav-link ${activeTab === 'comments' ? 'active' : ''}`}
                                             id="comments-tab"
                                             data-bs-toggle="tab"
                                             data-bs-target="#comments"
                                             type="button"
                                             role="tab"
-                                            aria-controls="comments"
-                                            aria-selected="false"
+                                            aria-controls={activeTab === 'comments'}
+                                            aria-selected={() => handleTabClick('comments')}
                                         >
                                             Comments
                                         </button>
                                     </li>
-                                    {/* <li className="nav-item add-to-favorites" role="presentation">
-                                        <button
-                                            className="btn btn-primary add-to-favorites-btn"
-                                            id="add-to-favorites-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#add-to-favorites"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="message"
-                                            aria-selected="false"
-                                        >
-                                            Add to favorites
-                                        </button>
-                                    </li> */}
+
                                 </ul>
                                 {/* Tab panes */}
                                 <div className="tab-content" id="myTabContent">
@@ -380,8 +394,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     >
                                         <div className='person-message-wrapper'>
                                             <p>You can leave me a message. I`ll respond ASAP.</p>
-                                            <form className='msgForm' onSubmit={messageHandler}>
-                                                <textarea name="msgArea" id="msgArea" cols="40" rows="5"></textarea>
+                                            <form ref={formRef} className='msgForm' onSubmit={messageHandler}>
+                                                <textarea name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
                                                 <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
                                             </form>
 
