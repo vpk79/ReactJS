@@ -17,6 +17,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let [msgHeader, setMsgHeader] = useState(false);
     let userName = 'You';
     const formRef = useRef(null);
+    const modalRef = useRef(null);
+
+    console.log(activeTab);
 
     if (email) {
         userName = email.split('@')[0];
@@ -25,8 +28,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setPersonData(data);
     }, [data]);
 
-
-    // set default tab on opening 
+    // handle tabs
     const handleTabClick = (tabId) => {
         if(tabId !== 'message') {
             setMsgHeader(false);
@@ -159,15 +161,35 @@ export default function ContactInfo({ data, toggleContactForm }) {
             formRef.current.reset();
         }
         setActiveTab('about');
+        setMsgHeader(false);
         toggleContactForm();
     };
+
+
+    // handle backdrop close
+    useEffect(() => {
+        const modalElement = modalRef.current;
+        const handleModalHidden = () => {
+            clearForm();
+        };
+
+        if (modalElement) {
+            modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
+        }
+
+        return () => {
+            if (modalElement) {
+                modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+            }
+        };
+    }, []);
 
 
     return (
         <>
             {personData && (
 
-                <div className="modal fade" id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
+                <div className="modal fade" ref={modalRef} id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             {
@@ -296,8 +318,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             data-bs-target="#comments"
                                             type="button"
                                             role="tab"
-                                            aria-controls={activeTab === 'comments'}
-                                            aria-selected={() => handleTabClick('comments')}
+                                            aria-controls="comments"
+                                            aria-selected={activeTab === 'comments'}
+                                            onClick={() => handleTabClick('comments')}
                                         >
                                             Comments
                                         </button>
@@ -307,7 +330,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                 {/* Tab panes */}
                                 <div className="tab-content" id="myTabContent">
                                     <div
-                                        className="tab-pane fade show active person-about"
+                                        className={`tab-pane fade ${activeTab === 'about' ? 'show active' : ''}`}
                                         id="about"
                                         role="tabpanel"
                                         aria-labelledby="about-tab"
@@ -328,7 +351,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </ul>
                                     </div>
                                     <div
-                                        className="tab-pane fade person-summary"
+                                        className={`tab-pane fade ${activeTab === 'summary' ? 'show active' : ''}`}
                                         id="summary"
                                         role="tabpanel"
                                         aria-labelledby="summary-tab"
@@ -370,7 +393,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
                                     </div>
                                     <div
-                                        className="tab-pane fade person-contact"
+                                        className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`}
                                         id="contact"
                                         role="tabpanel"
                                         aria-labelledby="contact-tab"
@@ -387,7 +410,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         }
                                     </div>
                                     <div
-                                        className="tab-pane fade person-message"
+                                        className={`tab-pane fade ${activeTab === 'message' ? 'show active' : ''}`}
                                         id="message"
                                         role="tabpanel"
                                         aria-labelledby="message-tab"
@@ -402,7 +425,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </div>
                                     </div>
                                     <div
-                                        className="tab-pane fade person-comments"
+                                        className={`tab-pane fade ${activeTab === 'comments' ? 'show active' : ''}`}
                                         id="comments"
                                         role="tabpanel"
                                         aria-labelledby="comments-tab"

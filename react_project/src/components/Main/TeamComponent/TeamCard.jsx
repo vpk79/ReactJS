@@ -32,6 +32,7 @@ export default function TeamCard({ data, delay, personDetails }) {
                     </div>
                 </div>
             </div>
+            
         </>
     )
 }
