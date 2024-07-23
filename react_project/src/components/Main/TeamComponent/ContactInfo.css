@@ -113,13 +113,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
 }
 
 .modal-header.no-form .person-name-wrapper {
     display: flex;
     flex-direction: column;
-    
+
     /* justify-content: space-between; */
     /* align-content: space-between; */
 }
@@ -136,7 +136,7 @@
     color: black;
 }
 
-.modal-header.no-form .person-name-wrapper button{
+.modal-header.no-form .person-name-wrapper button {
     font-size: 16px;
 }
 
@@ -180,10 +180,10 @@
 
 
 .modal-header.no-form .close-modal {
-  
-   align-self: start;
-   margin-top: -20px;
-   margin-right: -20px;
+
+    align-self: start;
+    margin-top: -20px;
+    margin-right: -20px;
 }
 
 
@@ -326,7 +326,7 @@
     padding-top: 20px;
 
     /* text-align: right; */
-    color: blue;
+    /* color: blue; */
     font-size: 14px;
     /* border: 1px solid grey; */
     background-color: rgb(240, 238, 238);
@@ -341,18 +341,20 @@
 }
 
 .displayMsg li {
-    text-align: right;
     width: 230px;
     list-style: none;
+    margin-bottom: 10px;
     /* border: 1px solid black; */
     /* margin-right: -130px; */
-    margin-bottom: 10px;
+
     /* padding-bottom: 20px; */
     /* line-height: 2.2; */
 }
 
 .displayMsg .yourMsg {
-    font-weight: 560;
+    text-align: right;
+    font-weight: 660;
+    color: blue;
     margin-right: 10px;
     border: 1px solid black;
     border-radius: 50px;
@@ -362,9 +364,34 @@
 
 .displayMsg .yourName {
     font-size: 18px;
+    font-style: italic;
     color: rgb(63, 94, 104);
     margin-right: -60px;
     /* border: 1px solid black; */
     padding: 5px;
     font-weight: 600;
 }
+
+.displayMsg .personMsg {
+    text-align: left;
+    font-weight: 660;
+    color: black;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 5px 5px 5px 10px;
+    display: inline-block;
+    
+}
+
+.displayMsg .personName {
+    font-size: 18px;
+    /* font-style: italic; */
+    color: rgb(63, 94, 104);
+    margin-left: -30px;
+    /* border: 1px solid black; */
+    padding: 5px;
+    font-weight: 600;
+    display: inline;
+}
+

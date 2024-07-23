@@ -14,23 +14,26 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
     const [sentMessages, setSentMessages] = useState([])
+    const [respondMessage, setRespondMessage] = useState('');
     let [msgHeader, setMsgHeader] = useState(false);
-    let userName = 'You';
+    let userName = 'Patient';
+    let personName = 'Dr.'
     const formRef = useRef(null);
     const modalRef = useRef(null);
 
-    console.log(activeTab);
+    // console.log(activeTab);
 
-    if (email) {
-        userName = email.split('@')[0];
-    }
+    if (email) userName = email.split('@')[0];
+    if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0];
+    console.log(personData);
+
     useEffect(() => {
         setPersonData(data);
     }, [data]);
 
     // handle tabs
     const handleTabClick = (tabId) => {
-        if(tabId !== 'message') {
+        if (tabId !== 'message') {
             setMsgHeader(false);
         } else {
             setMsgHeader(true);
@@ -46,24 +49,43 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
 
     // load chat messages on opening
-    useEffect(() => {
-        const oldMessages = request.get(`${url.MESSAGES}?distinct=${userId}`)
-            .then(data => {
-                if (data.length > 0) {
-                    const receiverId = personData._id;
-                    const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
-                    if (personMsg.length == 0) {
-                        setSentMessages([]);
-                        return;
-                    } else {
-                        const messages = personMsg[0].sentMsg;
-                        setSentMessages(messages);
-                    }
-                }
-                return;
-            })
-    }, [toggleContactForm])
 
+    async function loadChatMessages() {
+        const data = await request.get(`${url.MESSAGES}?distinct=${userId}`)
+
+        if (data.length > 0) {
+            const receiverId = personData._id;
+            const personMsg = data[0].messages.filter(x => x.receiverId == receiverId);
+            if (personMsg.length == 0) {
+                setSentMessages([]);
+                return;
+            } else {
+                const messages = personMsg[0].sentMsg;
+                setSentMessages(messages);
+            }
+
+            return;
+        }
+
+
+    }
+
+    async function loadChatResponses() {
+        const responses = personData.responses;
+
+        const greetings = responses[0];
+        const describe = responses[1];
+        const appointment = responses[2];
+        const moreInfo = responses[3];
+        const busy = responses[4];
+        const bye = responses[5];
+
+        setRespondMessage(greetings);
+        setTimeout(() => {
+            setRespondMessage(describe);
+        }, 3000);
+        console.log(responses);
+    }
 
     // main chat handler 
     async function messageHandler(e) {
@@ -206,18 +228,20 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </div>
 
                                         <div className="messages-wrapper">
-                                            {/* <textarea className="displayMsg" name="displayMsg" id="displayMsg" cols="30" rows="10"  value={text} disabled={true}></textarea> */}
                                             <div className='displayMsg'>
                                                 <ul>
-                                                    {sentMessages.map((data, index) => (
+                                                    {respondMessage &&
+                                                   
+                                                         <li><span className='personName'>{personName}</span><span className='personMsg'>{respondMessage}</span></li>
+                                                      }
+                                                    {/* {sentMessages.map((data, index) => (
 
                                                         <li key={index}><span className='yourMsg'>{data}</span><span className='yourName'>{userName}</span></li>
-
-
-                                                    ))}
-                                                </ul>
+                                                    ))} */}
+                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> 
+
                                         <div className="close-modal">
                                             <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
@@ -305,7 +329,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="message"
                                             aria-selected={activeTab === 'message'}
-                                            onClick={() => handleTabClick('message')}
+                                            onClick={() => { handleTabClick('message'); loadChatMessages(); loadChatResponses() }}
                                         >
                                             Message
                                         </button>
