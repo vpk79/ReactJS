@@ -45,7 +45,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setMsgHeader(true);
         }
         setActiveTab(tabId);
-       
+
     };
 
     // chat sounds 
@@ -81,32 +81,44 @@ export default function ContactInfo({ data, toggleContactForm }) {
         const greetings = responses[0];
         const newMsg = {
             name: personName,
-            message: greetings
+            message: greetings,
+            user: 'doctor'
         }
 
         console.log(newMsg);
         console.log(chat);
 
         timeoutIdRef.current = setTimeout(() => {
-            setChat((chat)=>[...chat, newMsg]);
+            setChat((chat) => [...chat, newMsg]);
             playSound(receiveSound);
         }, 1000);
-        
+
     }
 
 
-    function userChatMsg(e){
+    function userChatMsg(e) {
         e.preventDefault();
         let textarea = e.target.value || e.target.elements.msgArea.value;
+        const name = userName;
         const msg = textarea.trim();
         if (msg === '') {
             showErrorToast('Message cannot be empty!', { toastId: "messageError" })
             return;
         }
-        console.log(msg);
+        // console.log(msg);
+        const newMsg = {
+            name: name,
+            message: msg,
+            user: 'user'
+        }
+
+        setChat([...chat, newMsg]);
+        playSound(sendSound);
+        chatManager(name, msg)
     }
 
     function chatManager(name, msg) {
+
         const responses = personData.responses;
         const greetings = responses[0];
         const describe = responses[1];
@@ -115,10 +127,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
         const busy = responses[4];
         const bye = responses[5];
 
-        const newMsg = {
-            name: personName,
-            message: greetings
-        }
+        // const newMsg = {
+        //     name: personName,
+        //     message: greetings
+        // }
         // console.log(newMsg);
         // setChat([...chat, newMsg]);
 
@@ -130,7 +142,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     async function messageHandler(e) {
         e.preventDefault();
 
-        
+
         // let textarea = e.target.value || e.target.elements.msgArea.value;
         // const msg = textarea.trim();
         // if (msg === '') {
@@ -266,9 +278,14 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <div className='displayMsg'>
                                                 <ul>
                                                     {chat.length > 0 && chat.map((data, index) => (
-                                                        <li key={index}><span className='personName'>{data.name}</span>
-                                                        <span className='personMsg'>{data.message}</span>
-                                                        </li>
+                                                        data.user == 'doctor' ?
+                                                            <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
+                                                                <span className='doctorText'>{data.message}</span>
+                                                            </li>
+                                                            :
+                                                            <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
+                                                                <span className='userName'>{data.name}</span>
+                                                            </li>
                                                     ))
 
                                                     }

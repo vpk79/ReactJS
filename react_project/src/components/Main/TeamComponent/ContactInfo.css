@@ -322,9 +322,9 @@
 
 .displayMsg {
     width: 350px;
-    height: 240px;
+    height: 260px;
     padding-top: 20px;
-
+/* flex-direction: column; */
     /* text-align: right; */
     /* color: blue; */
     font-size: 14px;
@@ -333,17 +333,22 @@
     overflow-Y: auto;
     overflow-x: hidden;
     resize: none;
+    padding-bottom: 20px;
     /* direction: rtl; */
 }
 
-.displayMsg {
-    padding-bottom: 20px;
+.displayMsg ul{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .displayMsg li {
-    width: 330px;
+    /* width: 330px; */
     list-style: none;
     margin-bottom: 10px;
+    
     /* border: 1px solid black; */
     /* margin-right: -130px; */
 
@@ -351,20 +356,31 @@
     /* line-height: 2.2; */
 }
 
-.displayMsg .yourMsg {
-    text-align: right;
+
+.displayMsg .userMsg {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 70px;
+}
+
+.displayMsg .doctorMsg{
+    display: flex;
+    justify-content: flex-start;
+    
+}
+.displayMsg .userText {
     font-weight: 660;
     color: blue;
-    margin-right: 10px;
+    margin-right: 5px;
     border: 1px solid black;
     border-radius: 50px;
     padding: 5px 10px 5px 10px;
     display: inline-block;
 }
 
-.displayMsg .yourName {
-    font-size: 18px;
-    font-style: italic;
+.displayMsg .userName {
+    font-size: 14px;
+    /* font-style: italic; */
     color: rgb(63, 94, 104);
     margin-right: -60px;
     /* border: 1px solid black; */
@@ -372,7 +388,7 @@
     font-weight: 600;
 }
 
-.displayMsg .personMsg {
+.displayMsg .doctorText {
     
     text-align: left;
     font-weight: 660;
@@ -385,7 +401,7 @@
     
 }
 
-.displayMsg .personName {
+.displayMsg .doctorName {
     font-size: 14px;
     /* font-style: italic; */
     color: rgb(63, 94, 104);
