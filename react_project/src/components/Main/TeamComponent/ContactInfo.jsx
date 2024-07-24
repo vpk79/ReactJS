@@ -21,6 +21,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
     const msgAreaRef = useRef(null);
+    const commentRef = useRef(null);
+    const userNameRef = useRef(null);
 
     let userName = 'Patient';
     let personName = 'Dr.'
@@ -45,19 +47,25 @@ export default function ContactInfo({ data, toggleContactForm }) {
         if (tabId == 'message') {
             setMsgHeader(true);
             setCommentHeader(false);
+            setTimeout(() => {
+                if (msgAreaRef.current) {
+                    msgAreaRef.current.focus();
+                }
+            }, 100);
         } else if (tabId == 'comments') {
             setCommentHeader(true);
             setMsgHeader(false);
+            setTimeout(() => {
+                if (userNameRef.current) {
+                    userNameRef.current.focus();
+                }
+            }, 100);
         } else {
             setMsgHeader(false);
             setCommentHeader(false);
         }
 
-        setTimeout(() => {
-            if (msgAreaRef.current) {
-                msgAreaRef.current.focus();
-            }
-        }, 100);
+
 
         setActiveTab(tabId);
         setDoctorCounter(0);
@@ -73,6 +81,31 @@ export default function ContactInfo({ data, toggleContactForm }) {
         const audio = new Audio(sound);
         audio.play();
     };
+
+
+    // post new comment
+
+    function commentHandler(e) {
+        e.preventDefault();
+
+        if (isAuthenticated) {
+            const userName = userNameRef.current.value;
+            const comment = commentRef.current.value;
+
+            const newComment = createNewComment(userName, comment);
+            console.log(commentRef.current.value);
+            console.log(userNameRef.current.value);
+        } else {
+            showErrorToast('You are not logged in!', { toastId: 'notLogged' });
+            return;
+        }
+
+
+    }
+
+    function createNewComment(userName, comment) {
+
+    }
 
 
     // start new chat
@@ -101,24 +134,30 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     function userChatMsg(e) {
         e.preventDefault();
-        let textarea = e.target.value || e.target.elements.msgArea.value;
-        const name = userName;
-        const msg = textarea.trim();
-        if (msg === '') {
-            showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+        if(isAuthenticated){
+            let textarea = e.target.value || e.target.elements.msgArea.value;
+            const name = userName;
+            const msg = textarea.trim();
+            if (msg === '') {
+                showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+                return;
+            }
+            // console.log(msg);
+            const newMsg = {
+                name: name,
+                message: msg,
+                user: 'user'
+            }
+
+            setChat([...chat, newMsg]);
+            playSound(sendSound);
+            chatManager(name, msg);
+            e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
+        } else {
+            showErrorToast('You are not logged in!', { toastId: 'notLogged' });
             return;
         }
-        // console.log(msg);
-        const newMsg = {
-            name: name,
-            message: msg,
-            user: 'user'
-        }
-
-        setChat([...chat, newMsg]);
-        playSound(sendSound);
-        chatManager(name, msg);
-        e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
+        
 
     }
 
@@ -560,14 +599,14 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     >
                                         <div className='person-comments-wrapper'>
                                             <p>You can leave a comment.</p>
-                                            <form className='commentForm' >
+                                            <form className='commentForm' onSubmit={commentHandler}>
                                                 <div className='userInput'>
                                                     <label htmlFor="userName">*Username:</label>
-                                                    <input type="text" className="userName" name='userName' id="userName"></input>
+                                                    <input ref={userNameRef} type="text" className="userName" name='userName' id="userName"></input>
                                                 </div>
-                                               
-                                                <textarea name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
-                                                <button type="btn btn-submit" className='btn  btn-primary'>Post</button>
+
+                                                <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
+                                                <button type="btn submit" className='btn  btn-primary'>Post</button>
                                             </form>
 
                                         </div>
