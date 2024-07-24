@@ -514,8 +514,20 @@
     margin-left: 25px;
 }
 
+.comments-section.modal-header.with-form .displayComments .btn-like i {
+    font-size: 10px;
+    transform: translateY(-2px);
+    margin-right: -8px;
+}
+
 .comments-section.modal-header.with-form .displayComments .btn-dislike {
     font-size: 12px;
+}
+
+.comments-section.modal-header.with-form .displayComments .btn-dislike i {
+    font-size: 12px;
+    transform: translateY(2px);
+    margin-right: -8px;
 }
 
 .comments-section.modal-header.with-form .displayComments .timeStamp {
