@@ -408,6 +408,11 @@ return (
                                                     <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <i class="fas fa-thumbs-up"></i> </Link><span>10</span></span>
                                                     <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <i class="fas fa-thumbs-down"></i></Link><span>20</span></span>
                                                     <span className='timeStamp'>24 юли 2024 | 13:08</span>
+                                                    <span className='btn-wrapper'> 
+                                                        <button className='btn edit-btn'>Edit</button>
+                                                        <button className='btn delete-btn'>Delete</button>
+                                                    </span>
+                                                   
                                                 </li>
                                                 <li className='comments-row'>
                                                     <span className='userName'>Peter says:</span>

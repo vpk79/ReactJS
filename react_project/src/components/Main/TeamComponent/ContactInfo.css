@@ -535,6 +535,35 @@
     margin-left: 50px;
 }
 
+.btn-wrapper {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    transform: translateY(-30px);
+    /* transform: translateX(140px); */
+    margin-left: 220px;
+    visibility: hidden;
+}
+
+.edit-btn {
+    font-size: 14px;
+    background-color: lightgrey;
+    padding: 0;
+    margin: 0;
+    color: white;
+    padding: 5px 17px 5px 17px;
+}
+
+.delete-btn {
+    font-size: 14px;
+    background-color: lightgrey;
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+    color: white;
+    padding: 5px 10px 5px 10px;
+}
+
 
 .comments-section.modal-header.with-form .displayComments .userComment {
     font-weight: 560;
