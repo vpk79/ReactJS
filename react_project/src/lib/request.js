@@ -45,7 +45,7 @@ export const request = async (method, url, data) => {
 
         if (response.status === 403 || response.status === 401) {
             // alert('No such user or password!');
-            localService.removeItem('userData')
+            // localService.removeItem('userData')
             throw new Error('No such user or password!');
         } else if (response.status === 409) {
             // alert('User already exist!');

@@ -122,14 +122,15 @@ async function  uploadComment(comment){
     const personId = personData._id;
     try {
     //    const getPosts = await request.get(`${url.COMMENTS}/${personId}`); 
-        const getPosts = await request.get(`${url.COMMENTS}?select=personId&${personId}`); 
-       console.log(getPosts);
-    } catch (error) {
-        const newComment = {
-            personId: personId,
-            comments: [comment]}
-        const uploadData = await request.post(`${url.COMMENTS}/`, newComment);
+        const getComments = await request.get(`${url.COMMENTS}`); 
+       console.log(comments);
+        // const uploadData = await request.put(`${url.EMPLOYERS}/${personId}`, {comments: comments});
+
         console.log(uploadData);
+
+    } catch (error) {
+        
+        console.log(error);
     }
     // console.log(personId);
     // request.post(url.COMMENTS)
