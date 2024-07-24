@@ -17,6 +17,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let [moreInfoCounter, setMoreInfoCounter] = useState(5);
     let [doctorCounter, setDoctorCounter] = useState(0);
     let [msgHeader, setMsgHeader] = useState(false);
+    let [commentHeader, setCommentHeader] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
     const msgAreaRef = useRef(null);
@@ -40,10 +41,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
             clearTimeout(timeoutIdRef.current);
             timeoutIdRef.current = null;
         }
-        if (tabId !== 'message') {
+
+        if (tabId == 'message') {
+            setMsgHeader(true);
+            setCommentHeader(false);
+        } else if (tabId == 'comments') {
+            setCommentHeader(true);
             setMsgHeader(false);
         } else {
-            setMsgHeader(true);
+            setMsgHeader(false);
+            setCommentHeader(false);
         }
 
         setTimeout(() => {
@@ -134,8 +141,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         const responses = personData.responses;
 
-        if (doctorCounter == 2 && msg.length < 20 ) {
-            if(moreInfoCounter > 8){
+        if (doctorCounter == 2 && msg.length < 20) {
+            if (moreInfoCounter > 8) {
                 response = responses[3];
                 setDoctorCounter((state) => state + 1);
             } else {
@@ -181,6 +188,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }
         setActiveTab('about');
         setMsgHeader(false);
+        setCommentHeader(false);
         setDoctorCounter(0);
         setMoreInfoCounter(5);
         toggleContactForm();
@@ -215,7 +223,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                         <div className="modal-content">
                             {
                                 msgHeader && (
-                                    <div className="modal-header with-form">
+                                    <div className="message-section modal-header with-form">
                                         <div className="image-section">
                                             <div className="image-wrapper">
                                                 <img src={personData.imageUrl} alt=""></img>
@@ -232,10 +240,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     {chat.map((data, index) => (
                                                         data.user == 'doctor' ?
 
-                                                                <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
-                                                                    <span className='doctorText'>{data.message}</span>
-                                                                </li>
-                                                           
+                                                            <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
+                                                                <span className='doctorText'>{data.message}</span>
+                                                            </li>
+
                                                             :
                                                             <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
                                                                 <span className='userName'>{data.name}</span>
@@ -264,8 +272,88 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </div>
                                 )
                             }
+
                             {
-                                !msgHeader && (
+                                !msgHeader && commentHeader && (
+                                    <div className="comments-section modal-header with-form">
+                                        <div className="image-section">
+                                            <div className="image-wrapper">
+                                                <img src={personData.imageUrl} alt=""></img>
+                                            </div>
+                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                            <p className='person-department'>{personData.department}</p>
+                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+
+                                        </div>
+
+                                        <div className="comments-wrapper">
+                                            <div className='displayComments'>
+                                                <ul className='comments-list'>
+                                                    <li className='comments-row'>
+                                                        <span className='userName'>Peter says:</span>
+                                                        <span className='userComment'>
+                                                            Verry nice person. I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.
+                                                        </span>
+                                                        <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
+                                                        <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
+                                                        <span className='timeStamp'>24 юли 2024 | 13:08</span>
+                                                    </li>
+                                                    <li className='comments-row'>
+                                                        <span className='userName'>Peter says:</span>
+                                                        <span className='userComment'>
+                                                            Verry nice person. I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.
+                                                        </span>
+                                                        <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
+                                                        <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
+                                                        <span className='timeStamp'>24 юли 2024 | 13:08</span>
+                                                    </li>
+                                                    <li className='comments-row'>
+                                                        <span className='userName'>Peter says:</span>
+                                                        <span className='userComment'>
+                                                            Verry nice person. I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.
+                                                        </span>
+                                                        <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
+                                                        <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
+                                                        <span className='timeStamp'>24 юли 2024 | 13:08</span>
+                                                    </li>
+                                                    <li className='comments-row'>
+                                                        <span className='userName'>Peter says:</span>
+                                                        <span className='userComment'>
+                                                            Verry nice person. I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.Verry nice person.
+                                                            I am very satisfied.
+                                                        </span>
+                                                        <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
+                                                        <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
+                                                        <span className='timeStamp'>24 юли 2024 | 13:08</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div className="close-modal">
+                                            <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+
+
+
+
+                            {
+                                !msgHeader && !commentHeader && (
                                     <div className="modal-header no-form">
                                         <div className='modal-container'>
                                             <div className='person-name-wrapper'>
@@ -465,7 +553,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         </div>
                                     </div>
                                     <div
-                                        className={`tab-pane fade person-comment ${activeTab === 'comments' ? 'show active' : ''}`}
+                                        className={`tab-pane fade person-comments ${activeTab === 'comments' ? 'show active' : ''}`}
                                         id="comments"
                                         role="tabpanel"
                                         aria-labelledby="comments-tab"
@@ -473,6 +561,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <div className='person-comments-wrapper'>
                                             <p>You can leave a comment.</p>
                                             <form className='commentForm' >
+                                                <div className='userInput'>
+                                                    <label htmlFor="userName">*Username:</label>
+                                                    <input type="text" className="userName" name='userName' id="userName"></input>
+                                                </div>
+                                               
                                                 <textarea name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
                                                 <button type="btn btn-submit" className='btn  btn-primary'>Post</button>
                                             </form>
