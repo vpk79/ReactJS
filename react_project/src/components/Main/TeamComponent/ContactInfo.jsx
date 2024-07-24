@@ -19,10 +19,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let [msgHeader, setMsgHeader] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
+    const msgAreaRef = useRef(null);
 
     let userName = 'Patient';
     let personName = 'Dr.'
-    const formRef = useRef(null);
+    const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
 
@@ -44,9 +45,20 @@ export default function ContactInfo({ data, toggleContactForm }) {
         } else {
             setMsgHeader(true);
         }
+
+        setTimeout(() => {
+            if (msgAreaRef.current) {
+                msgAreaRef.current.focus();
+            }
+        }, 100);
+
         setActiveTab(tabId);
         setDoctorCounter(0);
         setMoreInfoCounter(5);
+
+        if (formMsgRef.current) {
+            formMsgRef.current.reset();
+        }
     };
 
     // chat sounds 
@@ -103,6 +115,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     }
 
+
+    /* responses map */
+
     //  greetings =   responses[0];
     //  describe =    responses[1];
     //  appointment = responses[2];
@@ -147,7 +162,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setDoctorCounter((state) => state + 1);
             setLoading(false);
             setLoadingMessage(null);
-        }, 2200);
+        }, 2200 + (response.length) * 100);
     }
 
 
@@ -161,8 +176,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     /* clear on close */
     const clearForm = () => {
-        if (formRef.current) {
-            formRef.current.reset();
+        if (formMsgRef.current) {
+            formMsgRef.current.reset();
         }
         setActiveTab('about');
         setMsgHeader(false);
@@ -442,8 +457,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     >
                                         <div className='person-message-wrapper'>
                                             <p>You can leave me a message. I`ll respond ASAP.</p>
-                                            <form ref={formRef} className='msgForm' onSubmit={userChatMsg}>
-                                                <textarea name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
+                                            <form ref={formMsgRef} className='msgForm' onSubmit={userChatMsg}>
+                                                <textarea ref={msgAreaRef} className="msgArea" name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
                                                 <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
                                             </form>
 

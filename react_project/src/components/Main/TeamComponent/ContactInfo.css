@@ -269,16 +269,27 @@
     padding: 20px;
 }
 
-.person-message textarea,
+.person-message .msgArea,
 .person-comments textarea {
+    padding: 20px;
     resize: none;
+    border: 1px solid rgba(116, 118, 196, 0.8);
+    border-radius: 5px;
+    transition: 0.3s;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.person-message .msgArea:focus{
+   
+    outline: lightblue 2px solid;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .person-message-wrapper,
 .person-comments-wrapper {
     width: 100%;
     height: auto;
-    margin-top: 40px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -324,7 +335,7 @@
     width: 350px;
     height: 260px;
     padding-top: 20px;
-/* flex-direction: column; */
+    /* flex-direction: column; */
     /* text-align: right; */
     /* color: blue; */
     font-size: 14px;
@@ -337,7 +348,7 @@
     /* direction: rtl; */
 }
 
-.displayMsg ul{
+.displayMsg ul {
     width: 100%;
     height: auto;
     display: flex;
@@ -348,7 +359,7 @@
     /* width: 330px; */
     list-style: none;
     margin-bottom: 10px;
-    
+
     /* border: 1px solid black; */
     /* margin-right: -130px; */
 
@@ -363,11 +374,12 @@
     margin-right: 70px;
 }
 
-.displayMsg .doctorMsg{
+.displayMsg .doctorMsg {
     display: flex;
     justify-content: flex-start;
-    
+
 }
+
 .displayMsg .userText {
     font-weight: 660;
     color: blue;
@@ -391,7 +403,7 @@
 }
 
 .displayMsg .doctorText {
-    
+
     text-align: left;
     font-weight: 660;
     color: black;
@@ -401,7 +413,7 @@
     padding: 5px 5px 5px 10px;
     display: inline-block;
     background-color: white;
-    
+
 }
 
 .displayMsg .doctorName {
@@ -414,7 +426,6 @@
     font-weight: 600;
     display: inline;
 }
-
 
 
 /* dot animation */
