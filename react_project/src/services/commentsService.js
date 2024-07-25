@@ -42,6 +42,8 @@ export function createNewComment(userName, comment, date, postId, personId, user
         comment,
         Likes: 0,
         Dislikes: 0,
+        likedByUser: false,
+        dislikedByUser: false,
         date: date.formattedDate,
         hour: date.formattedTime,
     }

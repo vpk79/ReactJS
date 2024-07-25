@@ -153,8 +153,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     async function likesHandle(event, postId) {
         if (event.target.textContent.trim() === 'Like:') {
-            console.log(postId);
-            console.log(userId);
+            // console.log(postId);
+            // console.log(userId);
 
             const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
             const getLikedPost = getLikes.filter((x) => x.postId === postId);
@@ -178,21 +178,23 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     prevComments.map(comment =>
                         comment.postId === postId ? {
                             ...comment,
-                            Likes: comment.Likes + 1,
-                            Dislikes: comment.Dislikes > 0 ? comment.Dislikes - 1 : comment.Dislikes
+                            Likes: !comment.likedByUser ? comment.Likes + 1 : comment.Likes,
+                            Dislikes: comment.dislikedByUser && comment.Dislikes > 0 ? comment.Dislikes - 1 : comment.Dislikes,
+                            likedByUser: true,
+                            dislikedByUser: false
                         } : comment
                     )
                 );
                 if (getDislikedPost.length > 0) {
                     const entryId = getDislikedPost[0]._id;
                     const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
-                    console.log(deleteEntry);
+                    // console.log(deleteEntry);
                 }
             }
 
         } else {
-            console.log(postId);
-            console.log(userId);
+            // console.log(postId);
+            // console.log(userId);
             const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
             const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
             if (getDislikedPost.length > 0) {
@@ -210,19 +212,21 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
                 const getLikedPost = getLikes.filter((x) => x.postId === postId);
                 if (getLikedPost.length > 0) {
-                    console.log(getLikes);
+                    // console.log(getLikes);
 
                     const entryId = getLikedPost[0]._id;
-                    console.log(entryId);
+                    // console.log(entryId);
                     const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
-                    console.log(deleteEntry);
+                    // console.log(deleteEntry);
 
                     setComments(prevComments =>
                         prevComments.map(comment =>
                             comment.postId === postId ? {
                                 ...comment,
-                                Dislikes: comment.Dislikes + 1,
-                                Likes: comment.Likes > 0 ? comment.Likes - 1 : comment.Likes
+                                Dislikes: !comment.dislikedByUser ? comment.Dislikes + 1 : comment.Dislikes,
+                                Likes: comment.likedByUser && comment.Likes > 0 ? comment.Likes - 1 : comment.Likes,
+                                likedByUser: false,
+                                dislikedByUser: true
                             } : comment
                         )
                     );
@@ -232,7 +236,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         }
 
-        // console.log(comments);
+        setTimeout(() => {
+            console.log(comments);
+
+        }, 2000);
 
     }
 
