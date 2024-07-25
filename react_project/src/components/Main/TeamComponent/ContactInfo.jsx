@@ -3,10 +3,10 @@ import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
 import sendSound from '../../../media/sendMsg.mp3'
 import receiveSound from '../../../media/receiveMsg.mp3'
-import * as request from '../../../lib/request'
-import * as url from '../../../const/const'
 import { Link } from 'react-router-dom';
 import { showErrorToast } from '../../../Toasts/toastsMsg';
+import * as utils from '../../../utils/utils';
+import * as commentsService from '../../../services/commentsService';
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
@@ -14,10 +14,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
     const [chat, setChat] = useState([]);
-    let [moreInfoCounter, setMoreInfoCounter] = useState(5);
-    let [doctorCounter, setDoctorCounter] = useState(0);
-    let [msgHeader, setMsgHeader] = useState(false);
-    let [commentHeader, setCommentHeader] = useState(false);
+    const [moreInfoCounter, setMoreInfoCounter] = useState(5);
+    const [doctorCounter, setDoctorCounter] = useState(0);
+    const [msgHeader, setMsgHeader] = useState(false);
+    const [commentHeader, setCommentHeader] = useState(false);
+    const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
     const msgAreaRef = useRef(null);
@@ -30,8 +31,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
 
-    if (email) userName = email.split('@')[0];
-    if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0];
+
+    if (email) userName = email.split('@')[0]; // create username for chat
+    if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
     useEffect(() => {
         setPersonData(data);
@@ -53,6 +55,23 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 }
             }, 100);
         } else if (tabId == 'comments') {
+            if (comments.length == 0) {
+                const loadComments = async () => {
+                    try {
+                        // const data = await commentsService.loadComments(personData._id);
+                        // if (data.length > 0) {
+                        //     const personComments = data[0][personData._id];
+                        //     setComments(personComments);
+                        // }
+
+                    } catch (error) {
+                        console.error('Error loading comments:', error);
+                    }
+                };
+
+                loadComments();
+            }
+
             setCommentHeader(true);
             setMsgHeader(false);
             setTimeout(() => {
@@ -64,8 +83,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setMsgHeader(false);
             setCommentHeader(false);
         }
-
-
 
         setActiveTab(tabId);
         setDoctorCounter(0);
@@ -88,615 +105,560 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     // post new comment
 
-    function commentHandler(e) {
+    async function commentHandler(e) {
         e.preventDefault();
-        let newComment = {};
 
-    if (isAuthenticated) {
-        const userName = userNameRef.current.value;
-        const comment = commentRef.current.value;
+        if (isAuthenticated) {
+            const userName = userNameRef.current.value;
+            const comment = commentRef.current.value;
 
-        try {
-            commentValidator(userName, comment);
-            const date = getCurrentDate();
-            newComment = createNewComment(userName, comment, date);
-            const postData = uploadComment(newComment);
+            try {
+                const validatePost = commentsService.commentValidator(userName, comment);
+                if (validatePost) {
+                    const date = utils.getCurrentDate();
+                    const getNewId = utils.generateUID();
+                    const personId = personData._id;
 
-        } catch (error) {
-            showErrorToast(error.message, { toastId: error.message })
-        }
+                    const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
+                    const postData = await commentsService.uploadComment(newComment, personId);
+                    const data = await postData;
+                    // console.log(postData);
+                    // console.log(data);
+                    if (data._ownerId === userId) {
+                        setComments(data[personId]);
+                    }
+                }
+            } catch (error) {
+                showErrorToast(error.message, { toastId: error.message })
+            }
 
+            console.log(comments);
 
-
-        console.log(commentRef.current.value);
-        console.log(userNameRef.current.value);
-    } else {
-        showErrorToast('You are not logged in!', { toastId: 'notLogged' });
-        return;
-    }
-
-
-}
-
-async function  uploadComment(comment){
-    const personId = personData._id;
-    try {
-    //    const getPosts = await request.get(`${url.COMMENTS}/${personId}`); 
-        const getComments = await request.get(`${url.COMMENTS}`); 
-       console.log(comments);
-        // const uploadData = await request.put(`${url.EMPLOYERS}/${personId}`, {comments: comments});
-
-        console.log(uploadData);
-
-    } catch (error) {
-        
-        console.log(error);
-    }
-    // console.log(personId);
-    // request.post(url.COMMENTS)
-}
-
-function getCurrentDate(){
-    const date = new Date();
-
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; 
-    const day = date.getDate();
-
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    const formattedDate = `${day}-${month}-${year}`;
-    const formattedTime = `${hours}:${minutes}`;    
-
-    return {formattedDate, formattedTime};
-
-}
-
-function commentValidator(userName, comment) {
-    if (userName == '') {
-        throw new Error('Username is required!')
-    }
-    if (comment == '') {
-        throw new Error('Comment must not be empty!')
-    }
-}
-
-function createNewComment(userName, comment, date) {
-    
-    const newComment = {
-        userId,
-        userName,
-        comment,
-        date: date.formattedDate,
-        hour: date.formattedTime,
-        Like: false,
-        Dislike: false
-    }
-
-    return newComment;
-}
-
-
-// start new chat
-function intitiateChat() {
-    setChat([]);
-    const responses = personData.responses;
-    const greetings = responses[0];
-    const newMsg = {
-        name: personName,
-        message: greetings,
-        user: 'doctor'
-    }
-
-    setLoading(true);
-    setLoadingMessage({ name: personName, message: '', user: 'doctor' });
-
-    timeoutIdRef.current = setTimeout(() => {
-        setChat((chat) => [...chat, newMsg]);
-        playSound(receiveSound);
-        setDoctorCounter((state) => state + 1);
-        setLoading(false);
-        setLoadingMessage(null);
-    }, 2200);
-}
-
-
-function userChatMsg(e) {
-    e.preventDefault();
-    if (isAuthenticated) {
-        let textarea = e.target.value || e.target.elements.msgArea.value;
-        const name = userName;
-        const msg = textarea.trim();
-        if (msg === '') {
-            showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+        } else {
+            showErrorToast('You are not logged in!', { toastId: 'notLogged' });
             return;
         }
-        // console.log(msg);
-        const newMsg = {
-            name: name,
-            message: msg,
-            user: 'user'
-        }
-
-        setChat([...chat, newMsg]);
-        playSound(sendSound);
-        chatManager(name, msg);
-        e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
-    } else {
-        showErrorToast('You are not logged in!', { toastId: 'notLogged' });
-        return;
     }
 
+    // hadnles likes and dislikes
 
-}
+    function likesHandle(event, id) {
+        if (event.target.textContent.trim() === 'Like:') {
 
-
-/* responses map */
-
-//  greetings =   responses[0];
-//  describe =    responses[1];
-//  appointment = responses[2];
-//  busy =        responses[3];
-//  bye =         responses[4];
-//  moreInfo1 =   responses[5];
-//  moreInfo2 =   responses[6];
-//  moreInfo3 =   responses[7];
-//  moreInfo4 =   responses[8];
-
-function chatManager(name, msg) {
-    let response = 'Ok.';
-    if (doctorCounter > 4) return;
-
-    const responses = personData.responses;
-
-    if (doctorCounter == 2 && msg.length < 20) {
-        if (moreInfoCounter > 8) {
-            response = responses[3];
-            setDoctorCounter((state) => state + 1);
+            // setComments(prevComments =>
+            //     prevComments.map(comment =>
+            //         comment._id === id ? { ...comment, 
+            //             Likes: comment.Likes + 1,
+            //             Dislikes: comment.Dislikes > 0 ? comment.Dislikes - 1 : 0 } : comment
+            //     )
+            // );
         } else {
-            setDoctorCounter((state) => state - 1);
-            setMoreInfoCounter((state) => state + 1);
-            response = responses[moreInfoCounter];
+
+            // setComments(prevComments =>
+            //     prevComments.map(comment =>
+            //         comment._id === id ? {
+            //             ...comment,
+            //             Dislikes: comment.Dislikes + 1,
+            //             Likes: comment.Likes > 0 ? comment.Likes - 1 : 0
+            //         } : comment
+            //     )
+            // );
+
+
         }
-    } else {
-        response = responses[doctorCounter];
+
+        console.log(comments);
+
     }
 
-    const newMsg = {
-        name: personName,
-        message: response,
-        user: 'doctor'
+
+
+
+    // start new chat
+    function intitiateChat() {
+        setChat([]);
+        const responses = personData.responses;
+        const greetings = responses[0];
+        const newMsg = {
+            name: personName,
+            message: greetings,
+            user: 'doctor'
+        }
+
+        setLoading(true);
+        setLoadingMessage({ name: personName, message: '', user: 'doctor' });
+
+        timeoutIdRef.current = setTimeout(() => {
+            setChat((chat) => [...chat, newMsg]);
+            playSound(receiveSound);
+            setDoctorCounter((state) => state + 1);
+            setLoading(false);
+            setLoadingMessage(null);
+        }, 2200);
     }
 
-    setLoading(true);
-    setLoadingMessage({ name: personName, message: '', user: 'doctor' });
 
-    timeoutIdRef.current = setTimeout(() => {
-        setChat((chat) => [...chat, newMsg]);
-        playSound(receiveSound);
-        setDoctorCounter((state) => state + 1);
-        setLoading(false);
-        setLoadingMessage(null);
-    }, 2200 + (response.length) * 100);
-}
+    function userChatMsg(e) {
+        e.preventDefault();
+        if (isAuthenticated) {
+            let textarea = e.target.value || e.target.elements.msgArea.value;
+            const name = userName;
+            const msg = textarea.trim();
+            if (msg === '') {
+                showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+                return;
+            }
+            // console.log(msg);
+            const newMsg = {
+                name: name,
+                message: msg,
+                user: 'user'
+            }
+
+            setChat([...chat, newMsg]);
+            playSound(sendSound);
+            chatManager(name, msg);
+            e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
+        } else {
+            showErrorToast('You are not logged in!', { toastId: 'notLogged' });
+            return;
+        }
 
 
-/* submit on press enter */
-function submitOnEnter(event) {
-    if (event.key == "Enter") {
-        event.preventDefault();
-        userChatMsg(event);
     }
-}
 
-/* clear on close */
-const clearForm = () => {
-    if (formMsgRef.current) {
-        formMsgRef.current.reset();
+
+    /* responses map */
+
+    //  greetings =   responses[0];
+    //  describe =    responses[1];
+    //  appointment = responses[2];
+    //  busy =        responses[3];
+    //  bye =         responses[4];
+    //  moreInfo1 =   responses[5];
+    //  moreInfo2 =   responses[6];
+    //  moreInfo3 =   responses[7];
+    //  moreInfo4 =   responses[8];
+
+    function chatManager(name, msg) {
+        let response = 'Ok.';
+        if (doctorCounter > 4) return;
+
+        const responses = personData.responses;
+
+        if (doctorCounter == 2 && msg.length < 20) {
+            if (moreInfoCounter > 8) {
+                response = responses[3];
+                setDoctorCounter((state) => state + 1);
+            } else {
+                setDoctorCounter((state) => state - 1);
+                setMoreInfoCounter((state) => state + 1);
+                response = responses[moreInfoCounter];
+            }
+        } else {
+            response = responses[doctorCounter];
+        }
+
+        const newMsg = {
+            name: personName,
+            message: response,
+            user: 'doctor'
+        }
+
+        setLoading(true);
+        setLoadingMessage({ name: personName, message: '', user: 'doctor' });
+
+        timeoutIdRef.current = setTimeout(() => {
+            setChat((chat) => [...chat, newMsg]);
+            playSound(receiveSound);
+            setDoctorCounter((state) => state + 1);
+            setLoading(false);
+            setLoadingMessage(null);
+        }, 2200 + (response.length) * 100);
     }
-    setActiveTab('about');
-    setMsgHeader(false);
-    setCommentHeader(false);
-    setDoctorCounter(0);
-    setMoreInfoCounter(5);
-    toggleContactForm();
-};
 
 
-// handle backdrop close
-useEffect(() => {
-    const modalElement = modalRef.current;
-    const handleModalHidden = () => {
-        clearForm();
+    /* submit on press enter */
+    function submitOnEnter(event) {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            userChatMsg(event);
+        }
+    }
+
+    /* clear on close */
+    const clearForm = () => {
+        if (formMsgRef.current) {
+            formMsgRef.current.reset();
+        }
+        setActiveTab('about');
+        setMsgHeader(false);
+        setCommentHeader(false);
+        setDoctorCounter(0);
+        setMoreInfoCounter(5);
+        setComments([]);
+        toggleContactForm();
     };
 
-    if (modalElement) {
-        modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
-    }
 
-    return () => {
+    // handle backdrop close
+    useEffect(() => {
+        const modalElement = modalRef.current;
+        const handleModalHidden = () => {
+            clearForm();
+        };
+
         if (modalElement) {
-            modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+            modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
         }
-    };
-}, []);
+
+        return () => {
+            if (modalElement) {
+                modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+            }
+        };
+    }, []);
 
 
-return (
-    <>
-        {personData && (
+    return (
+        <>
+            {personData && (
 
-            <div className="modal fade" ref={modalRef} id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        {
-                            msgHeader && (
-                                <div className="message-section modal-header with-form">
-                                    <div className="image-section">
-                                        <div className="image-wrapper">
-                                            <img src={personData.imageUrl} alt=""></img>
-                                        </div>
-                                        <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
-                                        <p className='person-department'>{personData.department}</p>
-                                        <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-
-                                    </div>
-
-                                    <div className="messages-wrapper">
-                                        <div className='displayMsg'>
-                                            <ul>
-                                                {chat.map((data, index) => (
-                                                    data.user == 'doctor' ?
-
-                                                        <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
-                                                            <span className='doctorText'>{data.message}</span>
-                                                        </li>
-
-                                                        :
-                                                        <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
-                                                            <span className='userName'>{data.name}</span>
-                                                        </li>
-                                                ))
-
-                                                }
-                                                {loadingMessage && (
-                                                    <li>
-                                                        <span className='doctorName'>{loadingMessage.name}</span>
-                                                        <svg height={40} width={40} className="loader">
-                                                            <circle className="dot" cx={10} cy={20} r={3} style={{ fill: "grey" }} />
-                                                            <circle className="dot" cx={20} cy={20} r={3} style={{ fill: "grey" }} />
-                                                            <circle className="dot" cx={30} cy={20} r={3} style={{ fill: "grey" }} />
-                                                        </svg>
-                                                    </li>
-
-                                                )}
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div className="close-modal">
-                                        <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            )
-                        }
-
-                        {
-                            !msgHeader && commentHeader && (
-                                <div className="comments-section modal-header with-form">
-                                    <div className="image-section">
-                                        <div className="image-wrapper">
-                                            <img src={personData.imageUrl} alt=""></img>
-                                        </div>
-                                        <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
-                                        <p className='person-department'>{personData.department}</p>
-                                        <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-
-                                    </div>
-
-                                    <div className="comments-wrapper">
-                                        <div className='displayComments'>
-                                            <ul className='comments-list'>
-                                                <li className='comments-row'>
-                                                    <span className='userName'>Peter says:</span>
-                                                    <span className='userComment'>
-                                                        Verry nice person. I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.
-                                                    </span>
-                                                    <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <i class="fas fa-thumbs-up"></i> </Link><span>10</span></span>
-                                                    <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <i class="fas fa-thumbs-down"></i></Link><span>20</span></span>
-                                                    <span className='timeStamp'>24 юли 2024 | 13:08</span>
-                                                    <span className='btn-wrapper'> 
-                                                        <button className='btn edit-btn'>Edit</button>
-                                                        <button className='btn delete-btn'>Delete</button>
-                                                    </span>
-                                                   
-                                                </li>
-                                                <li className='comments-row'>
-                                                    <span className='userName'>Peter says:</span>
-                                                    <span className='userComment'>
-                                                        Verry nice person. I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.
-                                                    </span>
-                                                    <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
-                                                    <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
-                                                    <span className='timeStamp'>24 юли 2024 | 13:08</span>
-                                                </li>
-                                                <li className='comments-row'>
-                                                    <span className='userName'>Peter says:</span>
-                                                    <span className='userComment'>
-                                                        Verry nice person. I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.
-                                                    </span>
-                                                    <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
-                                                    <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
-                                                    <span className='timeStamp'>24 юли 2024 | 13:08</span>
-                                                </li>
-                                                <li className='comments-row'>
-                                                    <span className='userName'>Peter says:</span>
-                                                    <span className='userComment'>
-                                                        Verry nice person. I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.Verry nice person.
-                                                        I am very satisfied.
-                                                    </span>
-                                                    <span className='like-comment'><Link to="" className='btn btn-sm btn-like'>Like: <span>10</span></Link></span>
-                                                    <span className='dislike-comment'><Link to="" className='btn btn-sm btn-dislike'>Dislike: <span>20</span></Link></span>
-                                                    <span className='timeStamp'>24 юли 2024 | 13:08</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div className="close-modal">
-                                        <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            )
-                        }
-
-
-
-
-
-                        {
-                            !msgHeader && !commentHeader && (
-                                <div className="modal-header no-form">
-                                    <div className='modal-container'>
-                                        <div className='person-name-wrapper'>
-                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
-                                            <p className='person-department'>{personData.department}</p>
-                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
-                                        </div>
+                <div className="modal fade" ref={modalRef} id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            {
+                                msgHeader && (
+                                    <div className="message-section modal-header with-form">
                                         <div className="image-section">
                                             <div className="image-wrapper">
                                                 <img src={personData.imageUrl} alt=""></img>
                                             </div>
+                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                            <p className='person-department'>{personData.department}</p>
+                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+
                                         </div>
+
+                                        <div className="messages-wrapper">
+                                            <div className='displayMsg'>
+                                                <ul>
+                                                    {chat.map((data, index) => (
+                                                        data.user == 'doctor' ?
+
+                                                            <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
+                                                                <span className='doctorText'>{data.message}</span>
+                                                            </li>
+
+                                                            :
+                                                            <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
+                                                                <span className='userName'>{data.name}</span>
+                                                            </li>
+                                                    ))
+
+                                                    }
+                                                    {loadingMessage && (
+                                                        <li>
+                                                            <span className='doctorName'>{loadingMessage.name}</span>
+                                                            <svg height={40} width={40} className="loader">
+                                                                <circle className="dot" cx={10} cy={20} r={3} style={{ fill: "grey" }} />
+                                                                <circle className="dot" cx={20} cy={20} r={3} style={{ fill: "grey" }} />
+                                                                <circle className="dot" cx={30} cy={20} r={3} style={{ fill: "grey" }} />
+                                                            </svg>
+                                                        </li>
+
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        </div>
+
                                         <div className="close-modal">
                                             <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        }
-                        <div className="modal-body">
-                            {/* Nav tabs */}
-                            <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link  ${activeTab === 'about' ? 'active' : ''}`}
-                                        id="about-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#about"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="about"
-                                        aria-selected={activeTab === 'about'}
-                                        onClick={() => handleTabClick('about')}
-                                    >
-                                        About
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link  ${activeTab === 'summary' ? 'active' : ''}`}
-                                        id="summary-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#summary"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="summary"
-                                        aria-selected={activeTab === 'summary'}
-                                        onClick={() => handleTabClick('summary')}
-                                    >
-                                        Summary
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link  ${activeTab === 'contact' ? 'active' : ''}`}
-                                        id="contact-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#contact"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="contact"
-                                        aria-selected={activeTab === 'contact'}
-                                        onClick={() => handleTabClick('contact')}
-                                    >
-                                        Contacts
+                                )
+                            }
 
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link  ${activeTab === 'message' ? 'active' : ''}`}
-                                        id="message-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#message"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="message"
-                                        aria-selected={activeTab === 'message'}
-                                        onClick={() => { handleTabClick('message'); intitiateChat() }}
-                                    >
-                                        Message
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link ${activeTab === 'comments' ? 'active' : ''}`}
-                                        id="comments-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#comments"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="comments"
-                                        aria-selected={activeTab === 'comments'}
-                                        onClick={() => handleTabClick('comments')}
-                                    >
-                                        Comments
-                                    </button>
-                                </li>
+                            {
+                                !msgHeader && commentHeader && (
+                                    <div className="comments-section modal-header with-form">
+                                        <div className="image-section">
+                                            <div className="image-wrapper">
+                                                <img src={personData.imageUrl} alt=""></img>
+                                            </div>
+                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                            <p className='person-department'>{personData.department}</p>
+                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
 
-                            </ul>
-                            {/* Tab panes */}
-                            <div className="tab-content" id="myTabContent">
-                                <div
-                                    className={`tab-pane fade person-about ${activeTab === 'about' ? 'show active' : ''}`}
-                                    id="about"
-                                    role="tabpanel"
-                                    aria-labelledby="about-tab"
-                                >
-                                    {
-                                        personData.info && (
-                                            <p><i className="fas fa-info-circle"></i>&nbsp;{personData.info['about']}</p>
-                                        )
-                                    }
-                                    <ul>
-                                        {
-                                            personData.info && (
-                                                personData.info['facts'].map((data, index) => (
-                                                    <li key={index}>{data}</li>
-                                                ))
-                                            )
-                                        }
-                                    </ul>
-                                </div>
-                                <div
-                                    className={`tab-pane fade person-summary ${activeTab === 'summary' ? 'show active' : ''}`}
-                                    id="summary"
-                                    role="tabpanel"
-                                    aria-labelledby="summary-tab"
-                                >
-                                    <p>SPECIALITY</p>
-                                    <ul>
-                                        {
-                                            personData.info && (
-                                                <li>{personData.info.summary.speciality}</li>
-                                            )
-                                        }
-                                    </ul>
-                                    <p>EDUCATION</p>
-                                    <ul>
-                                        {
-                                            personData.info && (
-                                                <li>{personData.info.summary.education}</li>
-                                            )
-                                        }
-                                    </ul>
-                                    <p>CERTIFICATIONS</p>
-                                    <ul>
-                                        {
-                                            personData.info && (
-                                                personData.info.summary['certifications'].map((data, index) => (
-                                                    <li key={index}>{data}</li>
-                                                ))
-                                            )
-                                        }
-                                    </ul>
-                                    <p>SKILLS</p>
-                                    <ul>
-                                        {
-                                            personData.info && (
-                                                <li>{personData.info.summary.skills}</li>
-                                            )
-                                        }
-                                    </ul>
+                                        </div>
 
-                                </div>
-                                <div
-                                    className={`tab-pane fade person-contact ${activeTab === 'contact' ? 'show active' : ''}`}
-                                    id="contact"
-                                    role="tabpanel"
-                                    aria-labelledby="contact-tab"
-                                >
-                                    {personData.info && (
+                                        <div className="comments-wrapper">
+                                            <div className='displayComments'>
+                                                <ul className='comments-list'>
+                                                    {comments.length > 0 && comments.map(data => (
+                                                        <li className='comments-row'>
+                                                            <span className='userName'>{data.userName} says:</span>
+                                                            <span className='userComment'>
+                                                                {data.comment}
+                                                            </span>
+                                                            <span className='like-comment'><button onClick={() => likesHandle(event, data._id)} className='btn btn-sm btn-like'>Like: <i className="fas fa-thumbs-up"></i></button><span>0</span></span>
+                                                            <span className='dislike-comment'><button onClick={() => likesHandle(event, data._id)} className='btn btn-sm btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>0</span></span>
+                                                            <span className='timeStamp'>{data.date} | {data.hour}</span>
+                                                            <span className='btn-wrapper'>
+                                                                <button className='btn edit-btn'>Edit</button>
+                                                                <button className='btn delete-btn'>Delete</button>
+                                                            </span>
+
+                                                        </li>
+                                                    ))}
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div className="close-modal">
+                                            <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+
+
+
+
+                            {
+                                !msgHeader && !commentHeader && (
+                                    <div className="modal-header no-form">
+                                        <div className='modal-container'>
+                                            <div className='person-name-wrapper'>
+                                                <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                                <p className='person-department'>{personData.department}</p>
+                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
+                                            </div>
+                                            <div className="image-section">
+                                                <div className="image-wrapper">
+                                                    <img src={personData.imageUrl} alt=""></img>
+                                                </div>
+                                            </div>
+                                            <div className="close-modal">
+                                                <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            <div className="modal-body">
+                                {/* Nav tabs */}
+                                <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className={`nav-link  ${activeTab === 'about' ? 'active' : ''}`}
+                                            id="about-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#about"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="about"
+                                            aria-selected={activeTab === 'about'}
+                                            onClick={() => handleTabClick('about')}
+                                        >
+                                            About
+                                        </button>
+                                    </li>
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className={`nav-link  ${activeTab === 'summary' ? 'active' : ''}`}
+                                            id="summary-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#summary"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="summary"
+                                            aria-selected={activeTab === 'summary'}
+                                            onClick={() => handleTabClick('summary')}
+                                        >
+                                            Summary
+                                        </button>
+                                    </li>
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className={`nav-link  ${activeTab === 'contact' ? 'active' : ''}`}
+                                            id="contact-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#contact"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="contact"
+                                            aria-selected={activeTab === 'contact'}
+                                            onClick={() => handleTabClick('contact')}
+                                        >
+                                            Contacts
+
+                                        </button>
+                                    </li>
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className={`nav-link  ${activeTab === 'message' ? 'active' : ''}`}
+                                            id="message-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#message"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="message"
+                                            aria-selected={activeTab === 'message'}
+                                            onClick={() => { handleTabClick('message'); intitiateChat() }}
+                                        >
+                                            Message
+                                        </button>
+                                    </li>
+                                    <li className="nav-item" role="presentation">
+                                        <button
+                                            className={`nav-link ${activeTab === 'comments' ? 'active' : ''}`}
+                                            id="comments-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#comments"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="comments"
+                                            aria-selected={activeTab === 'comments'}
+                                            onClick={() => handleTabClick('comments')}
+                                        >
+                                            Comments
+                                        </button>
+                                    </li>
+
+                                </ul>
+                                {/* Tab panes */}
+                                <div className="tab-content" id="myTabContent">
+                                    <div
+                                        className={`tab-pane fade person-about ${activeTab === 'about' ? 'show active' : ''}`}
+                                        id="about"
+                                        role="tabpanel"
+                                        aria-labelledby="about-tab"
+                                    >
+                                        {
+                                            personData.info && (
+                                                <p><i className="fas fa-info-circle"></i>&nbsp;{personData.info['about']}</p>
+                                            )
+                                        }
                                         <ul>
-                                            <li><Link to={`tel:${personData.info.contacts.phone}`}><i className="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.phone}</Link></li>
-                                            <li><Link to={`mailto:${personData.info.contacts.email}`} target="_blank"><i className="far fa-envelope"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.email}</Link ></li>
-                                            <li><Link to="http://linkedin.com" target="_blank"><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.linkedin}</Link ></li>
-                                            <li><Link to="http://twitter.com" target="_blank"><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.twitter}</Link ></li>
+                                            {
+                                                personData.info && (
+                                                    personData.info['facts'].map((data, index) => (
+                                                        <li key={index}>{data}</li>
+                                                    ))
+                                                )
+                                            }
                                         </ul>
-                                    )
-
-                                    }
-                                </div>
-                                <div
-                                    className={`tab-pane fade person-message ${activeTab === 'message' ? 'show active' : ''}`}
-                                    id="message"
-                                    role="tabpanel"
-                                    aria-labelledby="message-tab"
-                                >
-                                    <div className='person-message-wrapper'>
-                                        <p>You can leave me a message. I`ll respond ASAP.</p>
-                                        <form ref={formMsgRef} className='msgForm' onSubmit={userChatMsg}>
-                                            <textarea ref={msgAreaRef} className="msgArea" name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
-                                            <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
-                                        </form>
+                                    </div>
+                                    <div
+                                        className={`tab-pane fade person-summary ${activeTab === 'summary' ? 'show active' : ''}`}
+                                        id="summary"
+                                        role="tabpanel"
+                                        aria-labelledby="summary-tab"
+                                    >
+                                        <p>SPECIALITY</p>
+                                        <ul>
+                                            {
+                                                personData.info && (
+                                                    <li>{personData.info.summary.speciality}</li>
+                                                )
+                                            }
+                                        </ul>
+                                        <p>EDUCATION</p>
+                                        <ul>
+                                            {
+                                                personData.info && (
+                                                    <li>{personData.info.summary.education}</li>
+                                                )
+                                            }
+                                        </ul>
+                                        <p>CERTIFICATIONS</p>
+                                        <ul>
+                                            {
+                                                personData.info && (
+                                                    personData.info.summary['certifications'].map((data, index) => (
+                                                        <li key={index}>{data}</li>
+                                                    ))
+                                                )
+                                            }
+                                        </ul>
+                                        <p>SKILLS</p>
+                                        <ul>
+                                            {
+                                                personData.info && (
+                                                    <li>{personData.info.summary.skills}</li>
+                                                )
+                                            }
+                                        </ul>
 
                                     </div>
-                                </div>
-                                <div
-                                    className={`tab-pane fade person-comments ${activeTab === 'comments' ? 'show active' : ''}`}
-                                    id="comments"
-                                    role="tabpanel"
-                                    aria-labelledby="comments-tab"
-                                >
-                                    <div className='person-comments-wrapper'>
-                                        <p>You can leave a comment.</p>
-                                        <form className='commentForm' onSubmit={commentHandler}>
-                                            <div className='userInput'>
-                                                <label htmlFor="userName">*Username:</label>
-                                                <input ref={userNameRef} type="text" className="userName" name='userName' id="userName"></input>
-                                            </div>
+                                    <div
+                                        className={`tab-pane fade person-contact ${activeTab === 'contact' ? 'show active' : ''}`}
+                                        id="contact"
+                                        role="tabpanel"
+                                        aria-labelledby="contact-tab"
+                                    >
+                                        {personData.info && (
+                                            <ul>
+                                                <li><Link to={`tel:${personData.info.contacts.phone}`}><i className="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.phone}</Link></li>
+                                                <li><Link to={`mailto:${personData.info.contacts.email}`} target="_blank"><i className="far fa-envelope"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.email}</Link ></li>
+                                                <li><Link to="http://linkedin.com" target="_blank"><i className="fab fa-linkedin-in"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.linkedin}</Link ></li>
+                                                <li><Link to="http://twitter.com" target="_blank"><i className="fab fa-twitter"></i>&nbsp;&nbsp;&nbsp;{personData.info.contacts.twitter}</Link ></li>
+                                            </ul>
+                                        )
 
-                                            <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
-                                            <button type="btn submit" className='btn  btn-primary'>Post</button>
-                                        </form>
+                                        }
+                                    </div>
+                                    <div
+                                        className={`tab-pane fade person-message ${activeTab === 'message' ? 'show active' : ''}`}
+                                        id="message"
+                                        role="tabpanel"
+                                        aria-labelledby="message-tab"
+                                    >
+                                        <div className='person-message-wrapper'>
+                                            <p>You can leave me a message. I`ll respond ASAP.</p>
+                                            <form ref={formMsgRef} className='msgForm' onSubmit={userChatMsg}>
+                                                <textarea ref={msgAreaRef} className="msgArea" name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
+                                                <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
+                                            </form>
 
+                                        </div>
+                                    </div>
+                                    <div
+                                        className={`tab-pane fade person-comments ${activeTab === 'comments' ? 'show active' : ''}`}
+                                        id="comments"
+                                        role="tabpanel"
+                                        aria-labelledby="comments-tab"
+                                    >
+                                        <div className='person-comments-wrapper'>
+                                            <p>You can leave a comment.</p>
+                                            <form className='commentForm' onSubmit={commentHandler}>
+                                                <div className='userInput'>
+                                                    <label htmlFor="userName">*Username:</label>
+                                                    <input ref={userNameRef} type="text" className="userName" name='userName' id="userName"></input>
+                                                </div>
+
+                                                <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
+                                                <button type="btn submit" className='btn  btn-primary'>Post</button>
+                                            </form>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        )
-        }
+            )
+            }
 
-    </>
-)
+        </>
+    )
 }
 
 

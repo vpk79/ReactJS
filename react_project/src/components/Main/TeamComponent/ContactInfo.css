@@ -513,6 +513,11 @@
     font-size: 12px;
     margin-left: 25px;
 }
+.comments-section.modal-header.with-form .displayComments .btn-like:active{
+    /* padding: 0; */
+    border: none !important;
+    outline: none !important;
+}
 
 .comments-section.modal-header.with-form .displayComments .btn-like i {
     font-size: 10px;
