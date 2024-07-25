@@ -506,7 +506,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <div className="comments-wrapper">
                                             <div className='displayComments'>
                                                 <ul className='comments-list'>
-
+                                                    {comments.length == 0 && (
+                                                        <li className='no-comments'>NO COMMENTS YET</li>
+                                                    )}
                                                     {comments.length > 0 && comments.map(data => (
                                                         <li className='comments-row' key={data._id}>
                                                             <span className='userName'>{data.userName} says:</span>

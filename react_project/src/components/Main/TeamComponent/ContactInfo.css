@@ -478,6 +478,13 @@
 
 /* comments-section */
 
+.no-comments {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 100px;
+}
+
 .comments-section.modal-header.with-form .displayComments {
     width: 390px;
     height: 260px;
