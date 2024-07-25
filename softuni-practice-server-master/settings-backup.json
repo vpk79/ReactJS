@@ -454,7 +454,15 @@
                 "_id": "08"
             }
         },
-        "comments": [],          
+        "comments": {
+            "0a272c58-b7ea-4e09-a000-7ec988248f66": {
+                "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+                "content": "Great recipe!",
+                "recipeId": "8f414b4f-ab39-4d36-bedb-2ad69da9c830",
+                "_createdOn": 1614260681375,
+                "_id": "0a272c58-b7ea-4e09-a000-7ec988248f66"
+            }
+        },
         "records": {
             "i01": {
                 "name": "John1",
@@ -560,9 +568,7 @@
                 "_id": "a9bae6d8-793e-46c4-a9db-deb9e3484909"
             }
         },
-        "likes": [],
-        "dislikes": [],
-        "likers": [],
+        "likes": {},
         "ideas": {
             "833e0e57-71dc-42c0-b387-0ce0caf5225e": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",

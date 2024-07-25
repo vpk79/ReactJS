@@ -4,7 +4,7 @@ import * as url from '../const/const'
 export async function uploadComment(comment) {
 
     try {
-        const data = await request.post(`${url.COMMENTS}`, { comment });
+        const data = await request.post(`${url.COMMENTS}`, comment );
         return data;
     } catch (error) {
         throw new Error(error.message);
@@ -14,7 +14,7 @@ export async function uploadComment(comment) {
 
 export const loadComments = async (personId) => {
     let data = await request.get(`${url.COMMENTS}`);
-    const getPersonObject = data.filter(x => x.hasOwnProperty(personId));
+    const getPersonObject = data.filter(x => x.personId == personId);
 
     return getPersonObject;
 }
@@ -35,11 +35,13 @@ export function commentValidator(userName, comment) {
 export function createNewComment(userName, comment, date, postId, personId, userId) {
 
     return {
-        _id: postId,
+        postId: postId,
         personId,
         userId,
         userName,
         comment,
+        Likes: 0,
+        Dislikes: 0,
         date: date.formattedDate,
         hour: date.formattedTime,
     }

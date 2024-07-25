@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { showErrorToast } from '../../../Toasts/toastsMsg';
 import * as utils from '../../../utils/utils';
 import * as commentsService from '../../../services/commentsService';
+import * as request from '../../../lib/request';
+import * as url from '../../../const/const'
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
@@ -58,14 +60,25 @@ export default function ContactInfo({ data, toggleContactForm }) {
             if (comments.length == 0) {
                 const loadComments = async () => {
                     try {
-                        // const data = await commentsService.loadComments(personData._id);
-                        // if (data.length > 0) {
-                        //     const personComments = data[0][personData._id];
-                        //     setComments(personComments);
-                        // }
+                        const data = await commentsService.loadComments(personData._id);
+                        if (data.length > 0) {
+                            console.log(data);
+                            const addLikesDislikes = await Promise.all(data.map(async (comment) => {
+                                const likesData = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22&count`);
+                                const dislikesData = await request.get(`${url.DISLIKES}?where=postId%3D%22${comment.postId}%22&count`);
+
+                                return {
+                                    ...comment,
+                                    Likes: likesData,
+                                    Dislikes: dislikesData,
+                                };
+                            }));
+
+                            setComments(addLikesDislikes);
+                        }
 
                     } catch (error) {
-                        console.error('Error loading comments:', error);
+                        showErrorToast(`Error loading comments: ${error}`, { toastId: 'commenstError' });
                     }
                 };
 
@@ -120,19 +133,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     const personId = personData._id;
 
                     const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
-                    const postData = await commentsService.uploadComment(newComment, personId);
-                    const data = await postData;
-                    // console.log(postData);
-                    // console.log(data);
-                    if (data._ownerId === userId) {
-                        setComments(data[personId]);
-                    }
+                    const postData = await commentsService.uploadComment(newComment);
+
+                    setComments((prevComments) => ([...prevComments, newComment]));
                 }
             } catch (error) {
                 showErrorToast(error.message, { toastId: error.message })
             }
 
-            console.log(comments);
+            // console.log(comments);
 
         } else {
             showErrorToast('You are not logged in!', { toastId: 'notLogged' });
@@ -142,32 +151,88 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     // hadnles likes and dislikes
 
-    function likesHandle(event, id) {
+    async function likesHandle(event, postId) {
         if (event.target.textContent.trim() === 'Like:') {
+            console.log(postId);
+            console.log(userId);
 
-            // setComments(prevComments =>
-            //     prevComments.map(comment =>
-            //         comment._id === id ? { ...comment, 
-            //             Likes: comment.Likes + 1,
-            //             Dislikes: comment.Dislikes > 0 ? comment.Dislikes - 1 : 0 } : comment
-            //     )
-            // );
+            const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
+            const getLikedPost = getLikes.filter((x) => x.postId === postId);
+            // console.log(getLikes);
+            // console.log(getPost);
+
+            // console.log(getDisLikes);
+            if (getLikedPost.length > 0) {
+                showErrorToast('Already liked!', { toastId: 'likeError' });
+            } else {
+                const newLike = {
+                    postId,
+                    userId
+                }
+
+                const likePost = await request.post(url.LIKES, newLike);
+                const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
+                const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+                // console.log(getDisLikes);
+                setComments(prevComments =>
+                    prevComments.map(comment =>
+                        comment.postId === postId ? {
+                            ...comment,
+                            Likes: comment.Likes + 1,
+                            Dislikes: comment.Dislikes > 0 ? comment.Dislikes - 1 : comment.Dislikes
+                        } : comment
+                    )
+                );
+                if (getDislikedPost.length > 0) {
+                    const entryId = getDislikedPost[0]._id;
+                    const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
+                    console.log(deleteEntry);
+                }
+            }
+
         } else {
+            console.log(postId);
+            console.log(userId);
+            const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
+            const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+            if (getDislikedPost.length > 0) {
+                showErrorToast('Already Disliked!', { toastId: 'dislikeError' });
 
-            // setComments(prevComments =>
-            //     prevComments.map(comment =>
-            //         comment._id === id ? {
-            //             ...comment,
-            //             Dislikes: comment.Dislikes + 1,
-            //             Likes: comment.Likes > 0 ? comment.Likes - 1 : 0
-            //         } : comment
-            //     )
-            // );
+            } else {
+                const newDislike = {
+                    postId,
+                    userId
+                }
+                // console.log(postId);
+                // console.log(userId);
+                const dislikePost = await request.post(url.DISLIKES, newDislike);
+                // console.log(dislikePost);
+                const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
+                const getLikedPost = getLikes.filter((x) => x.postId === postId);
+                if (getLikedPost.length > 0) {
+                    console.log(getLikes);
+
+                    const entryId = getLikedPost[0]._id;
+                    console.log(entryId);
+                    const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
+                    console.log(deleteEntry);
+
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.postId === postId ? {
+                                ...comment,
+                                Dislikes: comment.Dislikes + 1,
+                                Likes: comment.Likes > 0 ? comment.Likes - 1 : comment.Likes
+                            } : comment
+                        )
+                    );
+                }
+            }
 
 
         }
 
-        console.log(comments);
+        // console.log(comments);
 
     }
 
@@ -291,6 +356,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
         if (formMsgRef.current) {
             formMsgRef.current.reset();
         }
+
+        if (timeoutIdRef.current) {
+            clearTimeout(timeoutIdRef.current);
+            timeoutIdRef.current = null;
+        }
         setActiveTab('about');
         setMsgHeader(false);
         setCommentHeader(false);
@@ -395,14 +465,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <div className="comments-wrapper">
                                             <div className='displayComments'>
                                                 <ul className='comments-list'>
+
                                                     {comments.length > 0 && comments.map(data => (
-                                                        <li className='comments-row'>
+                                                        <li className='comments-row' key={data._id}>
                                                             <span className='userName'>{data.userName} says:</span>
                                                             <span className='userComment'>
                                                                 {data.comment}
                                                             </span>
-                                                            <span className='like-comment'><button onClick={() => likesHandle(event, data._id)} className='btn btn-sm btn-like'>Like: <i className="fas fa-thumbs-up"></i></button><span>0</span></span>
-                                                            <span className='dislike-comment'><button onClick={() => likesHandle(event, data._id)} className='btn btn-sm btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>0</span></span>
+                                                            <span className='like-comment'><button onClick={() => likesHandle(event, data.postId)} className='btn btn-sm btn-like'>Like: <i className="fas fa-thumbs-up"></i></button><span>{data.Likes}</span></span>
+                                                            <span className='dislike-comment'><button onClick={() => likesHandle(event, data.postId)} className='btn btn-sm btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>{data.Dislikes}</span></span>
                                                             <span className='timeStamp'>{data.date} | {data.hour}</span>
                                                             <span className='btn-wrapper'>
                                                                 <button className='btn edit-btn'>Edit</button>
