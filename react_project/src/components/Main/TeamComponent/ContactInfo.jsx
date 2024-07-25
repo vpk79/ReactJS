@@ -41,6 +41,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setPersonData(data);
     }, [data]);
 
+
     // handle tabs
     const handleTabClick = (tabId) => {
         if (timeoutIdRef.current) {
@@ -157,7 +158,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             // console.log(userId);
 
             const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
-            const getLikedPost = getLikes.filter((x) => x.postId === postId);
+            const getLikedPost = getLikes.filter(x => x.postId === postId);
             // console.log(getLikes);
             // console.log(getPost);
 
@@ -173,17 +174,39 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 const likePost = await request.post(url.LIKES, newLike);
                 const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
                 const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
-                // console.log(getDisLikes);
+
                 setComments(prevComments =>
-                    prevComments.map(comment =>
-                        comment.postId === postId ? {
-                            ...comment,
-                            Likes: !comment.likedByUser ? comment.Likes + 1 : comment.Likes,
-                            Dislikes: comment.dislikedByUser && comment.Dislikes > 0 ? comment.Dislikes - 1 : comment.Dislikes,
-                            likedByUser: true,
-                            dislikedByUser: false
-                        } : comment
-                    )
+                    prevComments.map(comment => {
+                        if (comment.postId === postId) {
+                            if (!comment.likedByUser && !comment.dislikedByUser) {
+                                return {
+                                    ...comment,
+                                    Likes: comment.Likes + 1,
+                                    likedByUser: true
+                                };
+                            }
+
+                            if (comment.likedByUser) {
+                                return {
+                                    ...comment,
+                                    Likes: Math.max(comment.Likes - 1, 0),
+                                    likedByUser: false
+                                };
+                            }
+
+                            if (comment.dislikedByUser) {
+                                return {
+                                    ...comment,
+                                    Likes: comment.Likes + 1,
+                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                    likedByUser: true,
+                                    dislikedByUser: false
+                                };
+                            }
+                        }
+
+                        return comment;
+                    })
                 );
                 if (getDislikedPost.length > 0) {
                     const entryId = getDislikedPost[0]._id;
@@ -210,38 +233,49 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 const dislikePost = await request.post(url.DISLIKES, newDislike);
                 // console.log(dislikePost);
                 const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
-                const getLikedPost = getLikes.filter((x) => x.postId === postId);
+                const getLikedPost = getLikes.filter(x => x.postId === postId);
+                console.log(getLikedPost);
                 if (getLikedPost.length > 0) {
-                    // console.log(getLikes);
-
                     const entryId = getLikedPost[0]._id;
-                    // console.log(entryId);
                     const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
-                    // console.log(deleteEntry);
-
-                    setComments(prevComments =>
-                        prevComments.map(comment =>
-                            comment.postId === postId ? {
-                                ...comment,
-                                Dislikes: !comment.dislikedByUser ? comment.Dislikes + 1 : comment.Dislikes,
-                                Likes: comment.likedByUser && comment.Likes > 0 ? comment.Likes - 1 : comment.Likes,
-                                likedByUser: false,
-                                dislikedByUser: true
-                            } : comment
-                        )
-                    );
                 }
+                setComments(prevComments =>
+                    prevComments.map(comment => {
+                        if (comment.postId === postId) {
+                            if (!comment.likedByUser && !comment.dislikedByUser) {
+                                return {
+                                    ...comment,
+                                    Dislikes: comment.Dislikes + 1,
+                                    dislikedByUser: true
+                                };
+                            }
+
+                            if (comment.dislikedByUser) {
+                                return {
+                                    ...comment,
+                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                    dislikedByUser: false
+                                };
+                            }
+
+                            if (comment.likedByUser) {
+                                return {
+                                    ...comment,
+                                    Likes: Math.max(comment.Likes - 1, 0),
+                                    Dislikes: comment.Dislikes + 1,
+                                    likedByUser: false,
+                                    dislikedByUser: true
+                                };
+                            }
+                        }
+                        return comment;
+                    })
+                );
             }
-
-
         }
-
-        setTimeout(() => {
-            console.log(comments);
-
-        }, 2000);
-
     }
+
+
 
 
 
