@@ -500,19 +500,34 @@
 .comments-section.modal-header.with-form .displayComments ul {
     width: 100%;
     height: auto;
+    position: relative;
     padding-left: 5px;
     display: flex;
     flex-direction: column;
 }
 
 .comments-section.modal-header.with-form .displayComments li {
+    position: relative;
     list-style: none;
     margin-bottom: 10px;
+
 }
+
 
 .comments-section.modal-header.with-form .displayComments .btn-like {
     font-size: 12px;
     margin-left: 25px;
+    margin-right: 10px;
+    /* padding: 5px; */
+    border: none;
+    background-color: transparent;
+    transition: 0.3s;
+}
+
+.comments-section.modal-header.with-form .displayComments .btn-like:hover {
+    color: blue;
+    scale: 1.1;
+    font-weight: 600px;
 }
 
 .comments-section.modal-header.with-form .displayComments .btn-like:active {
@@ -529,59 +544,129 @@
 
 .comments-section.modal-header.with-form .displayComments .btn-dislike {
     font-size: 12px;
+    border: none;
+    background-color: transparent;
+    margin-right: 10px;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.comments-section.modal-header.with-form .displayComments .btn-dislike:hover {
+    color: blue;
+    scale: 1.1;
+    font-weight: 600px;
 }
 
 .comments-section.modal-header.with-form .displayComments .btn-dislike i {
     font-size: 12px;
     transform: translateY(2px);
     margin-right: -8px;
+
 }
 
 .comments-section.modal-header.with-form .displayComments .timeStamp {
     font-size: 12px;
-    margin-left: 50px;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    transform: translateY(-20px);
 }
 
-.btn-wrapper {
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-    transform: translateY(-30px);
-    /* transform: translateX(140px); */
-    margin-left: 220px;
+
+/* edit and delete buttons */
+
+.buttons-active {
+    visibility: visible;
+}
+
+.buttons-unactive {
     visibility: hidden;
 }
 
+.comments-footer {
+    position: relative;
+}
+
+.btn-wrapper {
+    display: flex;
+
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    padding: 20;
+    margin-bottom: 0;
+    top: -20px;
+    right: -50px;
+    /* transform: translateY(-30px); */
+    /* transform: translateX(140px); */
+    /* margin-left: 220px; */
+    /* visibility: hidden; */
+}
+
 .edit-btn {
-    font-size: 14px;
-    background-color: lightgrey;
-    padding: 0;
+    font-size: 12px;
+
+    background-color: rgb(81, 81, 240);
+
+    height: 35px;
+    border: none;
     margin: 0;
     color: white;
-    padding: 5px 17px 5px 17px;
+    border-radius: 5px;
+    padding: 1px 15px 1px 15px;
+    /* margin-bottom: 10px;
+    margin-left: -30px; */
+}
+
+.edit-btn:hover {
+    background-color: rgb(135, 88, 245);
+    scale: 1.1;
+    transition: 0.3s;
+}
+
+.edit-btn:active {
+    scale: 1.0;
+    transition: 0.3s;
 }
 
 .delete-btn {
-    font-size: 14px;
-    background-color: lightgrey;
-    padding: 0;
+    font-size: 12px;
+    background-color: red;
+    padding: 10px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
     margin: 0;
     margin-left: 10px;
     color: white;
     padding: 5px 10px 5px 10px;
+
 }
 
+.delete-btn:hover {
+    background-color: rgb(248, 67, 67);
+    scale: 1.1;
+    transition: 0.3s;
+
+}
+
+.delete-btn:active {
+    scale: 1.0;
+    transition: 0.3s;
+}
 
 .comments-section.modal-header.with-form .displayComments .userComment {
     font-weight: 560;
     font-size: 14px;
     font-style: italic;
     color: black;
-    margin-left: 25px;
+    /* margin-left: 25px; */
     margin-right: 10px;
+    margin-bottom: 2px;
     line-height: 1.2;
-    text-indent: 3ch;
-    padding: 5px 0px 5px 15px;
+    text-indent: 1ch;
+    word-wrap: break-word;
+    padding: 5px 10px 5px 15px;
     display: block;
     background-color: rgb(233, 232, 232);
     border-radius: 10px;

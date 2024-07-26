@@ -26,11 +26,14 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const msgAreaRef = useRef(null);
     const commentRef = useRef(null);
     const userNameRef = useRef(null);
+    const timeoutRef = useRef(null);
     const [showAnimation1, setShowAnimation1] = useState(false);
     const [showAnimation2, setShowAnimation2] = useState(false);
     const [animationShowed, setAnimationShowed] = useState(false);
     const prevCommentsRef = useRef([]);
     const [showComments, setShowComments] = useState(false);
+    const [showButtons, setShowButtons] = useState(false);
+    const [selectedCommentId, setSelectedCommentId] = useState(null);
 
     let userName = 'Patient';
     let personName = 'Dr.'
@@ -42,27 +45,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
     if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
-    const prevCommentsLengthRef = useRef(comments.length);
-
-    // useEffect(() => {
-    //     const prevCommentsLength = prevCommentsLengthRef.current;
-
-    //     if (prevCommentsLength === 0 && comments.length > 0 && !animationShowed) {
-    //         // Условието се изпълнява само ако comments.length се промени от 0 на 1
-    //         showAnimation === true
-    //         setShowComments(false);
-    //         const timer = setTimeout(() => {
-    //             setShowAnimation(false);
-    //             setShowComments(true);
-    //             setAnimationShowed(true);
-    //         }, 3000); // Продължителност на анимацията
-
-    //         return () => clearTimeout(timer);
-    //     }
-    //     // Обновяваме предишната стойност
-    //     prevCommentsLengthRef.current = comments.length;
-    // }, [comments]);
-
     useEffect(() => {
         setPersonData(data);
     }, [data])
@@ -72,6 +54,35 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setShowAnimation2(false);
     }, [comments])
 
+   
+    const handleMouseEnter = (commentId) => {
+        clearTimeout(timeoutRef.current);
+        setSelectedCommentId(commentId);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            setSelectedCommentId(null);
+            console.log('out');
+        }, 6000);
+    };
+
+    const handleCommentClick = (commentId) => {
+        // clearTimeout(timeoutRef.current);
+        // setSelectedCommentId(commentId);
+    };
+
+    // function buttonsHandler(event, ownerId, postId, boolean){
+    //     const pointedPostId = event.target.id;
+    //     console.log(pointedPostId);
+    //     console.log(postId);
+    //     console.log('vliza');
+    //     // console.log(event.target.id);
+    //     if(ownerId === userId && pointedPostId === postId){
+    //         setShowButtons(boolean);
+    //         console.log('vliza2');
+    //     }
+    // }
 
     // handle tabs
     const handleTabClick = (tabId) => {
@@ -181,7 +192,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
                     const postData = await commentsService.uploadComment(newComment);
 
-                    setComments((prevComments) => ([...prevComments, newComment]));
+                    setComments((prevComments) => ([...prevComments, postData]));
                 }
             } catch (error) {
                 showErrorToast(error.message, { toastId: error.message })
@@ -570,18 +581,26 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     )}
 
                                                     {comments.length > 0 && !showAnimation1 && !showAnimation2 && comments.map(data => (
-                                                        <li className='comments-row' key={data._id}>
+                                                        <li className='comments-row' key={data._id} id={data._id}>
+
                                                             <span className='userName'>{data.userName} says:</span>
-                                                            <span className='userComment'>
+                                                            <span id={data.postId} className='userComment' onMouseOver={() => handleMouseEnter(data.postId)} onMouseLeave={handleMouseLeave}>
                                                                 {data.comment}
                                                             </span>
-                                                            <span className='like-comment'><button onClick={() => likesHandle(event, data.postId)} className='btn btn-sm btn-like'>Like: <i className="fas fa-thumbs-up"></i></button><span>{data.Likes}</span></span>
-                                                            <span className='dislike-comment'><button onClick={() => likesHandle(event, data.postId)} className='btn btn-sm btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>{data.Dislikes}</span></span>
-                                                            <span className='timeStamp'>{data.date} | {data.hour}</span>
-                                                            <span className='btn-wrapper'>
-                                                                <button className='btn edit-btn'>Edit</button>
-                                                                <button className='btn delete-btn'>Delete</button>
-                                                            </span>
+                                                            <span className='like-comment'><button onClick={() => likesHandle(event, data.postId)} className=' btn-like'>Like: <i className="fas fa-thumbs-up"></i></button><span>{data.Likes}</span></span>
+                                                            <span className='dislike-comment'><button onClick={() => likesHandle(event, data.postId)} className=' btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>{data.Dislikes}</span></span>
+                                                            <div className='comments-footer'>
+                                                                <span className='timeStamp'>{data.date} | {data.hour}</span>
+                                                                {data._ownerId === userId && selectedCommentId === data.postId && (
+                                                                    <span className='btn-wrapper'>
+                                                                        <button className='edit-btn' onClick={handleCommentClick}>Edit</button>
+                                                                        <button className='delete-btn' onClick={handleCommentClick}>Delete</button>
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+
+
 
                                                         </li>
                                                     ))}
