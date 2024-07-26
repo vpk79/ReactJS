@@ -26,6 +26,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const msgAreaRef = useRef(null);
     const commentRef = useRef(null);
     const userNameRef = useRef(null);
+    const [showAnimation, setShowAnimation] = useState(false);
+    const [animationShowed, setAnimationShowed] = useState(false);
+    const prevCommentsRef = useRef([]);
+    const [showComments, setShowComments] = useState(false);
 
     let userName = 'Patient';
     let personName = 'Dr.'
@@ -37,9 +41,30 @@ export default function ContactInfo({ data, toggleContactForm }) {
     if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
+    const prevCommentsLengthRef = useRef(comments.length);
+
+    useEffect(() => {
+        const prevCommentsLength = prevCommentsLengthRef.current;
+
+        if (prevCommentsLength === 0 && comments.length > 0 && !animationShowed) {
+            // Условието се изпълнява само ако comments.length се промени от 0 на 1
+            showAnimation === true
+            setShowComments(false);
+            const timer = setTimeout(() => {
+                setShowAnimation(false);
+                setShowComments(true);
+                setAnimationShowed(true);
+            }, 3000); // Продължителност на анимацията
+
+            return () => clearTimeout(timer);
+        }
+        // Обновяваме предишната стойност
+        prevCommentsLengthRef.current = comments.length;
+    }, [comments]);
+
     useEffect(() => {
         setPersonData(data);
-    }, [data]);
+    }, [data])
 
 
     // handle tabs
@@ -58,6 +83,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 }
             }, 100);
         } else if (tabId == 'comments') {
+            if (comments.length == 0) {
+                setShowAnimation(true);
+            } else {
+                setShowAnimation(false);
+            }
+
             if (comments.length == 0) {
                 const loadComments = async () => {
                     try {
@@ -154,11 +185,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     async function likesHandle(event, postId) {
         if (event.target.textContent.trim() === 'Like:') {
-            // console.log(postId);
-            // console.log(userId);
+            console.log(postId);
+            console.log(userId);
 
-            const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
-            const getLikedPost = getLikes.filter(x => x.postId === postId);
+            const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`)
+
+            // console.log(getLikesTest);
+
+            // const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
+            // const getLikedPost = getLikes.filter(x => x.postId === postId);
             // console.log(getLikes);
             // console.log(getPost);
 
@@ -172,8 +207,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 }
 
                 const likePost = await request.post(url.LIKES, newLike);
-                const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
-                const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+                // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
+                const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+                // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
 
                 setComments(prevComments =>
                     prevComments.map(comment => {
@@ -218,8 +254,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
         } else {
             // console.log(postId);
             // console.log(userId);
-            const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
-            const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+            // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
+            const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+            // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
             if (getDislikedPost.length > 0) {
                 showErrorToast('Already Disliked!', { toastId: 'dislikeError' });
 
@@ -232,8 +269,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 // console.log(userId);
                 const dislikePost = await request.post(url.DISLIKES, newDislike);
                 // console.log(dislikePost);
-                const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
-                const getLikedPost = getLikes.filter(x => x.postId === postId);
+                // const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
+                const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+                // const getLikedPost = getLikes.filter(x => x.postId === postId);
                 console.log(getLikedPost);
                 if (getLikedPost.length > 0) {
                     const entryId = getLikedPost[0]._id;
@@ -408,6 +446,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setDoctorCounter(0);
         setMoreInfoCounter(5);
         setComments([]);
+        setAnimationShowed(false);
         toggleContactForm();
     };
 
@@ -507,9 +546,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <div className='displayComments'>
                                                 <ul className='comments-list'>
                                                     {comments.length == 0 && (
-                                                        <li className='no-comments'>NO COMMENTS YET</li>
+                                                        // <li className='no-comments wave-text'>NO COMMENTS YET</li>
+                                                        <li className='no-comments wave-text'><span>N</span><span>O</span>  <span>C</span><span>O</span><span>M</span><span>M</span><span>E</span><span>N</span><span>T</span><span>S</span> <span>Y</span><span>E</span><span>T</span></li>
                                                     )}
-                                                    {comments.length > 0 && comments.map(data => (
+
+                                                    {showAnimation && comments.length > 0 && !animationShowed && (
+                                                        <li className='no-comments wave-text explosion-text'><span>N</span><span>O</span>  <span>C</span><span>O</span><span>M</span><span>M</span><span>E</span><span>N</span><span>T</span><span>S</span> <span>Y</span><span>E</span><span>T</span></li>
+                                                    )}
+
+                                                    {showComments && comments.length > 0 && comments.map(data => (
                                                         <li className='comments-row' key={data._id}>
                                                             <span className='userName'>{data.userName} says:</span>
                                                             <span className='userComment'>

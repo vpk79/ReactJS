@@ -70,15 +70,29 @@ function get(context, tokens, query, body) {
     validateRequest(context, tokens, query);
 
     let responseData;
-
     try {
         if (query.where) {
-            responseData = context.storage.get(context.params.collection).filter(parseWhere(query.where));
+            // console.log('query-where', query.where);
+            responseData = context.storage.get(context.params.collection).filter(parseWhere(query.where))
+            // console.log('Response', responseData);
         } else if (context.params.collection) {
             responseData = context.storage.get(context.params.collection, tokens[0]);
         } else {
             // Get list of collections
             return context.storage.get();
+
+        }
+
+        if (query.select) {
+            // console.log('query-where', query.where);
+            responseData = context.storage.get(context.params.collection).filter(parseWhere(query.where))
+            // console.log('Response', responseData);
+        } else if (context.params.collection) {
+            responseData = context.storage.get(context.params.collection, tokens[0]);
+        } else {
+            // Get list of collections
+            return context.storage.get();
+
         }
 
         if (query.sortBy) {
@@ -136,16 +150,16 @@ function get(context, tokens, query, body) {
             return responseData.length;
         }
 
-        if (query.select) {
-            const props = query.select.split(',').filter(p => p != '');
-            responseData = Array.isArray(responseData) ? responseData.map(transform) : transform(responseData);
+        // if (query.select) {
+        //     const props = query.select.split(',').filter(p => p != '');
+        //     responseData = Array.isArray(responseData) ? responseData.map(transform) : transform(responseData);
 
-            function transform(r) {
-                const result = {};
-                props.forEach(p => result[p] = r[p]);
-                return result;
-            }
-        }
+        //     function transform(r) {
+        //         const result = {};
+        //         props.forEach(p => result[p] = r[p]);
+        //         return result;
+        //     }
+        // }
 
         if (query.load) {
             const props = query.load.split(',').filter(p => p != '');
