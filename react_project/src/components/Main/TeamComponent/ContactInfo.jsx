@@ -26,7 +26,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const msgAreaRef = useRef(null);
     const commentRef = useRef(null);
     const userNameRef = useRef(null);
-    const [showAnimation, setShowAnimation] = useState(false);
+    const [showAnimation1, setShowAnimation1] = useState(false);
+    const [showAnimation2, setShowAnimation2] = useState(false);
     const [animationShowed, setAnimationShowed] = useState(false);
     const prevCommentsRef = useRef([]);
     const [showComments, setShowComments] = useState(false);
@@ -43,28 +44,33 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     const prevCommentsLengthRef = useRef(comments.length);
 
-    useEffect(() => {
-        const prevCommentsLength = prevCommentsLengthRef.current;
+    // useEffect(() => {
+    //     const prevCommentsLength = prevCommentsLengthRef.current;
 
-        if (prevCommentsLength === 0 && comments.length > 0 && !animationShowed) {
-            // Условието се изпълнява само ако comments.length се промени от 0 на 1
-            showAnimation === true
-            setShowComments(false);
-            const timer = setTimeout(() => {
-                setShowAnimation(false);
-                setShowComments(true);
-                setAnimationShowed(true);
-            }, 3000); // Продължителност на анимацията
+    //     if (prevCommentsLength === 0 && comments.length > 0 && !animationShowed) {
+    //         // Условието се изпълнява само ако comments.length се промени от 0 на 1
+    //         showAnimation === true
+    //         setShowComments(false);
+    //         const timer = setTimeout(() => {
+    //             setShowAnimation(false);
+    //             setShowComments(true);
+    //             setAnimationShowed(true);
+    //         }, 3000); // Продължителност на анимацията
 
-            return () => clearTimeout(timer);
-        }
-        // Обновяваме предишната стойност
-        prevCommentsLengthRef.current = comments.length;
-    }, [comments]);
+    //         return () => clearTimeout(timer);
+    //     }
+    //     // Обновяваме предишната стойност
+    //     prevCommentsLengthRef.current = comments.length;
+    // }, [comments]);
 
     useEffect(() => {
         setPersonData(data);
     }, [data])
+
+    useEffect(() => {
+        setShowAnimation1(false);
+        setShowAnimation2(false);
+    }, [comments])
 
 
     // handle tabs
@@ -84,12 +90,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
             }, 100);
         } else if (tabId == 'comments') {
             if (comments.length == 0) {
-                setShowAnimation(true);
-            } else {
-                setShowAnimation(false);
-            }
-
-            if (comments.length == 0) {
                 const loadComments = async () => {
                     try {
                         const data = await commentsService.loadComments(personData._id);
@@ -105,8 +105,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     Dislikes: dislikesData,
                                 };
                             }));
-
                             setComments(addLikesDislikes);
+                        } else {
+                            await delay(50);
+                            setShowAnimation1(true);
                         }
 
                     } catch (error) {
@@ -147,11 +149,23 @@ export default function ContactInfo({ data, toggleContactForm }) {
         audio.play();
     };
 
+    // delays for smooth permormance where is necessary
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
 
     // post new comment
 
     async function commentHandler(e) {
         e.preventDefault();
+        if (comments.length === 0) {
+            setShowAnimation1(false);
+            setShowAnimation2(true);
+
+            await delay(3000);
+            setShowAnimation2(false);
+        }
 
         if (isAuthenticated) {
             const userName = userNameRef.current.value;
@@ -179,6 +193,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             showErrorToast('You are not logged in!', { toastId: 'notLogged' });
             return;
         }
+
     }
 
     // hadnles likes and dislikes
@@ -545,16 +560,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <div className="comments-wrapper">
                                             <div className='displayComments'>
                                                 <ul className='comments-list'>
-                                                    {comments.length == 0 && (
+                                                    {showAnimation1 && (
                                                         // <li className='no-comments wave-text'>NO COMMENTS YET</li>
                                                         <li className='no-comments wave-text'><span>N</span><span>O</span>  <span>C</span><span>O</span><span>M</span><span>M</span><span>E</span><span>N</span><span>T</span><span>S</span> <span>Y</span><span>E</span><span>T</span></li>
                                                     )}
 
-                                                    {showAnimation && comments.length > 0 && !animationShowed && (
+                                                    {showAnimation2 && (
                                                         <li className='no-comments wave-text explosion-text'><span>N</span><span>O</span>  <span>C</span><span>O</span><span>M</span><span>M</span><span>E</span><span>N</span><span>T</span><span>S</span> <span>Y</span><span>E</span><span>T</span></li>
                                                     )}
 
-                                                    {showComments && comments.length > 0 && comments.map(data => (
+                                                    {comments.length > 0 && !showAnimation1 && !showAnimation2 && comments.map(data => (
                                                         <li className='comments-row' key={data._id}>
                                                             <span className='userName'>{data.userName} says:</span>
                                                             <span className='userComment'>
