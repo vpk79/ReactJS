@@ -31,8 +31,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [showAnimation2, setShowAnimation2] = useState(false);
     const [animationShowed, setAnimationShowed] = useState(false);
     const prevCommentsRef = useRef([]);
-    const [showComments, setShowComments] = useState(false);
-    const [showButtons, setShowButtons] = useState(false);
+    // const [showComments, setShowComments] = useState(false);
+    // const [showButtons, setShowButtons] = useState(false);
     const [selectedCommentId, setSelectedCommentId] = useState(null);
 
     let userName = 'Patient';
@@ -583,7 +583,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     {comments.length > 0 && !showAnimation1 && !showAnimation2 && comments.map(data => (
                                                         <li className='comments-row' key={data._id} id={data._id}>
 
-                                                            <span className='userName'>{data.userName} says:</span>
+                                                            <span className='userName'>{data.userName} wrote:</span>
                                                             <span id={data.postId} className='userComment' onMouseOver={() => handleMouseEnter(data.postId)} onMouseLeave={handleMouseLeave}>
                                                                 {data.comment}
                                                             </span>

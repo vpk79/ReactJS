@@ -23,9 +23,10 @@ export function getCurrentDate() {
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
     const formattedDate = `${day}-${month}-${year}`;
-    const formattedTime = `${hours}:${minutes}`;
+    const formattedTime = `${hours}:${formattedMinutes}`;
 
     return { formattedDate, formattedTime };
-
 }

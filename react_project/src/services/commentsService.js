@@ -20,7 +20,6 @@ export const loadComments = async (personId) => {
 }
 
 
-
 export function commentValidator(userName, comment) {
     if (userName == '') {
         throw new Error('Username is required!')
