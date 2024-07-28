@@ -19,6 +19,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [moreInfoCounter, setMoreInfoCounter] = useState(5);
     const [doctorCounter, setDoctorCounter] = useState(0);
     const [msgHeader, setMsgHeader] = useState(false);
+    const [posting, setPosting] = useState(false);
     const [commentHeader, setCommentHeader] = useState(false);
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setShowAnimation2(false);
     }, [comments])
 
-   
+
     const handleMouseEnter = (commentId) => {
         clearTimeout(timeoutRef.current);
         setSelectedCommentId(commentId);
@@ -68,7 +69,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         // setSelectedCommentId(commentId);
     };
 
-    
+
     /*---------- TABS HANDLER ---------*/
 
     const handleTabClick = (tabId) => {
@@ -81,6 +82,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setMsgHeader(true);
             setCommentHeader(false);
             setDoctorCounter(0);
+            setPosting(false);
             setTimeout(() => {
                 if (msgAreaRef.current) {
                     msgAreaRef.current.focus();
@@ -141,25 +143,28 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     };
 
-   /* ---------------- COMMENTS HANDLER ----------------- */
+    /* ---------------- COMMENTS HANDLER ----------------- */
 
     async function commentHandler(e) {
         e.preventDefault();
-        if (comments.length === 0) {
-            setShowAnimation1(false);
-            setShowAnimation2(true);
+        const userName = userNameRef.current.value;
+        const comment = commentRef.current.value;
 
-            await utils.delay(3000);
-            setShowAnimation2(false);
-        }
+        userNameRef.current.value = '';
+        commentRef.current.value = '';
 
         if (isAuthenticated) {
-            const userName = userNameRef.current.value;
-            const comment = commentRef.current.value;
 
             try {
                 const validatePost = commentsService.commentValidator(userName, comment);
                 if (validatePost) {
+                    if (comments.length === 0) {
+                        setShowAnimation1(false);
+                        setShowAnimation2(true);
+
+                        await utils.delay(3000);
+                        setShowAnimation2(false);
+                    }
                     const date = utils.getCurrentDate();
                     const getNewId = utils.generateUID();
                     const personId = personData._id;
@@ -186,30 +191,109 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     async function likesHandle(event, postId) {
         if (event.target.textContent.trim() === 'Like:') {
+            try {
+                const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`)
 
-            const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`)
+                if (getLikedPost.length > 0) {
+                    const entryId = getLikedPost[0]._id;
+                    await request.remove(`${url.LIKES}/${entryId}`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => {
+                            if (comment.postId === postId) {
+                                if (comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                        dislikedByUser: false
+                                    };
+                                }
 
-            if (getLikedPost.length > 0) {
-                showErrorToast('Already liked!', { toastId: 'likeError' });
-            } else {
-                const newLike = {
-                    postId,
-                    userId
+                                if (comment.likedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: Math.max(comment.Likes - 1, 0),
+                                        likedByUser: false,
+                                    };
+                                }
+                            }
+                            return comment;
+                        })
+                    );
+                    return;
+
+                } else {
+                    const newLike = {
+                        postId,
+                        userId
+                    }
+
+                    const likePost = await request.post(url.LIKES, newLike);
+                    // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
+                    const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+                    // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+
+                    setComments(prevComments =>
+                        prevComments.map(comment => {
+                            if (comment.postId === postId) {
+                                if (!comment.likedByUser && !comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: comment.Likes + 1,
+                                        likedByUser: true
+                                    };
+                                }
+
+                                if (comment.likedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: Math.max(comment.Likes - 1, 0),
+                                        likedByUser: false
+                                    };
+                                }
+
+                                if (comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: comment.Likes + 1,
+                                        Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                        likedByUser: true,
+                                        dislikedByUser: false
+                                    };
+                                }
+                            }
+
+                            return comment;
+                        })
+                    );
+                    if (getDislikedPost.length > 0) {
+                        const entryId = getDislikedPost[0]._id;
+                        const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
+                        // console.log(deleteEntry);
+                    }
                 }
+            } catch (error) {
+                showErrorToast(error.message, {toastId: 'errorLike'})
+            }
+         
 
-                const likePost = await request.post(url.LIKES, newLike);
-                // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
-                const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-                // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+        } else {
 
+        try {
+            const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+            // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+            if (getDislikedPost.length > 0) {
+                console.log(getDislikedPost);
+                const entryId = getDislikedPost[0]._id;
+                console.log(entryId);
+                await request.remove(`${url.DISLIKES}/${entryId}`);
                 setComments(prevComments =>
                     prevComments.map(comment => {
                         if (comment.postId === postId) {
-                            if (!comment.likedByUser && !comment.dislikedByUser) {
+                            if (comment.dislikedByUser) {
                                 return {
                                     ...comment,
-                                    Likes: comment.Likes + 1,
-                                    likedByUser: true
+                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                    dislikedByUser: false
                                 };
                             }
 
@@ -217,45 +301,21 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                 return {
                                     ...comment,
                                     Likes: Math.max(comment.Likes - 1, 0),
-                                    likedByUser: false
-                                };
-                            }
-
-                            if (comment.dislikedByUser) {
-                                return {
-                                    ...comment,
-                                    Likes: comment.Likes + 1,
-                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
-                                    likedByUser: true,
-                                    dislikedByUser: false
+                                    likedByUser: false,
                                 };
                             }
                         }
-
                         return comment;
                     })
                 );
-                if (getDislikedPost.length > 0) {
-                    const entryId = getDislikedPost[0]._id;
-                    const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
-                    // console.log(deleteEntry);
-                }
-            }
-
-        } else {
-         
-            // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
-            const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-            // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
-            if (getDislikedPost.length > 0) {
-                showErrorToast('Already Disliked!', { toastId: 'dislikeError' });
+                return;
 
             } else {
                 const newDislike = {
                     postId,
                     userId
                 }
-              
+
                 const dislikePost = await request.post(url.DISLIKES, newDislike);
                 const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
                 console.log(getLikedPost);
@@ -296,11 +356,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     })
                 );
             }
+        } catch (error) {
+            showErrorToast(error.message, { toastId: 'errorDisLike' })
+        }
+
         }
     }
 
     /*----------- INITIATE NEW CHAT ---------------- */
-    function intitiateChat() {
+    function initiateChat() {
         setChat([]);
         const responses = personData.responses;
         const greetings = responses[0];
@@ -325,6 +389,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     function userChatMsg(e) {
         e.preventDefault();
+        setPosting(true);
         if (isAuthenticated) {
             let textarea = e.target.value || e.target.elements.msgArea.value;
             const name = userName;
@@ -398,6 +463,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setDoctorCounter((state) => state + 1);
             setLoading(false);
             setLoadingMessage(null);
+            setPosting(false);
         }, 2200 + (response.length) * 100);
     }
 
@@ -426,7 +492,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setDoctorCounter(0);
         setMoreInfoCounter(5);
         setComments([]);
+        setPosting(false);
         toggleContactForm();
+
     };
 
 
@@ -651,7 +719,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             role="tab"
                                             aria-controls="message"
                                             aria-selected={activeTab === 'message'}
-                                            onClick={() => { handleTabClick('message'); intitiateChat() }}
+                                            onClick={() => { handleTabClick('message'); initiateChat() }}
                                         >
                                             Message
                                         </button>
@@ -762,10 +830,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         aria-labelledby="message-tab"
                                     >
                                         <div className='person-message-wrapper'>
-                                            <p>You can leave me a message. I`ll respond ASAP.</p>
+                                            <p>You can send me a message. I`ll respond ASAP.</p>
                                             <form ref={formMsgRef} className='msgForm' onSubmit={userChatMsg}>
-                                                <textarea ref={msgAreaRef} className="msgArea" name="msgArea" id="msgArea" cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
-                                                <button type="btn btn-submit" className='btn  btn-primary'>Send</button>
+                                                <textarea ref={msgAreaRef} className="msgArea" name="msgArea" id="msgArea" disabled={posting} cols="40" rows="5" onKeyPress={() => submitOnEnter(event)}></textarea>
+                                                <button type="btn btn-submit" className='btn  btn-primary' disabled={posting}>Send</button>
                                             </form>
 
                                         </div>

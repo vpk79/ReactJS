@@ -1,4 +1,7 @@
+import { redirect } from 'react-router-dom';
 import * as request from '../lib/request';
+import * as localService from './localStorageService';
+
 
 const baseUrl = 'http://localhost:3030/users'
 
@@ -34,6 +37,7 @@ export const register = (email, password) => {
 
 
 export const logout = async () => {
-     request.get(`${baseUrl}/logout`)
-   
+     request.get(`${baseUrl}/logout`);
+     localService.removeItem('userData');
+     redirect('/');
 }
