@@ -4,7 +4,7 @@ import AuthContext from '../../../contexts/authContext';
 import sendSound from '../../../media/sendMsg.mp3'
 import receiveSound from '../../../media/receiveMsg.mp3'
 import { Link } from 'react-router-dom';
-import { showErrorToast } from '../../../Toasts/toastsMsg';
+import { showErrorToast, showSuccessToast } from '../../../Toasts/toastsMsg';
 import * as utils from '../../../utils/utils';
 import * as commentsService from '../../../services/commentsService';
 import * as request from '../../../lib/request';
@@ -50,9 +50,14 @@ export default function ContactInfo({ data, toggleContactForm }) {
     }, [data])
 
     useEffect(() => {
-        setShowAnimation1(false);
-        setShowAnimation2(false);
-    }, [comments])
+        if(comments.length == 0) {
+            setShowAnimation1(true);
+        } 
+        else {
+            setShowAnimation1(false);
+            setShowAnimation2(false);
+        }
+    }, [comments]);
 
 
     const handleMouseEnter = (commentId) => {
@@ -70,6 +75,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     /* Edit and Delete Comments */
 
     const editPostHandler = (event, commentId, userName, comment) => {
+        console.log(userName);
         userNameRef.current.value = userName;
         commentRef.current.value = comment;
         setEditPost(true);
@@ -77,9 +83,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
         
     };
 
-    const deletePostHandler = (commentId, comment) => {
+    const deletePostHandler = async (event, commentId) => {
+        try {
+            confirm('Are you sure?')
+            const deletePost =  await commentsService.deleteComment(commentId);
+            const edited = comments.filter(x => x._id !== commentId);
+            setComments(edited);
 
-
+        } catch (error) {
+            throw showErrorToast(error.message, {toastId: 'deleteComment'})
+        }
     };
 
 
@@ -182,6 +195,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                         commentRef.current.value = '';
                     }
 
+                    showSuccessToast('Comment Edited Successfully!', {toastId:'editSuccess'});
                     return;
                 } else {
                     
@@ -565,6 +579,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                             <p className='person-department'>{personData.department}</p>
                                             <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                            <button type="button" className="btn btn-primary btn-sm appointment">Appointment</button>
 
                                         </div>
 
@@ -617,6 +632,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                             <p className='person-department'>{personData.department}</p>
                                             <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                            <button type="button" className="btn btn-primary btn-sm appointment">Appointment</button>
+
 
                                         </div>
 
@@ -646,7 +663,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                                 {data._ownerId === userId && selectedCommentId === data.postId && (
                                                                     <span className='btn-wrapper'>
                                                                         <button className='edit-btn' onClick={() => editPostHandler(event, data._id, data.userName, data.comment)}>Edit</button>
-                                                                        <button className='delete-btn' onClick={() => deletePostHandler(event, data._id, data.userName, data.comment)}>Delete</button>
+                                                                        <button className='delete-btn' onClick={() => deletePostHandler(event, data._id)}>Delete</button>
                                                                     </span>
                                                                 )}
                                                             </div>

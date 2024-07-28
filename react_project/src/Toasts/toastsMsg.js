@@ -21,8 +21,8 @@ export const showInfoToast = (message, {toastId}) => {
 export const showSuccessToast = (message, { toastId }) => {
     toast.success(message, {
         position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
+        autoClose: 1400,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,

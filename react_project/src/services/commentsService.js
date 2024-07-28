@@ -21,6 +21,17 @@ export async function editComment(commentId, comment){
     }
 }
 
+export async function deleteComment(commentId) {
+    try {
+        console.log(commentId);
+        const data = await request.remove(`${url.COMMENTS}/${commentId}`);
+        
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 export const loadComments = async (personId) => {
     try {
         let data = await request.get(`${url.COMMENTS}`);
