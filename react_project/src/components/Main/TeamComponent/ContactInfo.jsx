@@ -9,6 +9,7 @@ import * as utils from '../../../utils/utils';
 import * as commentsService from '../../../services/commentsService';
 import * as request from '../../../lib/request';
 import * as url from '../../../const/const'
+import { ConfirmToast } from 'react-confirm-toast'
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
@@ -33,6 +34,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [showAnimation2, setShowAnimation2] = useState(false);
     const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [editPost, setEditPost] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false)
 
 
     let userName = 'Patient';
@@ -40,7 +42,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
-    
+
 
     if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
@@ -50,9 +52,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
     }, [data])
 
     useEffect(() => {
-        if(comments.length == 0) {
+        if (comments.length == 0) {
             setShowAnimation1(true);
-        } 
+        }
         else {
             setShowAnimation1(false);
             setShowAnimation2(false);
@@ -69,7 +71,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         timeoutRef.current = setTimeout(() => {
             setSelectedCommentId(null);
             console.log('out');
-        }, 6000);
+        }, 30000);
     };
 
     /* Edit and Delete Comments */
@@ -80,18 +82,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
         commentRef.current.value = comment;
         setEditPost(true);
         setCommentId(commentId);
-        
+
     };
 
     const deletePostHandler = async (event, commentId) => {
         try {
-            confirm('Are you sure?')
-            const deletePost =  await commentsService.deleteComment(commentId);
+            const deletePost = await commentsService.deleteComment(commentId);
             const edited = comments.filter(x => x._id !== commentId);
             setComments(edited);
 
         } catch (error) {
-            throw showErrorToast(error.message, {toastId: 'deleteComment'})
+            throw showErrorToast(error.message, { toastId: 'deleteComment' })
         }
     };
 
@@ -195,29 +196,29 @@ export default function ContactInfo({ data, toggleContactForm }) {
                         commentRef.current.value = '';
                     }
 
-                    showSuccessToast('Comment Edited Successfully!', {toastId:'editSuccess'});
+                    showSuccessToast('Comment Edited Successfully!', { toastId: 'editSuccess' });
                     return;
                 } else {
-                    
-                        if (validatePost) {
-                            if (comments.length === 0) {
-                                setShowAnimation1(false);
-                                setShowAnimation2(true);
 
-                                await utils.delay(3000);
-                                setShowAnimation2(false);
-                            }
-                            const date = utils.getCurrentDate();
-                            const getNewId = utils.generateUID();
-                            const personId = personData._id;
+                    if (validatePost) {
+                        if (comments.length === 0) {
+                            setShowAnimation1(false);
+                            setShowAnimation2(true);
 
-                            const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
-                            const postData = await commentsService.uploadComment(newComment);
-
-                            setComments((prevComments) => ([...prevComments, postData]));
-                            userNameRef.current.value = '';
-                            commentRef.current.value = '';
+                            await utils.delay(3000);
+                            setShowAnimation2(false);
                         }
+                        const date = utils.getCurrentDate();
+                        const getNewId = utils.generateUID();
+                        const personId = personData._id;
+
+                        const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
+                        const postData = await commentsService.uploadComment(newComment);
+
+                        setComments((prevComments) => ([...prevComments, postData]));
+                        userNameRef.current.value = '';
+                        commentRef.current.value = '';
+                    }
                 }
             } else {
                 showErrorToast('You are not logged in!', { toastId: 'notLogged' });
@@ -226,7 +227,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         } catch (error) {
             showErrorToast(error.message, { toastId: error.message })
         }
-       
+
     }
 
     /*------------- LIKES AND DISLIKES HANDLER ---------------- */
@@ -660,17 +661,29 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                             <span className='dislike-comment'><button onClick={() => likesHandle(event, data.postId)} className=' btn-dislike'>Dislike: <i className="fas fa-thumbs-down"></i></button><span>{data.Dislikes}</span></span>
                                                             <div className='comments-footer'>
                                                                 <span className='timeStamp'>{data.date} | {data.hour}</span>
-                                                                {data._ownerId === userId && selectedCommentId === data.postId && (
-                                                                    <span className='btn-wrapper'>
-                                                                        <button className='edit-btn' onClick={() => editPostHandler(event, data._id, data.userName, data.comment)}>Edit</button>
-                                                                        <button className='delete-btn' onClick={() => deletePostHandler(event, data._id)}>Delete</button>
-                                                                    </span>
+                                                                {data._ownerId === userId && selectedCommentId === data.postId && !editPost && (
+                                                                    <>
+                                                                        <span className='btn-wrapper'>
+                                                                            <button className='edit-btn' onClick={() => editPostHandler(event, data._id, data.userName, data.comment)}>Edit</button>
+                                                                            <button className='delete-btn'
+                                                                             onClick={() => setShowConfirm(true)}
+                                                                             >Delete</button>
+                                                                        </span>
+                                                                        {showConfirm && <ConfirmToast
+                                                                            asModal='true'
+                                                                            className='custom-confirm-toast-theme'
+                                                                            position='top-center'
+                                                                            buttonNoText='No'
+                                                                            buttonYesText='Yes'
+                                                                            customFunction={() => deletePostHandler(event, data._id)}
+                                                                            setShowConfirmToast={setShowConfirm}
+                                                                            showConfirmToast={showConfirm}
+                                                                            // theme='light'
+                                                                            toastText='Are you sure?'
+                                                                        />}
+                                                                    </>
                                                                 )}
                                                             </div>
-
-
-
-
                                                         </li>
                                                     ))}
 
@@ -897,7 +910,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <form className='commentForm' onSubmit={commentHandler}>
                                                 <div className='userInput'>
                                                     <label htmlFor="userName" >*Username:</label>
-                                                    <input ref={userNameRef} disabled={editPost} style={ editPost ? {'backgroundColor' : 'lightgrey'} : {'backgroundColor' : 'white'}} type="text" className="userName" name='userName' id="userName"></input>
+                                                    <input ref={userNameRef} disabled={editPost} style={editPost ? { 'backgroundColor': 'lightgrey' } : { 'backgroundColor': 'white' }} type="text" className="userName" name='userName' id="userName"></input>
                                                 </div>
 
                                                 <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
