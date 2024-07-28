@@ -80,6 +80,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         if (tabId == 'message') {
             setMsgHeader(true);
             setCommentHeader(false);
+            setDoctorCounter(0);
             setTimeout(() => {
                 if (msgAreaRef.current) {
                     msgAreaRef.current.focus();
@@ -367,7 +368,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
     function chatManager(name, msg) {
         let response = 'Ok.';
         if (doctorCounter > 4) return;
-
         const responses = personData.responses;
 
         if (doctorCounter == 2 && msg.length < 20) {

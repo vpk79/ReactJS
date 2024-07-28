@@ -20,7 +20,10 @@ export default function TeamComponent() {
             .then(data => {
                 setEmployers(data);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err.message);
+                toast.showErrorToast(err.message, {toastId: 'requestError'})
+            });
     }, [toggleContact]);
 
     const handleContactClick = () => {

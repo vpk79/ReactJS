@@ -1,3 +1,4 @@
+import { redirect } from 'react-router-dom';
 import * as localService from '../services/localStorageService'
 
 
@@ -59,13 +60,19 @@ export const request = async (method, url, data) => {
 
         } else {
             // alert('Something went wrong')
-            localService.removeItem('userData')
+            // localService.removeItem('userData')
             throw new Error('Something went wrong')
         };
 
 
     } catch (error) {
         // alert(error.message)
+        // console.log(error);
+        if (error.message === 'No such user or password!') {
+            localService.removeItem('userData');
+            redirect('/');
+        }
+        // console.log(error.message);
         throw new Error(error.message);
     }
 
