@@ -29,10 +29,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const timeoutRef = useRef(null);
     const [showAnimation1, setShowAnimation1] = useState(false);
     const [showAnimation2, setShowAnimation2] = useState(false);
-    const [animationShowed, setAnimationShowed] = useState(false);
-    const prevCommentsRef = useRef([]);
-    // const [showComments, setShowComments] = useState(false);
-    // const [showButtons, setShowButtons] = useState(false);
     const [selectedCommentId, setSelectedCommentId] = useState(null);
 
     let userName = 'Patient';
@@ -72,19 +68,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
         // setSelectedCommentId(commentId);
     };
 
-    // function buttonsHandler(event, ownerId, postId, boolean){
-    //     const pointedPostId = event.target.id;
-    //     console.log(pointedPostId);
-    //     console.log(postId);
-    //     console.log('vliza');
-    //     // console.log(event.target.id);
-    //     if(ownerId === userId && pointedPostId === postId){
-    //         setShowButtons(boolean);
-    //         console.log('vliza2');
-    //     }
-    // }
+    
+    /*---------- TABS HANDLER ---------*/
 
-    // handle tabs
     const handleTabClick = (tabId) => {
         if (timeoutIdRef.current) {
             clearTimeout(timeoutIdRef.current);
@@ -118,7 +104,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                             }));
                             setComments(addLikesDislikes);
                         } else {
-                            await delay(50);
+                            await utils.delay(50);
                             setShowAnimation1(true);
                         }
 
@@ -154,19 +140,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     };
 
-    // chat sounds 
-    const playSound = (sound) => {
-        const audio = new Audio(sound);
-        audio.play();
-    };
-
-    // delays for smooth permormance where is necessary
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-
-    // post new comment
+   /* ---------------- COMMENTS HANDLER ----------------- */
 
     async function commentHandler(e) {
         e.preventDefault();
@@ -174,7 +148,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setShowAnimation1(false);
             setShowAnimation2(true);
 
-            await delay(3000);
+            await utils.delay(3000);
             setShowAnimation2(false);
         }
 
@@ -207,23 +181,13 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
     }
 
-    // hadnles likes and dislikes
+    /*------------- LIKES AND DISLIKES HANDLER ---------------- */
 
     async function likesHandle(event, postId) {
         if (event.target.textContent.trim() === 'Like:') {
-            console.log(postId);
-            console.log(userId);
 
             const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`)
 
-            // console.log(getLikesTest);
-
-            // const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`)
-            // const getLikedPost = getLikes.filter(x => x.postId === postId);
-            // console.log(getLikes);
-            // console.log(getPost);
-
-            // console.log(getDisLikes);
             if (getLikedPost.length > 0) {
                 showErrorToast('Already liked!', { toastId: 'likeError' });
             } else {
@@ -278,8 +242,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             }
 
         } else {
-            // console.log(postId);
-            // console.log(userId);
+         
             // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
             const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
             // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
@@ -291,13 +254,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     postId,
                     userId
                 }
-                // console.log(postId);
-                // console.log(userId);
+              
                 const dislikePost = await request.post(url.DISLIKES, newDislike);
-                // console.log(dislikePost);
-                // const getLikes = await request.get(`${url.LIKES}?where=userId%3D%22${userId}%22`);
                 const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-                // const getLikedPost = getLikes.filter(x => x.postId === postId);
                 console.log(getLikedPost);
                 if (getLikedPost.length > 0) {
                     const entryId = getLikedPost[0]._id;
@@ -339,12 +298,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }
     }
 
-
-
-
-
-
-    // start new chat
+    /*----------- INITIATE NEW CHAT ---------------- */
     function intitiateChat() {
         setChat([]);
         const responses = personData.responses;
@@ -360,7 +314,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         timeoutIdRef.current = setTimeout(() => {
             setChat((chat) => [...chat, newMsg]);
-            playSound(receiveSound);
+            utils.playSound(receiveSound);
             setDoctorCounter((state) => state + 1);
             setLoading(false);
             setLoadingMessage(null);
@@ -386,7 +340,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             }
 
             setChat([...chat, newMsg]);
-            playSound(sendSound);
+            utils.playSound(sendSound);
             chatManager(name, msg);
             e.target.value ? e.target.value = '' : e.target.elements.msgArea.value = '';
         } else {
@@ -440,7 +394,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
         timeoutIdRef.current = setTimeout(() => {
             setChat((chat) => [...chat, newMsg]);
-            playSound(receiveSound);
+            utils.playSound(receiveSound);
             setDoctorCounter((state) => state + 1);
             setLoading(false);
             setLoadingMessage(null);
@@ -472,7 +426,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setDoctorCounter(0);
         setMoreInfoCounter(5);
         setComments([]);
-        setAnimationShowed(false);
         toggleContactForm();
     };
 
@@ -616,10 +569,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </div>
                                 )
                             }
-
-
-
-
 
                             {
                                 !msgHeader && !commentHeader && (

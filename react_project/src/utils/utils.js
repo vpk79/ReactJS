@@ -30,3 +30,14 @@ export function getCurrentDate() {
 
     return { formattedDate, formattedTime };
 }
+
+
+export const playSound = (sound) => {
+    const audio = new Audio(sound);
+    audio.play();
+};
+
+// delays for smooth permormance
+export function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
