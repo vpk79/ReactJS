@@ -74,27 +74,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }, 30000);
     };
 
-    /* Edit and Delete Comments */
-
-    const editPostHandler = (event, commentId, userName, comment) => {
-        console.log(userName);
-        userNameRef.current.value = userName;
-        commentRef.current.value = comment;
-        setEditPost(true);
-        setCommentId(commentId);
-
-    };
-
-    const deletePostHandler = async (event, commentId) => {
-        try {
-            const deletePost = await commentsService.deleteComment(commentId);
-            const edited = comments.filter(x => x._id !== commentId);
-            setComments(edited);
-
-        } catch (error) {
-            throw showErrorToast(error.message, { toastId: 'deleteComment' })
-        }
-    };
 
 
     /*---------- TABS HANDLER ---------*/
@@ -119,16 +98,18 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setEditPost(false);
             userNameRef.current.value = '';
             commentRef.current.value = '';
-            if (comments.length == 0) {
+            
                 const loadComments = async () => {
                     try {
                         const data = await commentsService.loadComments(personData._id);
                         if (data.length > 0) {
-                            console.log(data);
+                           
+                            // console.log(data);
                             const addLikesDislikes = await Promise.all(data.map(async (comment) => {
+                                const likesData2 = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22`);
                                 const likesData = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22&count`);
                                 const dislikesData = await request.get(`${url.DISLIKES}?where=postId%3D%22${comment.postId}%22&count`);
-
+                                console.log(likesData2);
                                 return {
                                     ...comment,
                                     Likes: likesData,
@@ -147,7 +128,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 };
 
                 loadComments();
-            }
+            
 
             setCommentHeader(true);
             setMsgHeader(false);
@@ -229,6 +210,30 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }
 
     }
+
+
+    /* ----------- EDIT AND DELETE COMMENTS --------------- */
+
+    const editPostHandler = (event, commentId, userName, comment) => {
+        console.log(userName);
+        userNameRef.current.value = userName;
+        commentRef.current.value = comment;
+        setEditPost(true);
+        setCommentId(commentId);
+
+    };
+
+    const deletePostHandler = async (event, commentId) => {
+        try {
+            const deletePost = await commentsService.deleteComment(commentId);
+            const edited = comments.filter(x => x._id !== commentId);
+            setComments(edited);
+
+        } catch (error) {
+            throw showErrorToast(error.message, { toastId: 'deleteComment' })
+        }
+    };
+
 
     /*------------- LIKES AND DISLIKES HANDLER ---------------- */
 
@@ -689,6 +694,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
 
                                                 </ul>
+                                               
+                                            </div>
+                                            <div className='sort-btn-wrapper'>
+                                                <button className='btn  btn-sm'>Most liked</button>
+                                                <button className='btn  btn-sm'>Most Disliked</button>
+                                                <button className='btn  btn-sm'>Chrono</button>
                                             </div>
                                         </div>
 

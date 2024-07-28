@@ -72,9 +72,9 @@ function get(context, tokens, query, body) {
     let responseData;
     try {
         if (query.where) {
-            // console.log('query-where', query.where);
+            console.log('query-where', query.where);
             responseData = context.storage.get(context.params.collection).filter(parseWhere(query.where))
-            // console.log('Response', responseData);
+            console.log('Response', responseData);
         } else if (context.params.collection) {
             responseData = context.storage.get(context.params.collection, tokens[0]);
         } else {
@@ -84,9 +84,9 @@ function get(context, tokens, query, body) {
         }
 
         if (query.select) {
-            // console.log('query-where', query.where);
-            responseData = context.storage.get(context.params.collection).filter(parseWhere(query.where))
-            // console.log('Response', responseData);
+            console.log('query-select', query.where);
+            responseData = context.storage.get(context.params.collection).filter(parseWhere(query.select))
+            console.log('Response', responseData);
         } else if (context.params.collection) {
             responseData = context.storage.get(context.params.collection, tokens[0]);
         } else {

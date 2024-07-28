@@ -723,6 +723,19 @@
     border: 1px solid black;
 }
 
+
+.sort-btn-wrapper {
+    margin-left: 30px;
+    display: flex;
+    gap: 2px;
+    padding-top: 10px;
+}
+
+.sort-btn-wrapper .btn{
+    border: 1px solid black;
+    font-size: 14px;
+}
+
 /* dot animation */
 @keyframes blink {
     50% {
