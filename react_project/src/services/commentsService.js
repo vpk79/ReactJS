@@ -12,11 +12,23 @@ export async function uploadComment(comment) {
 
 }
 
-export const loadComments = async (personId) => {
-    let data = await request.get(`${url.COMMENTS}`);
-    const getPersonObject = data.filter(x => x.personId == personId);
+export async function editComment(commentId, comment){
+    try {
+        const data = await request.patch(`${url.COMMENTS}/${commentId}`,);
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 
-    return getPersonObject;
+export const loadComments = async (personId) => {
+    try {
+        let data = await request.get(`${url.COMMENTS}`);
+        const getPersonObject = data.filter(x => x.personId == personId);
+        return getPersonObject;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 }
 
 

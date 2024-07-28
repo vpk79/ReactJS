@@ -22,6 +22,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [posting, setPosting] = useState(false);
     const [commentHeader, setCommentHeader] = useState(false);
     const [comments, setComments] = useState([]);
+    const [commentId, setCommentId] = useState('');
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
     const msgAreaRef = useRef(null);
@@ -31,13 +32,15 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [showAnimation1, setShowAnimation1] = useState(false);
     const [showAnimation2, setShowAnimation2] = useState(false);
     const [selectedCommentId, setSelectedCommentId] = useState(null);
+    const [editPost, setEditPost] = useState(false);
+
 
     let userName = 'Patient';
     let personName = 'Dr.'
     const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
-
+    
 
     if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
@@ -64,9 +67,19 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }, 6000);
     };
 
-    const handleCommentClick = (commentId) => {
-        // clearTimeout(timeoutRef.current);
-        // setSelectedCommentId(commentId);
+    /* Edit and Delete Comments */
+
+    const editPostHandler = (event, commentId, userName, comment) => {
+        userNameRef.current.value = userName;
+        commentRef.current.value = comment;
+        setEditPost(true);
+        setCommentId(commentId);
+        
+    };
+
+    const deletePostHandler = (commentId, comment) => {
+
+
     };
 
 
@@ -89,6 +102,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 }
             }, 100);
         } else if (tabId == 'comments') {
+            setEditPost(false);
+            userNameRef.current.value = '';
+            commentRef.current.value = '';
             if (comments.length == 0) {
                 const loadComments = async () => {
                     try {
@@ -146,45 +162,57 @@ export default function ContactInfo({ data, toggleContactForm }) {
     /* ---------------- COMMENTS HANDLER ----------------- */
 
     async function commentHandler(e) {
-        e.preventDefault();
-        const userName = userNameRef.current.value;
-        const comment = commentRef.current.value;
+        try {
+            e.preventDefault();
+            const btnText = e.target.textContent.split(':')[1];
+            const userName = userNameRef.current.value;
+            const comment = commentRef.current.value;
+            const validatePost = commentsService.commentValidator(userName, comment);
+            if (isAuthenticated) {
 
-        userNameRef.current.value = '';
-        commentRef.current.value = '';
-
-        if (isAuthenticated) {
-
-            try {
-                const validatePost = commentsService.commentValidator(userName, comment);
-                if (validatePost) {
-                    if (comments.length === 0) {
-                        setShowAnimation1(false);
-                        setShowAnimation2(true);
-
-                        await utils.delay(3000);
-                        setShowAnimation2(false);
+                if (btnText === 'Edit') {
+                    if (validatePost) {
+                        const index = comments.findIndex(x => x._id == commentId);
+                        const edited = comments.slice();
+                        edited[index].comment = comment;
+                        // setComments((prevComments) => ([...prevComments, edited]));
+                        commentsService.editComment(commentId, edited);
+                        setEditPost(false);
+                        userNameRef.current.value = '';
+                        commentRef.current.value = '';
                     }
-                    const date = utils.getCurrentDate();
-                    const getNewId = utils.generateUID();
-                    const personId = personData._id;
 
-                    const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
-                    const postData = await commentsService.uploadComment(newComment);
+                    return;
+                } else {
+                    
+                        if (validatePost) {
+                            if (comments.length === 0) {
+                                setShowAnimation1(false);
+                                setShowAnimation2(true);
 
-                    setComments((prevComments) => ([...prevComments, postData]));
+                                await utils.delay(3000);
+                                setShowAnimation2(false);
+                            }
+                            const date = utils.getCurrentDate();
+                            const getNewId = utils.generateUID();
+                            const personId = personData._id;
+
+                            const newComment = commentsService.createNewComment(userName, comment, date, getNewId, personId, userId);
+                            const postData = await commentsService.uploadComment(newComment);
+
+                            setComments((prevComments) => ([...prevComments, postData]));
+                            userNameRef.current.value = '';
+                            commentRef.current.value = '';
+                        }
                 }
-            } catch (error) {
-                showErrorToast(error.message, { toastId: error.message })
+            } else {
+                showErrorToast('You are not logged in!', { toastId: 'notLogged' });
+                return;
             }
-
-            // console.log(comments);
-
-        } else {
-            showErrorToast('You are not logged in!', { toastId: 'notLogged' });
-            return;
+        } catch (error) {
+            showErrorToast(error.message, { toastId: error.message })
         }
-
+       
     }
 
     /*------------- LIKES AND DISLIKES HANDLER ---------------- */
@@ -272,93 +300,93 @@ export default function ContactInfo({ data, toggleContactForm }) {
                     }
                 }
             } catch (error) {
-                showErrorToast(error.message, {toastId: 'errorLike'})
+                showErrorToast(error.message, { toastId: 'errorLike' })
             }
-         
+
 
         } else {
 
-        try {
-            const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-            // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
-            if (getDislikedPost.length > 0) {
-                console.log(getDislikedPost);
-                const entryId = getDislikedPost[0]._id;
-                console.log(entryId);
-                await request.remove(`${url.DISLIKES}/${entryId}`);
-                setComments(prevComments =>
-                    prevComments.map(comment => {
-                        if (comment.postId === postId) {
-                            if (comment.dislikedByUser) {
-                                return {
-                                    ...comment,
-                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
-                                    dislikedByUser: false
-                                };
-                            }
+            try {
+                const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+                // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
+                if (getDislikedPost.length > 0) {
+                    console.log(getDislikedPost);
+                    const entryId = getDislikedPost[0]._id;
+                    console.log(entryId);
+                    await request.remove(`${url.DISLIKES}/${entryId}`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => {
+                            if (comment.postId === postId) {
+                                if (comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                        dislikedByUser: false
+                                    };
+                                }
 
-                            if (comment.likedByUser) {
-                                return {
-                                    ...comment,
-                                    Likes: Math.max(comment.Likes - 1, 0),
-                                    likedByUser: false,
-                                };
+                                if (comment.likedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: Math.max(comment.Likes - 1, 0),
+                                        likedByUser: false,
+                                    };
+                                }
                             }
-                        }
-                        return comment;
-                    })
-                );
-                return;
+                            return comment;
+                        })
+                    );
+                    return;
 
-            } else {
-                const newDislike = {
-                    postId,
-                    userId
+                } else {
+                    const newDislike = {
+                        postId,
+                        userId
+                    }
+
+                    const dislikePost = await request.post(url.DISLIKES, newDislike);
+                    const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
+                    console.log(getLikedPost);
+                    if (getLikedPost.length > 0) {
+                        const entryId = getLikedPost[0]._id;
+                        const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
+                    }
+                    setComments(prevComments =>
+                        prevComments.map(comment => {
+                            if (comment.postId === postId) {
+                                if (!comment.likedByUser && !comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Dislikes: comment.Dislikes + 1,
+                                        dislikedByUser: true
+                                    };
+                                }
+
+                                if (comment.dislikedByUser) {
+                                    return {
+                                        ...comment,
+                                        Dislikes: Math.max(comment.Dislikes - 1, 0),
+                                        dislikedByUser: false
+                                    };
+                                }
+
+                                if (comment.likedByUser) {
+                                    return {
+                                        ...comment,
+                                        Likes: Math.max(comment.Likes - 1, 0),
+                                        Dislikes: comment.Dislikes + 1,
+                                        likedByUser: false,
+                                        dislikedByUser: true
+                                    };
+                                }
+                            }
+                            return comment;
+                        })
+                    );
                 }
-
-                const dislikePost = await request.post(url.DISLIKES, newDislike);
-                const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-                console.log(getLikedPost);
-                if (getLikedPost.length > 0) {
-                    const entryId = getLikedPost[0]._id;
-                    const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
-                }
-                setComments(prevComments =>
-                    prevComments.map(comment => {
-                        if (comment.postId === postId) {
-                            if (!comment.likedByUser && !comment.dislikedByUser) {
-                                return {
-                                    ...comment,
-                                    Dislikes: comment.Dislikes + 1,
-                                    dislikedByUser: true
-                                };
-                            }
-
-                            if (comment.dislikedByUser) {
-                                return {
-                                    ...comment,
-                                    Dislikes: Math.max(comment.Dislikes - 1, 0),
-                                    dislikedByUser: false
-                                };
-                            }
-
-                            if (comment.likedByUser) {
-                                return {
-                                    ...comment,
-                                    Likes: Math.max(comment.Likes - 1, 0),
-                                    Dislikes: comment.Dislikes + 1,
-                                    likedByUser: false,
-                                    dislikedByUser: true
-                                };
-                            }
-                        }
-                        return comment;
-                    })
-                );
+            } catch (error) {
+                showErrorToast(error.message, { toastId: 'errorDisLike' })
             }
-        } catch (error) {
-            showErrorToast(error.message, { toastId: 'errorDisLike' })
-        }
 
         }
     }
@@ -494,6 +522,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setComments([]);
         setPosting(false);
         toggleContactForm();
+        setEditPost(false);
+        userNameRef.current.value = '';
+        commentRef.current.value = '';
 
     };
 
@@ -614,8 +645,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                                 <span className='timeStamp'>{data.date} | {data.hour}</span>
                                                                 {data._ownerId === userId && selectedCommentId === data.postId && (
                                                                     <span className='btn-wrapper'>
-                                                                        <button className='edit-btn' onClick={handleCommentClick}>Edit</button>
-                                                                        <button className='delete-btn' onClick={handleCommentClick}>Delete</button>
+                                                                        <button className='edit-btn' onClick={() => editPostHandler(event, data._id, data.userName, data.comment)}>Edit</button>
+                                                                        <button className='delete-btn' onClick={() => deletePostHandler(event, data._id, data.userName, data.comment)}>Delete</button>
                                                                     </span>
                                                                 )}
                                                             </div>
@@ -848,12 +879,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <p>You can leave a comment.</p>
                                             <form className='commentForm' onSubmit={commentHandler}>
                                                 <div className='userInput'>
-                                                    <label htmlFor="userName">*Username:</label>
-                                                    <input ref={userNameRef} type="text" className="userName" name='userName' id="userName"></input>
+                                                    <label htmlFor="userName" >*Username:</label>
+                                                    <input ref={userNameRef} disabled={editPost} style={ editPost ? {'backgroundColor' : 'lightgrey'} : {'backgroundColor' : 'white'}} type="text" className="userName" name='userName' id="userName"></input>
                                                 </div>
 
                                                 <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
-                                                <button type="btn submit" className='btn  btn-primary'>Post</button>
+                                                <button type="btn submit" className='btn  btn-primary'>{editPost ? 'Edit' : 'Post'}</button>
                                             </form>
 
                                         </div>
