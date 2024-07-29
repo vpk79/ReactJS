@@ -35,6 +35,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [editPost, setEditPost] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false)
+    const [text, setText] = useState('');
+    const MAX_CHAR_COUNT = 250;
+    const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
 
 
     let userName = 'Patient';
@@ -42,6 +45,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
+   
 
 
     if (email) userName = email.split('@')[0]; // create username for chat
@@ -70,10 +74,52 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const handleMouseLeave = () => {
         timeoutRef.current = setTimeout(() => {
             setSelectedCommentId(null);
-            console.log('out');
+            // console.log('out');
         }, 30000);
     };
 
+    function sortHandler(e) {
+        e.preventDefault();
+        const command = e.target.id;
+        let result = [];
+        // console.log(e.target.id);
+        switch (command) {
+            case "most-liked": result = comments.sort((a, b) => a.Likes - b.Likes); break;
+            case "most-disliked": result = comments.sort((a, b) => a.Dislikes - b.Dislikes); break;
+            case "most-recent": result = comments.sort((a, b) => a._createdOn - b._createdOn); break;
+        }
+        // console.log(result);
+        setComments(result.slice());
+    }
+
+
+    const loadComments = async () => {
+        try {
+            const data = await commentsService.loadComments(personData._id);
+            if (data.length > 0) {
+
+                // console.log(data);
+                const addLikesDislikes = await Promise.all(data.map(async (comment) => {
+                    const likesData = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22&count`);
+                    const dislikesData = await request.get(`${url.DISLIKES}?where=postId%3D%22${comment.postId}%22&count`);
+                    // console.log('liked--->', likesData);
+                    // console.log('disliked--->', dislikesData);
+                    return {
+                        ...comment,
+                        Likes: likesData,
+                        Dislikes: dislikesData,
+                    };
+                }));
+                setComments(addLikesDislikes);
+            } else {
+                await utils.delay(50);
+                setShowAnimation1(true);
+            }
+
+        } catch (error) {
+            showErrorToast(`Error loading comments: ${error}`, { toastId: 'commenstError' });
+        }
+    };
 
 
     /*---------- TABS HANDLER ---------*/
@@ -97,38 +143,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
         } else if (tabId == 'comments') {
             setEditPost(false);
             userNameRef.current.value = '';
-            commentRef.current.value = '';
-            
-                const loadComments = async () => {
-                    try {
-                        const data = await commentsService.loadComments(personData._id);
-                        if (data.length > 0) {
-                           
-                            // console.log(data);
-                            const addLikesDislikes = await Promise.all(data.map(async (comment) => {
-                                const likesData2 = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22`);
-                                const likesData = await request.get(`${url.LIKES}?where=postId%3D%22${comment.postId}%22&count`);
-                                const dislikesData = await request.get(`${url.DISLIKES}?where=postId%3D%22${comment.postId}%22&count`);
-                                console.log(likesData2);
-                                return {
-                                    ...comment,
-                                    Likes: likesData,
-                                    Dislikes: dislikesData,
-                                };
-                            }));
-                            setComments(addLikesDislikes);
-                        } else {
-                            await utils.delay(50);
-                            setShowAnimation1(true);
-                        }
+            setRemainingChars(MAX_CHAR_COUNT);
+            setText('');
 
-                    } catch (error) {
-                        showErrorToast(`Error loading comments: ${error}`, { toastId: 'commenstError' });
-                    }
-                };
-
-                loadComments();
-            
+            loadComments();
 
             setCommentHeader(true);
             setMsgHeader(false);
@@ -159,22 +177,23 @@ export default function ContactInfo({ data, toggleContactForm }) {
     async function commentHandler(e) {
         try {
             e.preventDefault();
-            const btnText = e.target.textContent.split(':')[1];
+            const btnText = e.target.innerText.split('\n')[2];
+            // console.log(btnText);
             const userName = userNameRef.current.value;
-            const comment = commentRef.current.value;
-            const validatePost = commentsService.commentValidator(userName, comment);
+            const validatePost = commentsService.commentValidator(userName, text);
             if (isAuthenticated) {
 
-                if (btnText === 'Edit') {
+                if (btnText.includes('Edit')) {
                     if (validatePost) {
                         const index = comments.findIndex(x => x._id == commentId);
                         const edited = comments.slice();
-                        edited[index].comment = comment;
+                        edited[index].comment = text;
                         // setComments((prevComments) => ([...prevComments, edited]));
                         commentsService.editComment(commentId, edited);
                         setEditPost(false);
                         userNameRef.current.value = '';
-                        commentRef.current.value = '';
+                        setText('');
+                        setRemainingChars(MAX_CHAR_COUNT);
                     }
 
                     showSuccessToast('Comment Edited Successfully!', { toastId: 'editSuccess' });
@@ -182,6 +201,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 } else {
 
                     if (validatePost) {
+                        const comment = text;
+                        userNameRef.current.value = '';
+                        setText('');
+                        setRemainingChars(MAX_CHAR_COUNT);
+                        // commentRef.current.value = '';
                         if (comments.length === 0) {
                             setShowAnimation1(false);
                             setShowAnimation2(true);
@@ -197,8 +221,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                         const postData = await commentsService.uploadComment(newComment);
 
                         setComments((prevComments) => ([...prevComments, postData]));
-                        userNameRef.current.value = '';
-                        commentRef.current.value = '';
+
                     }
                 }
             } else {
@@ -215,12 +238,13 @@ export default function ContactInfo({ data, toggleContactForm }) {
     /* ----------- EDIT AND DELETE COMMENTS --------------- */
 
     const editPostHandler = (event, commentId, userName, comment) => {
-        console.log(userName);
         userNameRef.current.value = userName;
-        commentRef.current.value = comment;
+        setText(comment);
         setEditPost(true);
         setCommentId(commentId);
-
+        setRemainingChars(MAX_CHAR_COUNT - comment.length)
+        clearTimeout(timeoutRef.current);
+        setSelectedCommentId(null);
     };
 
     const deletePostHandler = async (event, commentId) => {
@@ -241,8 +265,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
         if (event.target.textContent.trim() === 'Like:') {
             try {
                 const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`)
+                // console.log(getLikedPost);
 
                 if (getLikedPost.length > 0) {
+                    // console.log('enter');
                     const entryId = getLikedPost[0]._id;
                     await request.remove(`${url.LIKES}/${entryId}`);
                     setComments(prevComments =>
@@ -264,22 +290,29 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     };
                                 }
                             }
+
                             return comment;
                         })
                     );
-                    return;
+                    // return;
 
                 } else {
                     const newLike = {
                         postId,
-                        userId
+                        userId,
+                        likedByUser: true,
+                        dislikedByUser: false
                     }
 
                     const likePost = await request.post(url.LIKES, newLike);
                     // const getDisLikes = await request.get(`${url.DISLIKES}?where=userId%3D%22${userId}%22`);
                     const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
                     // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
-
+                    if (getDislikedPost.length > 0) {
+                        const entryId = getDislikedPost[0]._id;
+                        const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
+                        // console.log(deleteEntry);
+                    }
                     setComments(prevComments =>
                         prevComments.map(comment => {
                             if (comment.postId === postId) {
@@ -309,15 +342,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     };
                                 }
                             }
-
+                            // console.log(comment._id);
+                            // request.patch(`${url.COMMENTS}/${comment._id}`, comment);
                             return comment;
                         })
                     );
-                    if (getDislikedPost.length > 0) {
-                        const entryId = getDislikedPost[0]._id;
-                        const deleteEntry = await request.remove(`${url.DISLIKES}/${entryId}`);
-                        // console.log(deleteEntry);
-                    }
+
                 }
             } catch (error) {
                 showErrorToast(error.message, { toastId: 'errorLike' })
@@ -330,9 +360,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
                 const getDislikedPost = await request.get(`${url.DISLIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
                 // const getDislikedPost = getDisLikes.filter((x) => x.postId === postId);
                 if (getDislikedPost.length > 0) {
-                    console.log(getDislikedPost);
+                    // console.log(getDislikedPost);
                     const entryId = getDislikedPost[0]._id;
-                    console.log(entryId);
+                    // console.log(entryId);
                     await request.remove(`${url.DISLIKES}/${entryId}`);
                     setComments(prevComments =>
                         prevComments.map(comment => {
@@ -356,17 +386,19 @@ export default function ContactInfo({ data, toggleContactForm }) {
                             return comment;
                         })
                     );
-                    return;
+                    // return;
 
                 } else {
                     const newDislike = {
                         postId,
-                        userId
+                        userId,
+                        dislikedByUser: true,
+                        likedByUser: false
                     }
 
                     const dislikePost = await request.post(url.DISLIKES, newDislike);
                     const getLikedPost = await request.get(`${url.LIKES}?where=postId%3D%22${postId}%22&select=userId%3D%22${userId}%22`);
-                    console.log(getLikedPost);
+                    // console.log(getLikedPost);
                     if (getLikedPost.length > 0) {
                         const entryId = getLikedPost[0]._id;
                         const deleteEntry = await request.remove(`${url.LIKES}/${entryId}`);
@@ -409,6 +441,9 @@ export default function ContactInfo({ data, toggleContactForm }) {
             }
 
         }
+
+        loadComments();
+
     }
 
     /*----------- INITIATE NEW CHAT ---------------- */
@@ -543,9 +578,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setPosting(false);
         toggleContactForm();
         setEditPost(false);
+        setRemainingChars(MAX_CHAR_COUNT)
+        setText('');
         userNameRef.current.value = '';
-        commentRef.current.value = '';
 
+    };
+
+    const handleMessageChange = (event) => {
+        const newText = event.target.value;
+        setText(newText);
+        setRemainingChars(MAX_CHAR_COUNT - newText.length);
+    
     };
 
 
@@ -671,8 +714,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                                         <span className='btn-wrapper'>
                                                                             <button className='edit-btn' onClick={() => editPostHandler(event, data._id, data.userName, data.comment)}>Edit</button>
                                                                             <button className='delete-btn'
-                                                                             onClick={() => setShowConfirm(true)}
-                                                                             >Delete</button>
+                                                                                onClick={() => setShowConfirm(true)}
+                                                                            >Delete</button>
                                                                         </span>
                                                                         {showConfirm && <ConfirmToast
                                                                             asModal='true'
@@ -694,12 +737,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
 
                                                 </ul>
-                                               
+
                                             </div>
                                             <div className='sort-btn-wrapper'>
-                                                <button className='btn  btn-sm'>Most liked</button>
-                                                <button className='btn  btn-sm'>Most Disliked</button>
-                                                <button className='btn  btn-sm'>Chrono</button>
+                                                <button className='btn  btn-sm' id="most-liked" onClick={sortHandler}>Most liked</button>
+                                                <button className='btn  btn-sm' id="most-disliked" onClick={sortHandler}>Most Disliked</button>
+                                                <button className='btn  btn-sm' id="most-recent" onClick={sortHandler}>Most Recent</button>
                                             </div>
                                         </div>
 
@@ -924,7 +967,16 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                     <input ref={userNameRef} disabled={editPost} style={editPost ? { 'backgroundColor': 'lightgrey' } : { 'backgroundColor': 'white' }} type="text" className="userName" name='userName' id="userName"></input>
                                                 </div>
 
-                                                <textarea ref={commentRef} name="commentArea" id="commentArea" cols="40" rows="5"></textarea>
+                                                <textarea
+                                                    ref={commentRef}
+                                                    name="commentArea"
+                                                    id="commentArea" cols="40" rows="5"
+                                                    placeholder="Enter your message..."
+                                                    value={text}
+                                                    maxLength={MAX_CHAR_COUNT}
+                                                    onChange={handleMessageChange}>
+                                                </textarea>
+                                                <div>Max chars: {remainingChars}</div>
                                                 <button type="btn submit" className='btn  btn-primary'>{editPost ? 'Edit' : 'Post'}</button>
                                             </form>
 

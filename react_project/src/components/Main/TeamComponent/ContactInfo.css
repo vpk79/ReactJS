@@ -104,8 +104,6 @@
 
 
 
-
-
 /* Header section no-form*/
 
 .modal-header.no-form .modal-container {
@@ -335,12 +333,12 @@
 .person-comments-wrapper {
     width: 100%;
     height: auto;
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 30px
+    /* gap: 30px */
 }
 
 .commentForm {
