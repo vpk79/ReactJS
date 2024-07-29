@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../../contexts/authContext";
 import * as toast from "../../Toasts/toastsMsg"
 
-export default function Navbar() {
+export default function Navbar({handleCloseAuthModal}) {
 
     const { isAuthenticated} = useContext(AuthContext);
 
@@ -43,11 +43,14 @@ export default function Navbar() {
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
-                    <div className="navbar-nav ms-auto p-4 p-lg-0">
-                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/">
+                    <div className="navbar-nav ms-auto p-4 p-lg-0" onClick={handleCloseAuthModal}>
+                        <NavLink
+                         className={({ isActive }) => isActive ? "nav-item nav-link active" :
+                                "nav-item nav-link"} to="/">
                             Home
                         </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/about">
+                        <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" :
+                            "nav-item nav-link"} to="/about" >
                             About
                         </NavLink>
                         <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/service">

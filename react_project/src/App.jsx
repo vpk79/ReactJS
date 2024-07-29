@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate, Router } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
 
 import * as authService from './services/authService'
 import AuthContext from './contexts/authContext';
@@ -24,10 +25,23 @@ import usePersistedState from './hooks/usePersistedState';
 import { loginValidator, registerValidator } from './services/validators';
 import { ToastContainer } from 'react-toastify';
 import * as toast from "./Toasts/toastsMsg";
+import AuthModal from './components/Main/Modals/AuthModal';
+
+
+const CurrentPath = () => {
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   console.log('Текущ път:', location.pathname);
+  // }, [location]);
+
+  return null; 
+};
 
 function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = usePersistedState({})
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(true);
 
   const loginSubmitHandler = async (values) => {
     try {
@@ -43,10 +57,38 @@ function App() {
 
     } catch (error) {
       // alert(error.message);
-      toast.showErrorToast(error.message, {toastId: "loginError"});
+      toast.showErrorToast(error.message, { toastId: "loginError" });
       return
     }
   };
+
+  const handleScroll = () => {
+  let scrollThreshold = 0;
+
+  if(location.pathname == '/'){
+    scrollThreshold = 1000;
+  } else {
+    scrollThreshold = 400;
+  }
+
+    if (window.scrollY >= scrollThreshold) {
+      setIsAuthModalOpen(true);
+    } else {
+      setIsAuthModalOpen(false);
+    }
+  };
+
+  const handleCloseAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const registerSubmitHandler = async (values) => {
     try {
@@ -64,25 +106,24 @@ function App() {
 
     } catch (error) {
       // alert(error.message);
-      toast.showErrorToast(error.message,{ toastId: "registerError" });
+      toast.showErrorToast(error.message, { toastId: "registerError" });
       return
     }
   }
 
   const logoutHandler = () => {
-    try{
+    try {
       setAuth({});
       localStorage.removeItem('userData');
       toast.showSuccessToast("Logout Successfull!", { toastId: "logoutSuccess" });
       navigate('/');
-    } catch(error) {
+    } catch (error) {
       toast.showErrorToast(error.message, { toastId: "logoutError" });
       localStorage.removeItem('userData');
       navigate('/');
     }
-   
-  }
 
+  }
 
   const pageTitles = {
     '/about': 'About',
@@ -135,8 +176,13 @@ function App() {
       <AuthContext.Provider value={values}>
 
         <Topbar />
-        <Navbar />
+        <Navbar handleCloseAuthModal={handleCloseAuthModal}/>
         <Header />
+        
+          {!values.isAuthenticated && isAuthModalOpen && <AuthModal onClose={handleCloseAuthModal} />}
+        
+        <CurrentPath />
+
 
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
@@ -153,7 +199,7 @@ function App() {
         </Routes>
 
         <Footer />
-        <ToastContainer 
+        <ToastContainer
           progressClassName="toastProgress"
           bodyClassName="toastBody"
         />
