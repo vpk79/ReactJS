@@ -1,6 +1,5 @@
 const { ServiceError } = require('./common/errors');
 
-
 function createHandler(plugins, services) {
     return async function handler(req, res) {
         const method = req.method;
@@ -76,6 +75,68 @@ function createHandler(plugins, services) {
                 console.error('Missing service ' + serviceName);
             } else {
                 result = await service(context, { method, tokens, query, body });
+
+                if (method == 'GET' && query.where || method == 'GET' && query.select || method == 'GET' && query.count){
+
+                    function parseWhere(query) {
+                        const operators = {
+                            '<=': (prop, value) => record => record[prop] <= JSON.parse(value),
+                            '<': (prop, value) => record => record[prop] < JSON.parse(value),
+                            '>=': (prop, value) => record => record[prop] >= JSON.parse(value),
+                            '>': (prop, value) => record => record[prop] > JSON.parse(value),
+                            '=': (prop, value) => record => record[prop] == JSON.parse(value),
+                            ' like ': (prop, value) => record => record[prop].toLowerCase().includes(JSON.parse(value).toLowerCase()),
+                            ' in ': (prop, value) => record => JSON.parse(`[${/\((.+?)\)/.exec(value)[1]}]`).includes(record[prop]),
+                        };
+                        const pattern = new RegExp(`^(.+?)(${Object.keys(operators).join('|')})(.+?)$`, 'i');
+
+                        try {
+                            let clauses = [query.trim()];
+                            let check = (a, b) => b;
+                            let acc = true;
+                            if (query.match(/ and /gi)) {
+                                // inclusive
+                                clauses = query.split(/ and /gi);
+                                check = (a, b) => a && b;
+                                acc = true;
+                            } else if (query.match(/ or /gi)) {
+                                // optional
+                                clauses = query.split(/ or /gi);
+                                check = (a, b) => a || b;
+                                acc = false;
+                            }
+                            clauses = clauses.map(createChecker);
+
+                            return (record) => clauses
+                                .map(c => c(record))
+                                .reduce(check, acc);
+                        } catch (err) {
+                            throw new Error('Could not parse WHERE clause, check your syntax.');
+                        }
+
+                        function createChecker(clause) {
+                            let [match, prop, operator, value] = pattern.exec(clause);
+                            [prop, value] = [prop.trim(), value.trim()];
+
+                            return operators[operator.toLowerCase()](prop, value);
+                        }
+                    }
+
+                    if(query.where){
+                        result = result.filter(parseWhere(query.where));
+                    }
+
+                    if(query.select){
+                        result = result.filter(parseWhere(query.select));
+                    }
+
+                    if(query.count){
+                        result = result.length;
+                    }
+
+                    console.log('new result', result);
+                }
+             
             }
 
             // NOTE: logout does not return a result
@@ -87,6 +148,7 @@ function createHandler(plugins, services) {
                 delete headers['Content-Type'];
             }
         }
+        // console.log('result ->', result);
     };
 }
 
@@ -110,7 +172,6 @@ async function parseRequest(req) {
         .map(x => x.split('='))
         .reduce((p, [k, v]) => Object.assign(p, { [k]: decodeURIComponent(v) }), {});
     const body = await parseBody(req);
-
     return {
         serviceName,
         tokens,

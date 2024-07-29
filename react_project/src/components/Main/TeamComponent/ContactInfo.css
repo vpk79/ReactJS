@@ -696,24 +696,24 @@
 
 
 .custom-confirm-toast-theme {
-  --confirm-toast-bg: aquamarine;
-  --confirm-toast-box-shadow: 0 0 1px 4px purple;
-  --confirm-toast-text-color: purple;
-  --confirm-toast-icon-color: black;
-  --confirm-toast-btn-yes-bg: green;
-  --confirm-toast-btn-yes-color: lightgreen;
-  --confirm-toast-btn-no-bg: yellow;
-  --confirm-toast-btn-no-color: black;
-  --confirm-toast-btn-hover: brightness(0.9);
-  --confirm-toast-btn-yes-focus: 2px solid orange;
-  --confirm-toast-btn-no-focus: 2px solid orange;
-  --confirm-toast-btn-close-focus: 2px solid red;
-  --confirm-toast-btn-no-disabled: opacity(0.6);
-  --confirm-toast-btn-yes-disabled: opacity(0.6);
+    --confirm-toast-bg: aquamarine;
+    --confirm-toast-box-shadow: 0 0 1px 4px purple;
+    --confirm-toast-text-color: purple;
+    --confirm-toast-icon-color: black;
+    --confirm-toast-btn-yes-bg: green;
+    --confirm-toast-btn-yes-color: lightgreen;
+    --confirm-toast-btn-no-bg: yellow;
+    --confirm-toast-btn-no-color: black;
+    --confirm-toast-btn-hover: brightness(0.9);
+    --confirm-toast-btn-yes-focus: 2px solid orange;
+    --confirm-toast-btn-no-focus: 2px solid orange;
+    --confirm-toast-btn-close-focus: 2px solid red;
+    --confirm-toast-btn-no-disabled: opacity(0.6);
+    --confirm-toast-btn-yes-disabled: opacity(0.6);
 
-  background-color: var(--confirm-toast-bg);
-  box-shadow: var(--confirm-toast-box-shadow);
-  z-index: 10000;
+    background-color: var(--confirm-toast-bg);
+    box-shadow: var(--confirm-toast-box-shadow);
+    z-index: 10000;
 
 }
 
@@ -727,14 +727,54 @@
 .sort-btn-wrapper {
     margin-left: 30px;
     display: flex;
-    gap: 2px;
-    padding-top: 10px;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+    margin-right: 30px;
+    /* padding-top: 10px; */
+    /* border: 1px solid black; */
 }
 
-.sort-btn-wrapper .btn{
-    border: 1px solid black;
-    font-size: 14px;
+.sort-btn-wrapper .btn {
+    /* border: 1px solid black; */
+    font-size: 12px;
+    /* font-weight: 700; */
+    border-left: 1px solid black;
+    /* border-radius: 10px; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    color: white;
+    background-color: blue;
 }
+
+.sort-btn-wrapper .btn:last-child {
+    border-right: 1px solid black;
+}
+
+.sort-btn-wrapper .btn:hover {
+    /* transition: 0.3s; */
+    /* scale: 1.1; */
+    /* color: blue; */
+    background-color: rgb(64, 64, 245);
+    outline: 5px solid lightblue;
+
+}
+
+.sort-btn-wrapper .btn:active {
+    /* transition: 0.3s; */
+    scale: 0.9;
+    background-color: rgb(64, 64, 245);
+}
+
+.sort-btn-wrapper .btn:focus {
+    /* transition: 0.3s; */
+    scale: 0.9;
+    background-color: rgb(64, 64, 245);
+}
+
+
+
+
 
 /* dot animation */
 @keyframes blink {

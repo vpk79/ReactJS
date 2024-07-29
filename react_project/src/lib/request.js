@@ -46,9 +46,11 @@ export const request = async (method, url, data) => {
         }
 
         if (response.status === 403 || response.status === 401) {
-            // alert('No such user or password!');
-            // localService.removeItem('userData')
-            throw new Error('No such user or password!');
+            let text = await response.text()
+            text = JSON.parse(text);
+            // console.log(text.message);
+            // throw new Error('No such user or password!');
+            throw new Error(text.message);
         } else if (response.status === 409) {
             // alert('User already exist!');
             throw new Error('User already exist!');
@@ -69,7 +71,7 @@ export const request = async (method, url, data) => {
     } catch (error) {
         // alert(error.message)
         // console.log(error);
-        if (error.message === 'No such user or password!') {
+        if (error.message === 'Invalid access token') {
             localService.removeItem('userData');
             redirect('/');
         }

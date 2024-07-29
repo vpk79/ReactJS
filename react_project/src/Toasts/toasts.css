@@ -10,7 +10,8 @@
 }
 
 .Toastify__toast--info {
-    background: #FFE8BC !important;
+    background: #e3ecec !important;
+    /* background: #FFE8BC !important; */
     padding-left: 20px;
     /* border: 1px solid black; */
         /* border-radius: 50px; */
@@ -23,7 +24,8 @@
 }
 
 .Toastify__toast--success {
-    background: #e3ecec !important;
+    background: #FFE8BC !important;
+    /* background: #e3ecec !important; */
     /* background: #FCA7A9 !important; */
     padding-left: 20px;
 }
