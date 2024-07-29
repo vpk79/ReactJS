@@ -96,12 +96,16 @@
 
 .message-section.modal-header.with-form .appointment,
 .comments-section.modal-header.with-form .appointment {
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 12px;
     padding-inline: 20px;
 }
 
-
+.message-section.modal-header.with-form .appointment.pressed{
+    transition: 1.5s;
+    scale: 1.2;
+    outline: 3px solid lightblue;
+}
 
 
 /* Header section no-form*/
@@ -368,8 +372,27 @@
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
+.left-btn-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
 
+.arrow-wrapper {
+    width: 100px;
+    height: 100px;
+}
 
+.arrow-wrapper img {
+    transition: 3s;
+    width: 150px;
+    height: 200px;
+    position: absolute;
+    z-index: 100;
+    top: -100px;
+    left: -15px;
+}
 
 /* Add-to-favorites */
 
@@ -435,14 +458,17 @@
 }
 
 .message-section.modal-header.with-form .displayMsg .userText {
+    width: 100%;
     font-weight: 660;
     color: blue;
     margin-right: 5px;
     border: 1px solid black;
     border-radius: 50px;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 15px 5px 15px;
     display: inline-block;
     background-color: white;
+    word-wrap: break-word;
+    text-align: center;
 }
 
 

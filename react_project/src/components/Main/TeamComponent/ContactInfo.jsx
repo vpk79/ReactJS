@@ -38,14 +38,14 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [text, setText] = useState('');
     const MAX_CHAR_COUNT = 250;
     const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
-
+    const [showArrow, setShowArrow] = useState(false);
 
     let userName = 'Patient';
     let personName = 'Dr.'
     const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
-   
+
 
 
     if (email) userName = email.split('@')[0]; // create username for chat
@@ -135,6 +135,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setCommentHeader(false);
             setDoctorCounter(0);
             setPosting(false);
+            setShowArrow(false)
             setTimeout(() => {
                 if (msgAreaRef.current) {
                     msgAreaRef.current.focus();
@@ -478,7 +479,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
             const name = userName;
             const msg = textarea.trim();
             if (msg === '') {
-                showErrorToast('Message cannot be empty!', { toastId: "messageError" })
+                showErrorToast('Message cannot be empty!', { toastId: "messageError" });
+                setPosting(false);
                 return;
             }
             // console.log(msg);
@@ -530,6 +532,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         } else {
             response = responses[doctorCounter];
         }
+        // console.log(doctorCounter);
 
         const newMsg = {
             name: personName,
@@ -547,6 +550,19 @@ export default function ContactInfo({ data, toggleContactForm }) {
             setLoading(false);
             setLoadingMessage(null);
             setPosting(false);
+            utils.delay(1000);
+            if (doctorCounter == 2 && response.includes('appointment')) {
+                console.log('enter');
+                setShowArrow(true);
+            }
+            if (doctorCounter >= 3) {
+                setShowArrow(false);
+            }
+            setTimeout(() => {
+                if (msgAreaRef.current) {
+                    msgAreaRef.current.focus();
+                }
+            }, 100);
         }, 2200 + (response.length) * 100);
     }
 
@@ -578,6 +594,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setPosting(false);
         toggleContactForm();
         setEditPost(false);
+        setShowArrow(false);
         setRemainingChars(MAX_CHAR_COUNT)
         setText('');
         userNameRef.current.value = '';
@@ -588,7 +605,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         const newText = event.target.value;
         setText(newText);
         setRemainingChars(MAX_CHAR_COUNT - newText.length);
-    
+
     };
 
 
@@ -627,10 +644,18 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             </div>
                                             <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                             <p className='person-department'>{personData.department}</p>
-                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                            <button type="button" className="btn btn-primary btn-sm appointment">Appointment</button>
+                                            <div className='left-btn-container'>
+                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                                <button type="button" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
+                                                {showArrow && <div className='arrow-wrapper'>
+                                                    <img src="../../../../public/img/arrow.gif" alt="" />
+                                                </div>}
+
+                                            </div>
+
 
                                         </div>
+
 
                                         <div className="messages-wrapper">
                                             <div className='displayMsg'>
