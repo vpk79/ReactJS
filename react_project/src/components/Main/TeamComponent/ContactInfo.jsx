@@ -26,10 +26,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [commentId, setCommentId] = useState('');
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState(null);
-    const msgAreaRef = useRef(null);
-    const commentRef = useRef(null);
-    const userNameRef = useRef(null);
-    const timeoutRef = useRef(null);
+
     const [showAnimation1, setShowAnimation1] = useState(false);
     const [showAnimation2, setShowAnimation2] = useState(false);
     const [selectedCommentId, setSelectedCommentId] = useState(null);
@@ -40,13 +37,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
     const [showArrow, setShowArrow] = useState(false);
 
-    let userName = 'Patient';
-    let personName = 'Dr.'
+    const msgAreaRef = useRef(null);
+    const commentRef = useRef(null);
+    const userNameRef = useRef(null);
+    const timeoutRef = useRef(null);
+    const listRef = useRef(null);
     const formMsgRef = useRef(null);
     const modalRef = useRef(null);
     const timeoutIdRef = useRef(null);
 
-
+    let userName = 'Patient';
+    let personName = 'Dr.'
 
     if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
@@ -65,6 +66,17 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }
     }, [comments]);
 
+
+    const focusLastItem = () => {
+        if (listRef.current) {
+            const listItems = listRef.current.children;
+            if (listItems.length > 0) {
+                console.log('focus');
+                listItems[listItems.length - 1].focus();
+                listItems[listItems.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }
+    };
 
     const handleMouseEnter = (commentId) => {
         clearTimeout(timeoutRef.current);
@@ -91,6 +103,12 @@ export default function ContactInfo({ data, toggleContactForm }) {
         // console.log(result);
         setComments(result.slice());
     }
+
+    useEffect(() => {
+        // Фокусирай последния елемент при маунтване на компонента
+            focusLastItem();
+        // Ако искаш да фокусираш първия елемент, използвай focusFirstItem() вместо focusLastItem()
+    }, [comments]);
 
 
     const loadComments = async () => {
@@ -253,9 +271,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
             const deletePost = await commentsService.deleteComment(commentId);
             const edited = comments.filter(x => x._id !== commentId);
             setComments(edited);
+            showSuccessToast('Delete completed', {toastId: 'deleteSuccess'});
 
         } catch (error) {
-            throw showErrorToast(error.message, { toastId: 'deleteComment' })
+            throw showErrorToast(error.message, { toastId: 'deleteComment' });
         }
     };
 
@@ -650,12 +669,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                 {showArrow && <div className='arrow-wrapper'>
                                                     <img src="../../../../public/img/arrow.gif" alt="" />
                                                 </div>}
-
                                             </div>
-
-
                                         </div>
-
 
                                         <div className="messages-wrapper">
                                             <div className='displayMsg'>
@@ -713,7 +728,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
 
                                         <div className="comments-wrapper">
                                             <div className='displayComments'>
-                                                <ul className='comments-list'>
+                                                <ul className='comments-list' ref={listRef}>
                                                     {showAnimation1 && (
                                                         // <li className='no-comments wave-text'>NO COMMENTS YET</li>
                                                         <li className='no-comments wave-text'><span>N</span><span>O</span>  <span>C</span><span>O</span><span>M</span><span>M</span><span>E</span><span>N</span><span>T</span><span>S</span> <span>Y</span><span>E</span><span>T</span></li>
