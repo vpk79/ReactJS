@@ -156,7 +156,7 @@ export default function Register() {
 
             >
                 <div className={`${styles.register} modal-dialog modal-dialog-centered`}>
-                    <div className={`${styles.register} modal-content`}>
+                    <div className={`${styles.register} modal-content bg-light`}>
                         <div className={`${styles.registerHeader} modal-header`}>
                             <button
                                 id="closeBtn"
@@ -175,20 +175,25 @@ export default function Register() {
                         <form className={styles.registerForm} onSubmit={onSubmit}>
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
-                                    <label htmlFor="registerName" className="col-sm-2 col-form-label">
-                                        *Name
-                                    </label>
-                                    <input id="registerName" type="text" />
-                                    <label htmlFor="registerLastName" className="col-sm-2 col-form-label">
-                                        *Last name
-                                    </label>
-                                    <input id="registerLastName" type="text" />
-                                    <label htmlFor="registerEmail3" className="col-sm-2 col-form-label">
-                                        *Email
-                                    </label>
-                                    <div className={`${styles.emailInput} col-sm-9`}>
+                                    <div className=' d-flex flex-column'>
+                                        <label htmlFor="registerName" className="">
+                                            *Name
+                                        </label>
+                                        <input className='' id="registerName" type="text" />
+                                    </div>
+                                    <div className=' d-flex flex-column'>
+                                        <label htmlFor="registerLastName" className="">
+                                            *Last name
+                                        </label>
+                                        <input id="registerLastName" type="text" />
+                                    </div>
+                                   
+                                    <div className=' d-flex flex-column'>
+                                        <label htmlFor="registerEmail3" className="">
+                                            *Email
+                                        </label>
                                         <input type="email"
-                                            className={`form-control ${emailInputError ? 'is-invalid' : ''}`}
+                                            className={` ${emailInputError ? 'is-invalid' : ''}`}
                                             id="registerEmail3"
                                             name={RegisterFormKeys.Email}
                                             onChange={onChange}
@@ -200,78 +205,80 @@ export default function Register() {
                                         {emailInputError && (
                                             <p className={styles.emailError}>{emailInputError}</p>
                                         )}
+                                   </div>
+                                    <div className={`${styles.registerPassword} d-flex flex-column`}>
+                                        <label htmlFor="registerPassword3" className="">
+                                            *Password
+                                        </label>
+                                        <input type="password"
+                                            className={` ${passwordInputError ? 'is-invalid' : ''}`}
+                                            name={RegisterFormKeys.Password}
+                                            id="registerPassword3"
+                                            onChange={onChange}
+                                            value={values[RegisterFormKeys.Password]}
+                                            autoComplete="on"
+                                            onFocus={clearErrors}
+                                            onBlur={passwordInputValidator} />
+
+                                        {passwordInputError && (
+                                            <p className={styles.passwordError}>{passwordInputError}</p>
+                                        )}
                                     </div>
                                 </div>
 
-                                <div className='registerRightSide'>
-                                    <label htmlFor="registerPnone" className="col-sm-2 col-form-label">
-                                        *Phone number
-                                    </label>
-                                    <input id="registerPhone" type="tel" />
-                                    <label htmlFor="registerCity" className="col-sm-2 col-form-label">
-                                        *City
-                                    </label>
-                                    <input id="registerCity" type="text" />
-                                    <div>
-                                        <label htmlFor="registerBirthDate" className="col-sm-2 col-form-label">
-                                            *Birth date
+                                <div className={styles.registerRightSide}>
+
+                                    <div className='d-flex flex-column '>
+                                        <label htmlFor="registerPnone" className="">
+                                            *Phone number
                                         </label>
-                                        <input id="registerBirthDate" type="text" />
-                                        <label htmlFor="registerName" className="col-sm-2 col-form-label">
-                                            *Gender
-                                        </label>
-                                        <select name="" id="registerGender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                        <input id="registerPhone" type="tel" />
                                     </div>
-
-                                    <div className='registerBottom'>
-                                        <div className={`${styles.formInputs} row mb-3`}>
-                                            <label htmlFor="registerPassword3" className="col-sm-2 col-form-label">
-                                                *Password
+                                    <div className='d-flex flex-column'>
+                                        <label htmlFor="registerCity" className="">
+                                            *City
+                                        </label>
+                                        <input id="registerCity" type="text" />
+                                    </div>
+                                   
+                                    <div className={styles.registerRightSIdeInfo}>
+                                        <div>
+                                            <label htmlFor="registerBirthDate" className="">
+                                                *Birth date
                                             </label>
-                                            <div className="col-sm-9">
-                                                <input type="password"
-                                                    className={`form-control ${passwordInputError ? 'is-invalid' : ''}`}
-                                                    name={RegisterFormKeys.Password}
-                                                    id="registerPassword3"
-                                                    onChange={onChange}
-                                                    value={values[RegisterFormKeys.Password]}
-                                                    autoComplete="on"
-                                                    onFocus={clearErrors}
-                                                    onBlur={passwordInputValidator} />
-
-                                                {passwordInputError && (
-                                                    <p className={styles.passwordError}>{passwordInputError}</p>
-                                                )}
-                                            </div>
-                                            <label htmlFor="ConfirmPassword3" className="col-sm-2 col-form-label">
-                                                *Repeat-Password
-                                            </label>
-                                            <div className="col-sm-9">
-                                                <input type="password"
-                                                    style={{ marginTop: '15px' }}
-                                                    className={`form-control ${confirmInputError ? 'is-invalid' : ''}`}
-                                                    name={RegisterFormKeys.ConfirmPassword}
-                                                    id="ConfirmPassword3"
-                                                    onChange={onChange}
-                                                    value={values[RegisterFormKeys.ConfirmPassword]}
-                                                    autoComplete="on"
-                                                    onFocus={clearErrors}
-                                                    onBlur={confirmPasswordInputValidator} />
-                                                {confirmInputError && (
-                                                    <p className={styles.confirmError}>{confirmInputError}</p>
-                                                )}
-                                            </div>
+                                            <input id="registerBirthDate" type="text" />
                                         </div>
+
+                                        <div>
+                                            <label htmlFor="registerName" className="">
+                                                *Gender
+                                            </label>
+                                            <select name="" id="registerGender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.registerRePassword} d-flex flex-column`}>
+                                        <label htmlFor="ConfirmPassword3" className="">
+                                            *Repeat-Password
+                                        </label>
+                                        <input type="password"
+                                            className={` ${confirmInputError ? 'is-invalid' : ''}`}
+                                            name={RegisterFormKeys.ConfirmPassword}
+                                            id="ConfirmPassword3"
+                                            onChange={onChange}
+                                            value={values[RegisterFormKeys.ConfirmPassword]}
+                                            autoComplete="on"
+                                            onFocus={clearErrors}
+                                            onBlur={confirmPasswordInputValidator} />
+                                        {confirmInputError && (
+                                            <p className={styles.confirmError}>{confirmInputError}</p>
+                                        )}
                                     </div>
                                 </div>
-
-
-
                             </div>
-
                             <button type="submit" className={`${styles.btnRegister} btn btn-primary`}>
                                 Register
                             </button>
