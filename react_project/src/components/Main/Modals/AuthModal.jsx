@@ -8,8 +8,10 @@ const AuthModal = ({ onClose }) => {
                 {/* <button className="auth-modal-close" onClick={onClose}>&times;</button> */}
                 <h2>Welcome, Guest!</h2>
                 <p>Please, login or register to use our services.</p>
-                <button className="auth-modal-button">Login</button>
-                <button className="auth-modal-button">Register</button>
+                <button className="auth-modal-button" data-bs-toggle="modal"
+                    data-bs-target="#Login">Login</button>
+                <button className="auth-modal-button" data-bs-toggle="modal"
+                    data-bs-target="#Register">Register</button>
             </div>
         </div>
     );

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import Login from "./Modals/Login.jsx";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext.js";
-import Register from "./Modals/Register.jsx";
 
 
 export default function Topbar() {
@@ -81,11 +79,7 @@ export default function Topbar() {
             </div>
             {/* Topbar End */}
 
-            <Login />
-
-            {/* Register-Modal */}
-            
-            <Register />
+           
         </>
     )
 }

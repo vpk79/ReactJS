@@ -1,35 +1,58 @@
+
+/* .registerModal{
+    border: 1px solid black;
+} */
+
+.registerDialog {
+    /* background-color: black; */
+    width: 1200px;
+}
+
 .register {
-    width: 600px;
+    width: 1200px;
     height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-content: space-between;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .registerHeader {
-    border-bottom: none;
+    /* border-bottom: none;
     padding-left: 30px;
-    margin-top: -40px;
+    margin-top: -40px; */
 }
 
 .registerForm {
+padding: 30px;
     /* margin-top: -200px; */
-    padding: 30px;
+    /* 
     display: flex;
     flex-direction: column;
-    gap: 30px
+    gap: 30px */
 }
 
-.formInputs {
+.registerWrapper{
+    width: 100%;
+    height: auto;
     display: flex;
-    gap: 30px;
+    justify-content: center;
+}
+
+.registerLeftSide{
+    
+}
+
+
+.formInputs {
+    /* display: flex;
+    gap: 30px; */
 }
 
 
 .emailInput {
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 .btnRegister {

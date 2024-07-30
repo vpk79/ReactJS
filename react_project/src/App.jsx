@@ -26,6 +26,8 @@ import { loginValidator, registerValidator } from './services/validators';
 import { ToastContainer } from 'react-toastify';
 import * as toast from "./Toasts/toastsMsg";
 import AuthModal from './components/Main/Modals/AuthModal';
+import Register from './components/Main/Modals/Register';
+import Login from './components/Main/Modals/Login';
 
 
 const CurrentPath = () => {
@@ -41,7 +43,7 @@ const CurrentPath = () => {
 function App() {
   const navigate = useNavigate();
   const [auth, setAuth] = usePersistedState({})
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const loginSubmitHandler = async (values) => {
     try {
@@ -182,7 +184,8 @@ function App() {
           {!values.isAuthenticated && isAuthModalOpen && <AuthModal onClose={handleCloseAuthModal} />}
         
         <CurrentPath />
-
+        <Login />
+        <Register />
 
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
@@ -199,6 +202,7 @@ function App() {
         </Routes>
 
         <Footer />
+
         <ToastContainer
           progressClassName="toastProgress"
           bodyClassName="toastBody"
