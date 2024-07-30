@@ -159,11 +159,12 @@ export default function Login() {
                                 </label>
                                 <div className={`${styles.emailInput} col-sm-9`}>
                                     <input type="email"
-                                        className={`form-control ${emailInputError ? 'is-invalid' : ''}`}
+                                        className={`form-control shadow-sm ${emailInputError ? 'is-invalid' : ''}`}
                                         id="inputEmail3"
                                         name={LoginFormKeys.Email}
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Email]}
+                                        placeholder='Email'
                                         autoComplete="on"
                                         onBlur={handleBlur}
                                         onFocus={clearErrors}
@@ -180,11 +181,12 @@ export default function Login() {
                                 </label>
                                 <div className="col-sm-9">
                                     <input type="password"
-                                        className={`form-control ${passwordInputError ? 'is-invalid' : ''}`}
+                                        className={`form-control shadow-sm ${passwordInputError ? 'is-invalid' : ''}`}
                                         name={LoginFormKeys.Password}
                                         id="inputPassword3"
                                         onChange={onChange}
                                         value={values[LoginFormKeys.Password]}
+                                        placeholder='Password'
                                         onFocus={clearErrors}
                                         onBlur={passwordInputValidator}
                                         autoComplete="on" />

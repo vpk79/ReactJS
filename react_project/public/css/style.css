@@ -46,7 +46,7 @@
 
 
 
-.not-allowed:hover{
+.not-allowed:hover {
     cursor: pointer;
 }
 
@@ -54,7 +54,7 @@
     cursor: not-allowed;
 }
 
-.allowed:hover{
+.allowed:hover {
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@
     font-weight: normal;
 }
 
-.btn:active{
+.btn:active {
     scale: 0.9;
 }
 
@@ -127,16 +127,16 @@
 
 }
 
-.appointment:hover{
+.appointment:hover {
     background-color: #514ed4;
 }
 
-.appointment:active{
+.appointment:active {
     scale: 0.9;
 }
 
 @media (max-width: 991.98px) {
-    .navbar .navbar-nav .nav-link  {
+    .navbar .navbar-nav .nav-link {
         margin-right: 0;
         padding: 10px 0;
     }
@@ -227,7 +227,7 @@
     border-color: var(--primary) !important;
 }
 
-.header-carousel .owl-dots span{
+.header-carousel .owl-dots span {
     position: absolute !important;
     height: 45px !important;
     bottom: 30px !important;
@@ -238,7 +238,7 @@
     justify-content: center !important;
 }
 
-.header-carousel .owl-dot span{
+.header-carousel .owl-dot span {
     position: relative !important;
     display: inline-block !important;
     margin: 0 5px !important;
@@ -272,7 +272,7 @@
     text-shadow: 0 0 30px rgba(0, 0, 0, .1) !important;
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item::before {
     color: var(--light) !important;
 }
 
@@ -310,19 +310,19 @@
         max-width: 100% !important;
     }
 
-    .feature-text  {
+    .feature-text {
         padding-left: calc(((100% - 960px) / 2) + .75rem);
     }
 }
 
 @media (min-width: 1200px) {
-    .feature-text  {
+    .feature-text {
         padding-left: calc(((100% - 1140px) / 2) + .75rem);
     }
 }
 
 @media (min-width: 1400px) {
-    .feature-text  {
+    .feature-text {
         padding-left: calc(((100% - 1320px) / 2) + .75rem);
     }
 }
@@ -424,6 +424,7 @@
 }
 
 @media (min-width: 768px) {
+
     .testimonial-carousel::before,
     .testimonial-carousel::after {
         width: 200px;
@@ -431,6 +432,7 @@
 }
 
 @media (min-width: 992px) {
+
     .testimonial-carousel::before,
     .testimonial-carousel::after {
         width: 300px;
@@ -459,7 +461,7 @@
 
 .testimonial-carousel .owl-item.center .testimonial-item img {
     background: var(--primary) !important;
-} 
+}
 
 .testimonial-carousel .owl-nav {
     position: absolute;
@@ -548,4 +550,39 @@
 
 .footer .copyright a:hover {
     color: var(--primary);
+}
+
+
+
+
+input::placeholder {
+    /* color: #aaa; */
+    color: #aaa;
+    filter: opacity(0.6);
+    font-size: 18px;
+    /* font-style: italic; */
+}
+
+input::-webkit-input-placeholder {
+    color: #aaa;
+    filter: opacity(0.6);
+    font-size: 18px;
+}
+
+input:-moz-placeholder {
+    color: #aaa;
+    filter: opacity(0.6);
+    font-size: 18px;
+}
+
+input::-moz-placeholder {
+    color: #aaa;
+    filter: opacity(0.6);
+    font-size: 18px;
+}
+
+input:-ms-input-placeholder {
+    color: #aaa;
+    filter: opacity(0.6);
+    font-size: 18px;
 }

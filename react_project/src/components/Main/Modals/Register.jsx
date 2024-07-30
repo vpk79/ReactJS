@@ -5,9 +5,15 @@ import AuthContext from '../../../contexts/authContext';
 import { emailValidator } from '../../../services/validators';
 
 const RegisterFormKeys = {
-    Email: 'email',
-    Password: 'password',
-    ConfirmPassword: 'confirm-password'
+    Name: 'Name',
+    LastName: 'LastName',
+    Phone: 'Phone',
+    City: 'City',
+    BirthDate: 'Birthdate',
+    Gender: 'Gender',
+    Email: 'Email',
+    Password: 'Password',
+    ConfirmPassword: 'ConfirmPassword'
 }
 
 
@@ -15,6 +21,13 @@ export default function Register() {
 
     const { isAuthenticated, registerSubmitHandler } = useContext(AuthContext);
     const { values, onChange, onSubmit, setValues } = useForm(registerSubmitHandler, {
+
+        [RegisterFormKeys.Name]: '',
+        [RegisterFormKeys.LastName]: '',
+        [RegisterFormKeys.Phone]: '',
+        [RegisterFormKeys.City]: '',
+        [RegisterFormKeys.BirthDate]: '',
+        [RegisterFormKeys.Gender]: '',
         [RegisterFormKeys.Email]: '',
         [RegisterFormKeys.Password]: '',
         [RegisterFormKeys.ConfirmPassword]: ''
@@ -23,8 +36,9 @@ export default function Register() {
     const [emailInputError, setEmailInputError] = useState('');
     const [passwordInputError, setPasswordInputError] = useState('');
     const [confirmInputError, setConfirmInputError] = useState('');
-    const [touched, setTouched] = useState(false); // handle out of focus for email input - not show unnecessary errors
-
+    const [touched, setTouched] = useState({});
+    const [inputError, setInputError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState({});
 
     function formReset() {
         setEmailInputError('');
@@ -62,13 +76,13 @@ export default function Register() {
     }, [isAuthenticated]);
 
     // focus on email field when is shown
-    const emailRef = useRef(null);
+    const nameRef = useRef(null);
     const modalRef = useRef(null);
 
     useEffect(() => {
         const handleShown = () => {
-            if (emailRef.current) {
-                emailRef.current.focus();
+            if (nameRef.current) {
+                nameRef.current.focus();
             }
         };
 
@@ -85,25 +99,35 @@ export default function Register() {
         };
     }, []);
 
-    const handleBlur = () => {
-        setTouched(true);
+    const handleBlur = (e) => {
+        const name = e.target.name;
+        setTouched(state => ({ ...state, [name]: true }));
+        // setErrorMessage(state => ({ ...state, [name]: '' }));
+        console.log('handed', name);
     };
 
     // input validators
     useEffect(() => {
-        if (!touched) return;
+        console.log(touched);
         const timeoutId = setTimeout(() => {
-            if (values.email === '') {
-                setEmailInputError('*email is required!');
-            } else if (!emailValidator(values.email)) {
-                setEmailInputError('*email is not valid!');
-            } else {
-                setEmailInputError('');
+
+            for (let item of Object.keys(touched)) {
+                // console.log(item);
+                if (item) {
+                    if (values[item] === '') {
+                        const error = `*${item} is required!`
+                        setErrorMessage(state => ({ ...state, [item]: error }));
+                    } else {
+                        setErrorMessage(state => ({ ...state, [item]: '' }));
+                    }
+                }
+
+                // touched[item] = false;
             }
-        }, 500);
+        }, 300);
 
         return () => clearTimeout(timeoutId);
-    }, [touched]);
+    }, [touched, values]);
 
     const passwordInputValidator = () => {
         if (values.password === '') {
@@ -123,21 +147,25 @@ export default function Register() {
     }
 
     const clearErrors = (e) => {
+        const name = e.target.name;
+        setTouched(state => ({ ...state, [name]: false }));
+        setErrorMessage(state => ({ ...state, [name]: '' }));
+
         // console.log(e.target.name);
-        if (e.target.name === 'email') {
-            setEmailInputError('');
-            setTouched(false);
-        } else if (e.target.name === 'password') {
-            setPasswordInputError('');
-        } else if (e.target.name === 'confirm-password') {
-            setConfirmInputError('');
-        }
-        else if (e.target.name === 'closeBtn') {
-            setEmailInputError('');
-            setPasswordInputError('');
-            setConfirmInputError('');
-            setTouched(false);
-        }
+        // if (e.target.name === 'email') {
+        //     setEmailInputError('');
+        //     setTouched(false);
+        // } else if (e.target.name === 'password') {
+        //     setPasswordInputError('');
+        // } else if (e.target.name === 'confirm-password') {
+        //     setConfirmInputError('');
+        // }
+        // else if (e.target.name === 'closeBtn') {
+        //     setEmailInputError('');
+        //     setPasswordInputError('');
+        //     setConfirmInputError('');
+        //     setTouched(false);
+        // }
     }
 
 
@@ -172,23 +200,56 @@ export default function Register() {
                         <h3 style={{ textAlign: 'center', marginTop: '-50px' }} className="form-title" id="RegisterLabel">
                             Register
                         </h3>
-                        <form className={`col ${styles.registerForm}`} onSubmit={onSubmit}>
+                        <form className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
-                                    <div className=' d-flex flex-column'>
+                                    <div className='d-flex flex-column position-relative'>
                                         <label htmlFor="registerName" className="">
                                             *Name
                                         </label>
-                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerName" type="text" />
+                                        <input
+                                            className='shadow-sm form-control form-control-sm w-75'
+                                            id="registerName"
+                                            type="text"
+                                            placeholder='Name'
+                                            name={RegisterFormKeys.Name}
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            autoComplete="off"
+                                            value={values[RegisterFormKeys.Name]}
+                                            onBlur={handleBlur}
+                                            onFocus={clearErrors}
+                                            ref={nameRef}
+                                        />
+                                        {touched.Name && !!errorMessage.Name && (
+                                            <p className={styles.errorMsg}>{errorMessage.Name}</p>
+                                        )}
+
                                     </div>
-                                    <div className=' d-flex flex-column'>
+                                    <div className=' d-flex flex-column position-relative'>
                                         <label htmlFor="registerLastName" className="">
                                             *Last name
                                         </label>
-                                        <input className='shadow-sm form-control form-control-sm w-75'  id="registerLastName" type="text" />
+                                        <input
+                                            className='shadow-sm form-control form-control-sm w-75'
+                                            id="registerLastName"
+                                            type="text"
+                                            placeholder='Last name'
+                                            name={RegisterFormKeys.LastName}
+                                            autoComplete="off"
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            value={values[RegisterFormKeys.LastName]}
+                                            onBlur={handleBlur}
+                                            onFocus={clearErrors}
+                                        />
+                                        {touched.LastName && !!errorMessage.LastName && (
+                                            <p className={styles.errorMsg}>{errorMessage.LastName}</p>
+                                        )}
+
                                     </div>
-                                   
-                                    <div className=' d-flex flex-column'>
+
+                                    <div className=' d-flex flex-column position-relative'>
                                         <label htmlFor="registerEmail3" className="">
                                             *Email
                                         </label>
@@ -198,15 +259,16 @@ export default function Register() {
                                             name={RegisterFormKeys.Email}
                                             onChange={onChange}
                                             value={values[RegisterFormKeys.Email]}
-                                            autoComplete="on"
+                                            placeholder='Email'
+                                            autoComplete="off"
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
-                                            ref={emailRef} />
+                                        />
                                         {/* {emailInputError && (
                                             <p className={styles.emailError}>{emailInputError}</p>
                                         )} */}
-                                   </div>
-                                    <div className={` d-flex flex-column`}>
+                                    </div>
+                                    <div className='d-flex flex-column position-relative'>
                                         <label htmlFor="registerPassword3" className="">
                                             *Password
                                         </label>
@@ -216,6 +278,7 @@ export default function Register() {
                                             id="registerPassword3"
                                             onChange={onChange}
                                             value={values[RegisterFormKeys.Password]}
+                                            placeholder='Password'
                                             autoComplete="on"
                                             onFocus={clearErrors}
                                             onBlur={passwordInputValidator} />
@@ -228,29 +291,44 @@ export default function Register() {
 
                                 <div className={styles.registerRightSide}>
 
-                                    <div className='d-flex flex-column '>
+                                    <div className='d-flex flex-column position-relative'>
                                         <label htmlFor="registerPnone" className="">
                                             *Phone number
                                         </label>
-                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerPhone" type="tel" />
+                                        <input
+                                            className='shadow-sm form-control form-control-sm w-75'
+                                            id="registerPhone"
+                                            type="tel"
+                                            placeholder='Phone number'
+                                        />
                                     </div>
-                                    <div className='d-flex flex-column'>
+                                    <div className='d-flex flex-column position-relative'>
                                         <label htmlFor="registerCity" className="">
                                             *City
                                         </label>
-                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerCity" type="text" />
+                                        <input
+                                            className='shadow-sm form-control form-control-sm w-75'
+                                            id="registerCity"
+                                            type="text"
+                                            placeholder='City'
+                                        />
                                     </div>
-                                   
-                                    <div className="d-flex w-75">
+
+                                    <div className="d-flex w-75 position-relative">
                                         <div className='d-flex flex-column'>
                                             <label htmlFor="registerBirthDate" className="">
                                                 *Birth date
                                             </label>
-                                            
-                                            <input className='shadow-sm form-control form-control-sm' id="registerBirthDate" type="text" />
+
+                                            <input
+                                                className='shadow-sm form-control form-control-sm'
+                                                id="registerBirthDate"
+                                                type="text"
+                                                placeholder='Birth date'
+                                            />
                                         </div>
 
-                                        <div className='d-flex flex-column'>
+                                        <div className='d-flex flex-column position-relative'>
                                             <label htmlFor="registerName" className="">
                                                 *Gender
                                             </label>
@@ -261,7 +339,7 @@ export default function Register() {
                                         </div>
 
                                     </div>
-                                    <div className={` d-flex flex-column`}>
+                                    <div className='d-flex flex-column position-relative'>
                                         <label htmlFor="ConfirmPassword3" className="">
                                             *Repeat-Password
                                         </label>
@@ -271,6 +349,7 @@ export default function Register() {
                                             id="ConfirmPassword3"
                                             onChange={onChange}
                                             value={values[RegisterFormKeys.ConfirmPassword]}
+                                            placeholder='Repeat-password'
                                             autoComplete="on"
                                             onFocus={clearErrors}
                                             onBlur={confirmPasswordInputValidator} />
