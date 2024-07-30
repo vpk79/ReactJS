@@ -42,7 +42,7 @@ export default function Register() {
     const closeBtnRef = useRef(null);
 
     function closeForm() {
-
+        console.log('heeee');
         try {
             formReset();
             if (closeBtnRef.current) {
@@ -156,7 +156,7 @@ export default function Register() {
 
             >
                 <div className={`${styles.register} modal-dialog modal-dialog-centered`}>
-                    <div className={`${styles.register} modal-content bg-light`}>
+                    <div className={`${styles.register} modal-content bg-light row`}>
                         <div className={`${styles.registerHeader} modal-header`}>
                             <button
                                 id="closeBtn"
@@ -172,20 +172,20 @@ export default function Register() {
                         <h3 style={{ textAlign: 'center', marginTop: '-50px' }} className="form-title" id="RegisterLabel">
                             Register
                         </h3>
-                        <form className={styles.registerForm} onSubmit={onSubmit}>
+                        <form className={`col ${styles.registerForm}`} onSubmit={onSubmit}>
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
                                     <div className=' d-flex flex-column'>
                                         <label htmlFor="registerName" className="">
                                             *Name
                                         </label>
-                                        <input className='' id="registerName" type="text" />
+                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerName" type="text" />
                                     </div>
                                     <div className=' d-flex flex-column'>
                                         <label htmlFor="registerLastName" className="">
                                             *Last name
                                         </label>
-                                        <input id="registerLastName" type="text" />
+                                        <input className='shadow-sm form-control form-control-sm w-75'  id="registerLastName" type="text" />
                                     </div>
                                    
                                     <div className=' d-flex flex-column'>
@@ -193,7 +193,7 @@ export default function Register() {
                                             *Email
                                         </label>
                                         <input type="email"
-                                            className={` ${emailInputError ? 'is-invalid' : ''}`}
+                                            className={`shadow-sm form-control form-control-sm w-75 {${emailInputError ? 'is-invalid' : ''}}`}
                                             id="registerEmail3"
                                             name={RegisterFormKeys.Email}
                                             onChange={onChange}
@@ -202,16 +202,16 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             ref={emailRef} />
-                                        {emailInputError && (
+                                        {/* {emailInputError && (
                                             <p className={styles.emailError}>{emailInputError}</p>
-                                        )}
+                                        )} */}
                                    </div>
-                                    <div className={`${styles.registerPassword} d-flex flex-column`}>
+                                    <div className={` d-flex flex-column`}>
                                         <label htmlFor="registerPassword3" className="">
                                             *Password
                                         </label>
                                         <input type="password"
-                                            className={` ${passwordInputError ? 'is-invalid' : ''}`}
+                                            className={`shadow-sm form-control form-control-sm w-75 {${passwordInputError ? 'is-invalid' : ''}}`}
                                             name={RegisterFormKeys.Password}
                                             id="registerPassword3"
                                             onChange={onChange}
@@ -220,9 +220,9 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             onBlur={passwordInputValidator} />
 
-                                        {passwordInputError && (
+                                        {/* {passwordInputError && (
                                             <p className={styles.passwordError}>{passwordInputError}</p>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
 
@@ -232,40 +232,41 @@ export default function Register() {
                                         <label htmlFor="registerPnone" className="">
                                             *Phone number
                                         </label>
-                                        <input id="registerPhone" type="tel" />
+                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerPhone" type="tel" />
                                     </div>
                                     <div className='d-flex flex-column'>
                                         <label htmlFor="registerCity" className="">
                                             *City
                                         </label>
-                                        <input id="registerCity" type="text" />
+                                        <input className='shadow-sm form-control form-control-sm w-75' id="registerCity" type="text" />
                                     </div>
                                    
-                                    <div className={styles.registerRightSIdeInfo}>
-                                        <div>
+                                    <div className="d-flex w-75">
+                                        <div className='d-flex flex-column'>
                                             <label htmlFor="registerBirthDate" className="">
                                                 *Birth date
                                             </label>
-                                            <input id="registerBirthDate" type="text" />
+                                            
+                                            <input className='shadow-sm form-control form-control-sm' id="registerBirthDate" type="text" />
                                         </div>
 
-                                        <div>
+                                        <div className='d-flex flex-column'>
                                             <label htmlFor="registerName" className="">
                                                 *Gender
                                             </label>
-                                            <select name="" id="registerGender">
+                                            <select className='shadow-sm form-control form-control-sm ' name="" id="registerGender">
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
                                             </select>
                                         </div>
 
                                     </div>
-                                    <div className={`${styles.registerRePassword} d-flex flex-column`}>
+                                    <div className={` d-flex flex-column`}>
                                         <label htmlFor="ConfirmPassword3" className="">
                                             *Repeat-Password
                                         </label>
                                         <input type="password"
-                                            className={` ${confirmInputError ? 'is-invalid' : ''}`}
+                                            className={`shadow-sm form-control form-control-sm w-75 {${confirmInputError ? 'is-invalid' : ''}}`}
                                             name={RegisterFormKeys.ConfirmPassword}
                                             id="ConfirmPassword3"
                                             onChange={onChange}
@@ -273,20 +274,19 @@ export default function Register() {
                                             autoComplete="on"
                                             onFocus={clearErrors}
                                             onBlur={confirmPasswordInputValidator} />
-                                        {confirmInputError && (
+                                        {/* {confirmInputError && (
                                             <p className={styles.confirmError}>{confirmInputError}</p>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                             </div>
                             <button type="submit" className={`${styles.btnRegister} btn btn-primary`}>
                                 Register
                             </button>
+                            <p style={{ textAlign: 'center', marginTop: '40px' }}>
+                                Already have an account?&nbsp;&nbsp;
+                                <span><a name="loginLink" style={{ color: 'blue', fontSize: '1.1em', marginBottom: '7px' }} className="btn" data-bs-toggle="modal" data-bs-target="#Login" onClick={closeForm}>Login</a></span></p>
                         </form>
-
-                        <p style={{ textAlign: 'center', marginBottom: '-50px' }}>
-                            Already have an account?&nbsp;&nbsp;
-                            <span><a name="loginLink" style={{ color: 'blue', fontSize: '1.1em', marginBottom: '5px' }} className="btn" data-bs-toggle="modal" data-bs-target="#Login" onClick={closeForm}>Login</a></span></p>
                     </div>
                 </div>
             </div>

@@ -135,7 +135,7 @@ export default function Login() {
                 ref={modalRef}
             >
                 <div className="modal-dialog modal-dialog-centered">
-                    <div className={`${styles.login} modal-content`}>
+                    <div className={`${styles.login} modal-content bg-light`}>
                         <div className={`${styles.loginHeader} modal-header`}>
 
                             <button

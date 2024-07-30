@@ -4,12 +4,12 @@
 
 .registerDialog {
     /* background-color: black; */
-    width: 1200px;
+    width: 600px;
 }
 
 .register {
-    width: 1200px;
-    height: 600px;
+    width: 800px;
+    height: 660px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -18,9 +18,12 @@
 }
 
 .registerHeader {
-    /* border-bottom: none;
-    padding-left: 30px;
-    margin-top: -40px; */
+    border-bottom: none;
+    /* padding-left: 30px; */
+    /* margin-top: -40px; */
+    /* padding-top: 20px; */
+    margin-top: 15px;
+    z-index: 1000;
 }
 
 .registerForm {
@@ -29,7 +32,9 @@
 
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 40px;
+   /* padding-left: 30px; */
+   margin-left: 35px;
 }
 
 .registerWrapper {
@@ -37,8 +42,9 @@
     height: auto;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    /* gap: 20px; */
     flex-wrap: wrap;
+    
 }
 
 .registerLeftSide {
@@ -62,7 +68,7 @@
     height: auto;
     display: flex;
     gap: 20px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .registerBottom {
@@ -85,14 +91,13 @@
     display: inline-block;
 }
 
-.emailInput {
-    /* margin-left: 30px; */
-}
+
 
 .btnRegister {
     /* margin-top: 10px; */
     margin-bottom: -60px;
     /* padding-bottom: 0px; */
+    margin-left: -60px;
     width: 200px;
     text-align: center;
     align-self: center;
