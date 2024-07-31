@@ -327,7 +327,7 @@ export default function Register() {
 
                                         {touched.Password && !validation['Password'].validated && (
                                             <ul className={styles.passwordTips}>
-                                                <li>Password must contain</li>
+                                                <li>Password must contain:</li>
                                                 <li style={{color: !conditions.minLength ? 'red': 'gray'}}><i className={`fas ${!conditions.minLength ? 'fa-times' : 'fa-check'}`}></i> min 6 characters</li>
                                                 <li style={{ color: !conditions.capitalLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.capitalLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 capital letter</li>
                                                 <li style={{ color: !conditions.smallLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.smallLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 small letter</li>
