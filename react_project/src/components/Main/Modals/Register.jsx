@@ -3,6 +3,7 @@ import styles from './Register.module.css';
 import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
 import { emailValidator, validatorHandler } from '../../../services/validators';
+import { showErrorToast } from '../../../Toasts/toastsMsg';
 
 const RegisterFormKeys = {
     Name: 'Name',
@@ -38,9 +39,11 @@ export default function Register() {
     const [confirmInputError, setConfirmInputError] = useState('');
     const [touched, setTouched] = useState({});
     const [inputError, setInputError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState({});
+    const [validation, setValidation] = useState({});
+    const regFormRef = useRef(null);
 
     function formReset() {
+        regFormRef.current.reset();
         setEmailInputError('');
         setPasswordInputError('');
         setConfirmInputError('');
@@ -102,7 +105,7 @@ export default function Register() {
     const handleBlur = (e) => {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: true }));
-        // setErrorMessage(state => ({ ...state, [name]: '' }));
+        // setValidation(state => ({ ...state, [name]: '' }));
         // console.log('handed', name);
     };
 
@@ -114,26 +117,29 @@ export default function Register() {
 
         for (let item of Object.keys(touched)) {
             if (item) {
-                if (values[item] === '') {
+                if (!values[item]) {
                     const error = `*${item} is required!`
-                    setErrorMessage(state => ({ ...state, [item]: error }));
+                    setValidation(state => ({ ...state, [item]: { error, validated: false } }));
                 } else {
-                    setErrorMessage(state => ({ ...state, [item]: '' }));
+                    // setValidation(state => ({ ...state, [item]: '' }));
 
                     console.log('key ->>', item);
                     console.log('values ->>', values);
-                   const validate =  validatorHandler(item, values[item]);
-                    console.log(validate);
-                    if(!validate.validated){
-                        setErrorMessage(state => ({ ...state, [item]: validate.error }));
-                    } else {
-                        setErrorMessage(state => ({ ...state, [item]: '' }));
+                    if (values == undefined) {
+                        showErrorToast('Validation error', { toastId: 'validationError' });
+                        return;
                     }
-                   
+                    const checkValidation = validatorHandler(item, values[item]);
+                    console.log(checkValidation);
+                        setValidation(state => ({ ...state, [item]: checkValidation }));
                 }
             }
         }
     }, [touched]);
+
+    useEffect(() => {
+        console.log(validation);
+    }, [validation])
 
     const passwordInputValidator = () => {
         if (values.password === '') {
@@ -155,7 +161,7 @@ export default function Register() {
     const clearErrors = (e) => {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: false }));
-        setErrorMessage(state => ({ ...state, [name]: '' }));
+        // setValidation(state => ({ ...state, [name]: '' }));
 
         // console.log(e.target.name);
         // if (e.target.name === 'email') {
@@ -206,7 +212,7 @@ export default function Register() {
                         <h3 style={{ textAlign: 'center', marginTop: '-50px' }} className="form-title" id="RegisterLabel">
                             Register
                         </h3>
-                        <form className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
+                        <form ref={regFormRef} className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
                                     <div className='d-flex flex-column position-relative'>
@@ -214,7 +220,8 @@ export default function Register() {
                                             *Name
                                         </label>
                                         <input
-                                            className={`${!!errorMessage.Name ? 'is-invalid' : 'is-valid'} shadow-sm form-control form-control-sm w-75`}
+                                            // className={`${!!validation.Name ? 'is-invalid' : ''} ${!!!validation.Name ? 'is-valid' : ''} shadow-sm form-control form-control-sm w-75`}
+                                            className={`shadow-sm form-control form-control-sm w-75`}
                                             id="registerName"
                                             type="text"
                                             placeholder='Name'
@@ -228,8 +235,8 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             ref={nameRef}
                                         />
-                                        {touched.Name && !!errorMessage.Name && (
-                                            <p className={styles.errorMsg}>{errorMessage.Name}</p>
+                                        {touched.Name && !validation['Name'].validated && (
+                                            <p className={styles.errorMsg}>{validation['Name'].error}</p>
                                         )}
 
                                     </div>
@@ -238,7 +245,8 @@ export default function Register() {
                                             *Last name
                                         </label>
                                         <input
-                                            className={`${!!errorMessage.LastName ? 'is-invalid': 'is-valid'} shadow-sm form-control form-control-sm w-75`}
+                                            // className={`${!!validation.Name ? 'is-invalid' : ''} ${!!!validation.Name ? 'is-valid' : ''}  shadow-sm form-control form-control-sm w-75`}
+                                            className={`shadow-sm form-control form-control-sm w-75`}
                                             id="registerLastName"
                                             type="text"
                                             placeholder='Last name'
@@ -251,9 +259,9 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {touched.LastName && !!errorMessage.LastName && (
-                                            <p className={styles.errorMsg}>{errorMessage.LastName}</p>
-                                        )}
+                                        {/* {touched.LastName && !!validation.LastName && (
+                                            <p className={styles.errorMsg}>{validation.LastName}</p>
+                                        )} */}
 
                                     </div>
 
@@ -265,15 +273,17 @@ export default function Register() {
                                             className={`shadow-sm form-control form-control-sm w-75 {${emailInputError ? 'is-invalid' : ''}}`}
                                             id="registerEmail3"
                                             name={RegisterFormKeys.Email}
-                                            onChange={onChange}
                                             value={values[RegisterFormKeys.Email]}
                                             placeholder='Email'
                                             autoComplete="off"
+                                            maxLength='50'
+                                            onChange={onChange}
+                                            onInput={handleBlur}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {/* {emailInputError && (
-                                            <p className={styles.emailError}>{emailInputError}</p>
+                                        {/* {touched.Email && !!validation.Email && (
+                                            <p className={styles.errorMsg}>{validation.LastName}</p>
                                         )} */}
                                     </div>
                                     <div className='d-flex flex-column position-relative'>

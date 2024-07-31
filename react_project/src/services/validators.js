@@ -1,6 +1,6 @@
 
 const emailRegex = new RegExp(/[a-z0-9._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.)+(com|bg)/, 'i');
-const nameRegex = new RegExp(/^[a-zA-Z]+$/);
+const nameRegex = new RegExp(/^[A-Za-zА-Яа-я]+$/);
 const validatedValues = {};
 
 export function loginValidator(values) {
@@ -36,7 +36,7 @@ export function registerValidator(values) {
 
 
 export function nameValidator(value) {
-    return nameRegex.test(value);
+    return !nameRegex.test(value) || value.length < 2 ? false : true;
 }
 
 
