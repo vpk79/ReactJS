@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Register.module.css';
 import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
-import { emailValidator } from '../../../services/validators';
+import { emailValidator, validatorHandler } from '../../../services/validators';
 
 const RegisterFormKeys = {
     Name: 'Name',
@@ -103,31 +103,37 @@ export default function Register() {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: true }));
         // setErrorMessage(state => ({ ...state, [name]: '' }));
-        console.log('handed', name);
+        // console.log('handed', name);
     };
 
     // input validators
     useEffect(() => {
-        console.log(touched);
-        const timeoutId = setTimeout(() => {
+        // const timeoutId = setTimeout(() => {
+        // }, 300);
+        // return () => clearTimeout(timeoutId);
 
-            for (let item of Object.keys(touched)) {
-                // console.log(item);
-                if (item) {
-                    if (values[item] === '') {
-                        const error = `*${item} is required!`
-                        setErrorMessage(state => ({ ...state, [item]: error }));
+        for (let item of Object.keys(touched)) {
+            if (item) {
+                if (values[item] === '') {
+                    const error = `*${item} is required!`
+                    setErrorMessage(state => ({ ...state, [item]: error }));
+                } else {
+                    setErrorMessage(state => ({ ...state, [item]: '' }));
+
+                    console.log('key ->>', item);
+                    console.log('values ->>', values);
+                   const validate =  validatorHandler(item, values[item]);
+                    console.log(validate);
+                    if(!validate.validated){
+                        setErrorMessage(state => ({ ...state, [item]: validate.error }));
                     } else {
                         setErrorMessage(state => ({ ...state, [item]: '' }));
                     }
+                   
                 }
-
-                // touched[item] = false;
             }
-        }, 300);
-
-        return () => clearTimeout(timeoutId);
-    }, [touched, values]);
+        }
+    }, [touched]);
 
     const passwordInputValidator = () => {
         if (values.password === '') {
@@ -208,13 +214,14 @@ export default function Register() {
                                             *Name
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-75'
+                                            className={`${!!errorMessage.Name ? 'is-invalid' : 'is-valid'} shadow-sm form-control form-control-sm w-75`}
                                             id="registerName"
                                             type="text"
                                             placeholder='Name'
                                             name={RegisterFormKeys.Name}
                                             onChange={onChange}
                                             onInput={handleBlur}
+                                            maxLength='50'
                                             autoComplete="off"
                                             value={values[RegisterFormKeys.Name]}
                                             onBlur={handleBlur}
@@ -231,12 +238,13 @@ export default function Register() {
                                             *Last name
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-75'
+                                            className={`${!!errorMessage.LastName ? 'is-invalid': 'is-valid'} shadow-sm form-control form-control-sm w-75`}
                                             id="registerLastName"
                                             type="text"
                                             placeholder='Last name'
                                             name={RegisterFormKeys.LastName}
                                             autoComplete="off"
+                                            maxLength='50'
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             value={values[RegisterFormKeys.LastName]}
