@@ -137,4 +137,35 @@
     padding: 0;
     font-size: 0.7rem;
     z-index: 1000;
+    transition: 0.5s;
+}
+
+.passwordTips {
+    width: 170px;
+    text-align: left;
+    padding-left: 10px;
+    margin-left: 0;
+    display: inline-block;
+    position: absolute;
+    /* background-color: lemonchiffon; */
+    color: gray;
+    font-weight: 600;
+    bottom: -200px;
+    left: 0;
+    z-index: 1000;
+    font-size: 0.7rem;
+    list-style: none;
+    transition: 0.5s;
+
+}
+
+.revealPassword {
+    position: absolute;
+    border: none;
+    color: rgb(145, 143, 143);
+    outline: none;
+    padding: 0;
+    margin: 0;
+    left: 110px;
+    z-index: 1000;
 }

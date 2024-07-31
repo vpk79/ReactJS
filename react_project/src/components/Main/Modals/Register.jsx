@@ -40,6 +40,7 @@ export default function Register() {
     const [touched, setTouched] = useState({});
     const [inputError, setInputError] = useState(false);
     const [validation, setValidation] = useState({});
+    const [revealPassword, setRevealPassword] = useState(false);
     const regFormRef = useRef(null);
 
     function formReset() {
@@ -55,11 +56,18 @@ export default function Register() {
         });
     }
 
+    const conditions = {
+        minLength: values.Password.length >= 6,
+        capitalLetter: /[A-Z]/.test(values.Password),
+        smallLetter: /[a-z]/.test(values.Password),
+        number: /\d/.test(values.Password),
+        specialChar: /[@$!%*?&_\-]/.test(values.Password)
+    };
+
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
 
     function closeForm() {
-        console.log('heeee');
         try {
             formReset();
             if (closeBtnRef.current) {
@@ -70,6 +78,8 @@ export default function Register() {
             console.error('Error closing form:', error);
             return null;
         }
+
+        setRevealPassword(false);
     };
 
     useEffect(() => {
@@ -109,6 +119,7 @@ export default function Register() {
         // console.log('handed', name);
     };
 
+
     // input validators
     useEffect(() => {
         // const timeoutId = setTimeout(() => {
@@ -131,23 +142,16 @@ export default function Register() {
                     }
                     const checkValidation = validatorHandler(item, values[item]);
                     console.log(checkValidation);
-                        setValidation(state => ({ ...state, [item]: checkValidation }));
+                    setValidation(state => ({ ...state, [item]: checkValidation }));
                 }
             }
         }
     }, [touched]);
 
     useEffect(() => {
-        console.log(validation);
-    }, [validation])
+        console.log(values);
+    }, [values])
 
-    const passwordInputValidator = () => {
-        if (values.password === '') {
-            setPasswordInputError('*password is required!')
-        } else if (values.password.length <= 5) {
-            setPasswordInputError('*password must have 6 symbols at least!')
-        }
-    }
 
     const confirmPasswordInputValidator = () => {
         if (values['confirm-password'] === '') {
@@ -156,6 +160,11 @@ export default function Register() {
             setConfirmInputError('*passwords did not match!')
 
         }
+    }
+
+    function revealPasswordHandler(e) {
+        e.preventDefault();
+        setRevealPassword(!revealPassword);
     }
 
     const clearErrors = (e) => {
@@ -220,17 +229,18 @@ export default function Register() {
                                             *Name
                                         </label>
                                         <input
-                                            // className={`${!!validation.Name ? 'is-invalid' : ''} ${!!!validation.Name ? 'is-valid' : ''} shadow-sm form-control form-control-sm w-75`}
-                                            className={`shadow-sm form-control form-control-sm w-75`}
+                                            className={`${touched.Name && !validation['Name'].validated ? 'is-invalid' : ''}
+                                             ${touched.Name && validation['Name'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-75`}
                                             id="registerName"
                                             type="text"
                                             placeholder='Name'
                                             name={RegisterFormKeys.Name}
+                                            value={values[RegisterFormKeys.Name]}
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             maxLength='50'
                                             autoComplete="off"
-                                            value={values[RegisterFormKeys.Name]}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             ref={nameRef}
@@ -245,23 +255,25 @@ export default function Register() {
                                             *Last name
                                         </label>
                                         <input
-                                            // className={`${!!validation.Name ? 'is-invalid' : ''} ${!!!validation.Name ? 'is-valid' : ''}  shadow-sm form-control form-control-sm w-75`}
-                                            className={`shadow-sm form-control form-control-sm w-75`}
+                                            className={`${touched.LastName && !validation['LastName'].validated ? 'is-invalid' : ''}
+                                             ${touched.LastName && validation['LastName'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-75`}
                                             id="registerLastName"
                                             type="text"
                                             placeholder='Last name'
                                             name={RegisterFormKeys.LastName}
+                                            value={values[RegisterFormKeys.LastName]}
                                             autoComplete="off"
                                             maxLength='50'
                                             onChange={onChange}
                                             onInput={handleBlur}
-                                            value={values[RegisterFormKeys.LastName]}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {/* {touched.LastName && !!validation.LastName && (
-                                            <p className={styles.errorMsg}>{validation.LastName}</p>
-                                        )} */}
+                                        {touched.LastName && !validation['LastName'].validated && (
+                                            <p className={styles.errorMsg}>{validation['LastName'].error}</p>
+                                        )}
+
 
                                     </div>
 
@@ -270,7 +282,9 @@ export default function Register() {
                                             *Email
                                         </label>
                                         <input type="email"
-                                            className={`shadow-sm form-control form-control-sm w-75 {${emailInputError ? 'is-invalid' : ''}}`}
+                                            className={`${touched.Email && !validation['Email'].validated ? 'is-invalid' : ''}
+                                             ${touched.Email && validation['Email'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-75`}
                                             id="registerEmail3"
                                             name={RegisterFormKeys.Email}
                                             value={values[RegisterFormKeys.Email]}
@@ -282,28 +296,46 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {/* {touched.Email && !!validation.Email && (
-                                            <p className={styles.errorMsg}>{validation.LastName}</p>
-                                        )} */}
+                                        {touched.Email && !validation['Email'].validated && (
+                                            <p className={styles.errorMsg}>{validation['Email'].error}</p>
+                                        )}
+
                                     </div>
                                     <div className='d-flex flex-column position-relative'>
+                                        <button className={styles.revealPassword} onClick={revealPasswordHandler}><i class={`fas ${!revealPassword ? 'fa-eye': 'fa-eye-slash'}`}></i></button>
                                         <label htmlFor="registerPassword3" className="">
                                             *Password
                                         </label>
-                                        <input type="password"
-                                            className={`shadow-sm form-control form-control-sm w-75 {${passwordInputError ? 'is-invalid' : ''}}`}
+                                        <input type={!revealPassword ? 'password': 'text'}
+                                            className={`${touched.Password && !validation['Password'].validated ? 'is-invalid' : ''}
+                                             ${touched.Password && validation['Password'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-75`}
                                             name={RegisterFormKeys.Password}
-                                            id="registerPassword3"
-                                            onChange={onChange}
                                             value={values[RegisterFormKeys.Password]}
+                                            id="registerPassword3"
                                             placeholder='Password'
-                                            autoComplete="on"
-                                            onFocus={clearErrors}
-                                            onBlur={passwordInputValidator} />
+                                            autoComplete="off"
+                                            maxLength='50'
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            onBlur={handleBlur}
+                                            onFocus={clearErrors} />
 
-                                        {/* {passwordInputError && (
-                                            <p className={styles.passwordError}>{passwordInputError}</p>
-                                        )} */}
+                                        {touched.Password && !validation['Password'].validated && (
+                                            <p className={styles.errorMsg}>{validation['Password'].error}</p>
+                                        )}
+
+                                        {touched.Password && !validation['Password'].validated && (
+                                            <ul className={styles.passwordTips}>
+                                                <li>Password must contain</li>
+                                                <li style={{color: !conditions.minLength ? 'red': 'gray'}}><i className={`fas ${!conditions.minLength ? 'fa-times' : 'fa-check'}`}></i> min 6 characters</li>
+                                                <li style={{ color: !conditions.capitalLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.capitalLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 capital letter</li>
+                                                <li style={{ color: !conditions.smallLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.smallLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 small letter</li>
+                                                <li style={{ color: !conditions.number ? 'red' : 'gray' }}><i className={`fas ${!conditions.number ? 'fa-times' : 'fa-check'}`}></i> min 1 digit</li>
+                                                <li style={{ color: !conditions.specialChar ? 'red' : 'gray' }}><i className={`fas ${!conditions.specialChar ? 'fa-times' : 'fa-check'}`}></i> min 1 special symbol(@$!%*?&_\-)</li>
+                                            </ul>
+                                        )}
+
                                     </div>
                                 </div>
 
@@ -381,8 +413,7 @@ export default function Register() {
                                 Register
                             </button>
                             <p style={{ textAlign: 'center', marginTop: '40px' }}>
-                                Already have an account?&nbsp;&nbsp;
-                                <span><a name="loginLink" style={{ color: 'blue', fontSize: '1.1em', marginBottom: '7px' }} className="btn" data-bs-toggle="modal" data-bs-target="#Login" onClick={closeForm}>Login</a></span></p>
+                                Already have an account?<span><a name="loginLink" style={{ color: 'blue', fontSize: '1.1em', marginBottom: '7px' }} className="btn" data-bs-toggle="modal" data-bs-target="#Login" onClick={closeForm}>Login</a></span></p>
                         </form>
                     </div>
                 </div>
