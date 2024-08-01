@@ -10,7 +10,7 @@ const RegisterFormKeys = {
     LastName: 'LastName',
     Phone: 'Phone',
     City: 'City',
-    BirthDate: 'BirthDate',
+    Date: 'Date',
     Gender: 'Gender',
     Email: 'Email',
     Password: 'Password',
@@ -24,8 +24,8 @@ export default function Register() {
         [RegisterFormKeys.LastName]: '',
         [RegisterFormKeys.Phone]: '',
         [RegisterFormKeys.City]: '',
-        [RegisterFormKeys.BirthDate]: '',
-        [RegisterFormKeys.Gender]: 'Male',
+        [RegisterFormKeys.Date]: '',
+        [RegisterFormKeys.Gender]: 'select...',
         [RegisterFormKeys.Email]: '',
         [RegisterFormKeys.Password]: '',
         [RegisterFormKeys.RepeatPassword]: ''
@@ -37,6 +37,7 @@ export default function Register() {
     const [touched, setTouched] = useState({});
     const [validation, setValidation] = useState({});
     const [revealPassword, setRevealPassword] = useState(false);
+    const [isNotValidated, setIsNotValidated] = useState(true);
     const closeBtnRef = useRef(null);
     const nameRef = useRef(null);
     const modalRef = useRef(null);
@@ -45,6 +46,25 @@ export default function Register() {
         setValues(intialValues);
         setTouched({});
     }
+
+    // check whether the form is validated completely
+    useEffect(() => {
+        let result = true;
+        for (let key of Object.keys(RegisterFormKeys)) {
+            if (validation[key] && validation[key].validated) {
+                // console.log(key, 'passed');
+                continue;
+            } else {
+                // console.log(key, 'not passed');
+                result = false;
+            }
+        }
+        if (result) {
+            setIsNotValidated(false)
+        } else {
+            setIsNotValidated(true);
+        }
+    }, [validation])
 
     // dynamic set conditions for valid password
     const conditions = {
@@ -58,14 +78,14 @@ export default function Register() {
 
     // set birthday separators
     useEffect(() => {
-        if (validation.BirthDate && validation.BirthDate.validated) return;
-        if (touched.BirthDate && values.BirthDate) {
-            // console.log(values.BirthDate);
-            let value = values.BirthDate.replace(/\D/g, '');
+        if (validation.Date && validation.Date.validated) return;
+        if (touched.Date && values.Date) {
+            // console.log(values.Date);
+            let value = values.Date.replace(/\D/g, '');
             if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
             if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
             if (value.length > 10) value = value.slice(0, 10);
-            values.BirthDate = value;
+            values.Date = value;
         }
 
     }, [values]);
@@ -142,10 +162,7 @@ export default function Register() {
     const handleBlur = (e) => {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: true }));
-        // setValidation(state => ({ ...state, [name]: '' }));
-        // console.log('handed', name);
     };
-
 
     // input validators
     useEffect(() => {
@@ -155,26 +172,22 @@ export default function Register() {
                     const error = `*${item} is required!`
                     setValidation(state => ({ ...state, [item]: { error, validated: false } }));
                 } else {
-                    console.log('key ->>', item);
-                    // console.log('values ->>', values);
-                    // console.log('touched ->>', touched);
-                    // console.log(item === 'BirthDate');
-                   
                     if (values == undefined) {
                         showErrorToast('Validation error', { toastId: 'validationError' });
                         return;
                     }
-                    if (item === 'RepeatPassword') return;
-                    console.log(values[item]);
+                    if (item === 'RepeatPassword') continue;
+                    // console.log('key1 ->>', item);
+                    // console.log('values1 ->>', values);
+                    // console.log('touched ->>', touched);
+                    // console.log(values[item]);
                     const checkValidation = validatorHandler(item, values[item]);
-                    
                     setValidation(state => ({ ...state, [item]: checkValidation }));
                     // console.log(validation);
                 }
             }
         }
     }, [touched]);
-
 
     // handle show password button
     function revealPasswordHandler(e) {
@@ -192,8 +205,8 @@ export default function Register() {
     useEffect(() => {
         const modalElement = modalRef.current;
         const handleModalHidden = () => {
-           closeForm();
-           console.log('form clear');
+            closeForm();
+            console.log('form clear');
         };
 
         if (modalElement) {
@@ -258,6 +271,7 @@ export default function Register() {
                                             value={values[RegisterFormKeys.Name]}
                                             onChange={onChange}
                                             onInput={handleBlur}
+                                            tabIndex="1"
                                             minLength="2"
                                             maxLength="50"
                                             autoComplete="off"
@@ -265,6 +279,7 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             ref={nameRef}
                                             required
+                                            title="Please, enter your name - 2-50 characters only."
 
                                         />
                                         {touched.Name && validation['Name'] && !validation['Name'].validated && (
@@ -287,6 +302,7 @@ export default function Register() {
                                             name={RegisterFormKeys.LastName}
                                             value={values[RegisterFormKeys.LastName]}
                                             autoComplete="off"
+                                            tabIndex="2"
                                             minLength="2"
                                             maxLength='50'
                                             onChange={onChange}
@@ -294,6 +310,7 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             required
+                                            title="Please, enter your name - 2-50 characters only."
                                         />
                                         {touched.LastName && validation['LastName'] && !validation['LastName'].validated && (
                                             <p className={styles.errorMsg}>{validation['LastName'].error}</p>
@@ -316,6 +333,7 @@ export default function Register() {
                                             value={values[RegisterFormKeys.Email]}
                                             placeholder='Email'
                                             autoComplete="off"
+                                            tabIndex="3"
                                             minLength="7"
                                             maxLength='50'
                                             onChange={onChange}
@@ -346,6 +364,7 @@ export default function Register() {
                                             id="registerPassword3"
                                             placeholder='Password'
                                             autoComplete="off"
+                                            tabIndex="4"
                                             minLength="6"
                                             maxLength='50'
                                             onChange={onChange}
@@ -353,6 +372,7 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             required
+                                            title="Please, enter a valid password."
                                         />
 
                                         {touched.Password && validation['Password'] && !validation['Password'].validated && (
@@ -390,6 +410,7 @@ export default function Register() {
                                             name={RegisterFormKeys.Phone}
                                             value={values[RegisterFormKeys.Phone]}
                                             autoComplete="off"
+                                            tabIndex="9"
                                             minLength="8"
                                             maxLength="15"
                                             pattern="^\d{8,15}$"
@@ -423,6 +444,7 @@ export default function Register() {
                                             autoComplete="off"
                                             pattern="^[A-Za-zА-Яа-я\s]{2,50}$"
                                             title="City must have between 2-50 charachters only."
+                                            tabIndex="8"
                                             required
                                             onChange={onChange}
                                             onInput={handleBlur}
@@ -435,33 +457,34 @@ export default function Register() {
                                     </div>
 
                                     <div className="d-flex w-75 position-relative">
-                                        <div className='d-flex flex-column'>
-                                            <label htmlFor="registerBirthDate" className="">
+                                        <div className='d-flex flex-column position-relative'>
+                                            <label htmlFor="registerDate" className="">
                                                 *Birth date
                                             </label>
 
                                             <input
                                                 className={
-                                                    `${touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated ? 'is-invalid' : ''}
-                                             ${touched.BirthDate && validation['BirthDate'] && validation['BirthDate'].validated ? 'is-valid' : ''}
+                                                    `${touched.Date && validation['Date'] && !validation['Date'].validated ? 'is-invalid' : ''}
+                                             ${touched.Date && validation['Date'] && validation['Date'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm w-100`}
-                                                id="registerBirthDate"
+                                                id="registerDate"
                                                 type="text"
                                                 placeholder='DD/MM/YYYY'
                                                 minLength="10"
                                                 maxLength="10"
                                                 autoComplete="off"
-                                                name={RegisterFormKeys.BirthDate}
-                                                value={values[RegisterFormKeys.BirthDate]}
+                                                tabIndex="7"
+                                                name={RegisterFormKeys.Date}
+                                                value={values[RegisterFormKeys.Date]}
                                                 required
-                                                title="Birth date must be in format DD/MM/YYYY."
+                                                title="Date must be in format DD/MM/YYYY."
                                                 onChange={onChange}
                                                 onInput={handleBlur}
                                                 onBlur={handleBlur}
                                                 onFocus={clearErrors}
                                             />
-                                            {touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated && (
-                                                <p className={styles.errorMsg}>{validation['BirthDate'].error}</p>
+                                            {touched.Date && validation['Date'] && !validation['Date'].validated && (
+                                                <p className={styles.errorMsg}>{validation['Date'].error}</p>
                                             )}
                                         </div>
 
@@ -477,6 +500,8 @@ export default function Register() {
                                                 name={RegisterFormKeys.Gender}
                                                 value={values[RegisterFormKeys.Gender]}
                                                 id="registerGender"
+                                                tabIndex="6"
+                                                onClick={handleBlur}
                                                 onChange={onChange}
                                                 onInput={onChange}
                                                 onBlur={handleBlur}
@@ -484,6 +509,8 @@ export default function Register() {
                                                 required
                                                 title="Please, select your gender"
                                             >
+
+                                                <option value={intialValues.Gender}>{intialValues.Gender}</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                                 <option value="Other">Other</option>
@@ -508,6 +535,7 @@ export default function Register() {
                                             value={values[RegisterFormKeys.RepeatPassword]}
                                             placeholder='Repeat-password'
                                             autoComplete="off"
+                                            tabIndex="5"
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             onBlur={handleBlur}
@@ -520,7 +548,7 @@ export default function Register() {
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" className={`${styles.btnRegister} btn btn-primary`}>
+                            <button type="submit" className={`${styles.btnRegister} btn btn-primary`} disabled={isNotValidated}>
                                 Register
                             </button>
                             <p style={{ textAlign: 'center', marginTop: '40px' }}>

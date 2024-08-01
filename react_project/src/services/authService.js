@@ -22,12 +22,13 @@ export const login = async (email, password) => {
 
 
 
-export const register = (email, password) => {
+export const register = (values) => {
     try {
-       const result = request.post(`${baseUrl}/register`, {
-            email,
-            password
-        });
+    //    const result = request.post(`${baseUrl}/register`, {
+    //         email,
+    //         password
+    //     });
+       const result = request.post(`${baseUrl}/register`, values);
         return result;
     } catch (error) {
         // console.log('register error', error);

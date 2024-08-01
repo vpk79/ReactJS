@@ -94,20 +94,25 @@ function App() {
 
   const registerSubmitHandler = async (values) => {
     try {
-      console.log(values);
+      // console.log('values', values);
       registerValidator(values);
+      
+      const keysToLowerCase = obj => {
+        return Object.keys(obj).reduce((acc, key) => {
+          acc[key.toLowerCase()] = obj[key];
+          return acc;
+        }, {});
+      };
 
-      // const result = await authService.register(values.email, values.password);
-      // if (result.name === 'Error') throw new Error(result.message, { toastId: "registerError" });
+      const newValues = keysToLowerCase(values);
+      const result = await authService.register(newValues);
+      setAuth(result);
+      localService.setItem(result);
+      toast.showSuccessToast("Registration Successfull!", { toastId: "registerSuccess" });
 
-      // setAuth(result);
-      // localService.setItem(result);
-      // toast.showSuccessToast("Register Successfull!", { toastId: "registerSuccess" });
-
-      // navigate('/');
+      navigate('/');
 
     } catch (error) {
-      // alert(error.message);
       toast.showErrorToast(error.message, { toastId: "registerError" });
       return
     }
