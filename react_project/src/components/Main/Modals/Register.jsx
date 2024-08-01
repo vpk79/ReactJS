@@ -239,11 +239,14 @@ export default function Register() {
                                             value={values[RegisterFormKeys.Name]}
                                             onChange={onChange}
                                             onInput={handleBlur}
-                                            maxLength='50'
+                                            minLength="2"
+                                            maxLength="50"
                                             autoComplete="off"
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             ref={nameRef}
+                                            required
+                                            
                                         />
                                         {touched.Name && validation['Name'] && !validation['Name'].validated && (
                                             <p className={styles.errorMsg}>{validation['Name'].error}</p>
@@ -264,11 +267,13 @@ export default function Register() {
                                             name={RegisterFormKeys.LastName}
                                             value={values[RegisterFormKeys.LastName]}
                                             autoComplete="off"
+                                            minLength="2"
                                             maxLength='50'
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
+                                            required
                                         />
                                         {touched.LastName && validation['LastName'] && !validation['LastName'].validated && (
                                             <p className={styles.errorMsg}>{validation['LastName'].error}</p>
@@ -290,11 +295,16 @@ export default function Register() {
                                             value={values[RegisterFormKeys.Email]}
                                             placeholder='Email'
                                             autoComplete="off"
+                                            minLength="7"
                                             maxLength='50'
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
+                                            required
+                                            pattern='[a-z0-9._%+!$&*=^|~#%`?{}\/\-]+@([a-z0-9\-]+\.)+(com|bg)'
+                                            title="Please, enter valid email. Email must finish with .com or .bg"
+                                            
                                         />
                                         {touched.Email &&  validation['Email'] && !validation['Email'].validated && (
                                             <p className={styles.errorMsg}>{validation['Email'].error}</p>
@@ -320,7 +330,10 @@ export default function Register() {
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             onBlur={handleBlur}
-                                            onFocus={clearErrors} />
+                                            onFocus={clearErrors}
+                                            required
+                                            pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}'
+                                             />
 
                                         {touched.Password && validation['Password'] &&  !validation['Password'].validated && (
                                             <p className={styles.errorMsg}>{validation['Password'].error}</p>
@@ -349,13 +362,20 @@ export default function Register() {
                                         <input
                                             className='shadow-sm form-control form-control-sm w-100'
                                             id="registerPhone"
-                                            type="tel"
+                                            type="number"
                                             placeholder='Phone number'
+                                            name={RegisterFormKeys.Phone}
+                                            value={values[RegisterFormKeys.Phone]}
+                                            autoComplete="off"
                                             minLength="8"
                                             maxLength="15"
                                             pattern="^\d{8,15}$"
                                             required
                                             title="You must enter a valid phone number between 8 and 15 digits"
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            onBlur={handleBlur}
+                                            onFocus={clearErrors}
                                         />
                                     </div>
                                     <div className='d-flex flex-column position-relative w-75'>
