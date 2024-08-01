@@ -95,8 +95,6 @@ function cityValidator(value) {
 function birthDateValidator(value) {
 
     if (!birthDayRegex.test(value)){
-        console.log(value);
-        console.log(!birthDayRegex.test(value));
         error = 'Birth date is invalid!'
     } else {
         error = false;
@@ -128,16 +126,33 @@ function passwordValidator(value) {
     }
 }
 
+function genderValidation(value){
+    if(value === 'Male' || value === 'Female' || value === 'Other'){
+            error = false;
+    } else {    
+        error = 'Please, select your gender.';
+    }
+    validated = !!error ? false : true;
+    return {
+        error,
+        validated
+    }
+}
+
 
 export function validatorHandler(key, value) {
-    console.log('key2 ->>', key);
-    console.log('value2 ->>', value);
+    // console.log('key2 ->>', key);
+    // console.log('value2 ->>', value);
+    console.log(key === 'BirthDate');
     if (validatedValues.hasOwnProperty(key)) {
         if (validatedValues[key].value === value && validatedValues[key].validated) {
+            // console.log('already validated');
             return {
                 error: false,
                 validated: true
             };
+        } else {
+            // console.log('not validated');
         }
     }
 
@@ -156,6 +171,7 @@ export function validatorHandler(key, value) {
         case 'Phone': test = phoneValidator(value); break;
         case 'City': test = cityValidator(value); break;
         case 'BirthDate': test = birthDateValidator(value); break;
+        case 'Gender': test = genderValidation(value); break;
         default:
             break;
     }

@@ -19,37 +19,31 @@ const RegisterFormKeys = {
 
 
 export default function Register() {
-
-    const { isAuthenticated, registerSubmitHandler } = useContext(AuthContext);
-    const { values, onChange, onSubmit, setValues } = useForm(registerSubmitHandler, {
-
+    const intialValues = {
         [RegisterFormKeys.Name]: '',
         [RegisterFormKeys.LastName]: '',
         [RegisterFormKeys.Phone]: '',
         [RegisterFormKeys.City]: '',
         [RegisterFormKeys.BirthDate]: '',
-        [RegisterFormKeys.Gender]: '',
+        [RegisterFormKeys.Gender]: 'Male',
         [RegisterFormKeys.Email]: '',
         [RegisterFormKeys.Password]: '',
         [RegisterFormKeys.RepeatPassword]: ''
-    });
+    };
+
+    const { isAuthenticated, registerSubmitHandler } = useContext(AuthContext);
+    const { values, onChange, onSubmit, setValues } = useForm(registerSubmitHandler, intialValues);
 
     const [touched, setTouched] = useState({});
     const [validation, setValidation] = useState({});
     const [revealPassword, setRevealPassword] = useState(false);
-    const regFormRef = useRef(null);
+    const closeBtnRef = useRef(null);
+    const nameRef = useRef(null);
+    const modalRef = useRef(null);
 
     function formReset() {
-        regFormRef.current.reset();
-        setEmailInputError('');
-        setPasswordInputError('');
-        setConfirmInputError('');
-        setTouched(false);
-        setValues({
-            [RegisterFormKeys.Email]: '',
-            [RegisterFormKeys.Password]: '',
-            [RegisterFormKeys.RepeatPassword]: ''
-        });
+        setValues(intialValues);
+        setTouched({});
     }
 
     // dynamic set conditions for valid password
@@ -66,7 +60,7 @@ export default function Register() {
     useEffect(() => {
         if (validation.BirthDate && validation.BirthDate.validated) return;
         if (touched.BirthDate && values.BirthDate) {
-            console.log(values.BirthDate);
+            // console.log(values.BirthDate);
             let value = values.BirthDate.replace(/\D/g, '');
             if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
             if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
@@ -76,33 +70,29 @@ export default function Register() {
 
     }, [values]);
 
+
+    // repeat password handler
     useEffect(() => {
-        console.log('entered');
         const matched = {};
         if (touched.RepeatPassword && values.RepeatPassword) {
-            if (values.Password && validation['Password'] && !validation['Password'].validated) {
+            if (!!values.Password && validation['Password'].validated) {
                 if (values.RepeatPassword === values.Password) {
                     matched.error = false;
                     matched.validated = true;
-                    console.log('matched');
                 } else {
                     matched.error = 'Re-password not match!';
                     matched.validated = false;
                 }
             } else {
-                console.log('Notmatched2');
                 matched.error = 'Re-password not match!';
                 matched.validated = false;
             }
             setValidation(state => ({ ...state, RepeatPassword: matched }));
         }
-
-        console.log('validation', validation);
     }, [values]);
 
-    // closing the form when is necessary
-    const closeBtnRef = useRef(null);
 
+    // closing the form when is necessary
     function closeForm() {
         try {
             formReset();
@@ -118,17 +108,15 @@ export default function Register() {
         setRevealPassword(false);
     };
 
-
+    // close form if user is already authenticated
     useEffect(() => {
         if (isAuthenticated) {
             closeForm();
         }
     }, [isAuthenticated]);
 
-    // focus on email field when is shown
-    const nameRef = useRef(null);
-    const modalRef = useRef(null);
 
+    // focus on name field when is shown
     useEffect(() => {
         const handleShown = () => {
             if (nameRef.current) {
@@ -149,7 +137,7 @@ export default function Register() {
         };
     }, []);
 
-    
+
     // handle all inputs
     const handleBlur = (e) => {
         const name = e.target.name;
@@ -168,32 +156,56 @@ export default function Register() {
                     setValidation(state => ({ ...state, [item]: { error, validated: false } }));
                 } else {
                     console.log('key ->>', item);
-                    console.log('values ->>', values);
+                    // console.log('values ->>', values);
+                    // console.log('touched ->>', touched);
+                    // console.log(item === 'BirthDate');
+                   
                     if (values == undefined) {
                         showErrorToast('Validation error', { toastId: 'validationError' });
                         return;
                     }
-                    if(item === 'RepeatPassword') return;
+                    if (item === 'RepeatPassword') return;
+                    console.log(values[item]);
                     const checkValidation = validatorHandler(item, values[item]);
-                    // console.log(checkValidation);
+                    
                     setValidation(state => ({ ...state, [item]: checkValidation }));
+                    // console.log(validation);
                 }
             }
         }
     }, [touched]);
 
 
-
+    // handle show password button
     function revealPasswordHandler(e) {
         e.preventDefault();
         setRevealPassword(!revealPassword);
     }
 
     const clearErrors = (e) => {
-        const name = e.target.name;
-        setTouched(state => ({ ...state, [name]: false }));
+        // const name = e.target.name;
+        // setTouched(state => ({ ...state, [name]: false }));
         // setValidation(state => ({ ...state, [name]: '' }));
     }
+
+    // handle backdrop close
+    useEffect(() => {
+        const modalElement = modalRef.current;
+        const handleModalHidden = () => {
+           closeForm();
+           console.log('form clear');
+        };
+
+        if (modalElement) {
+            modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
+        }
+
+        return () => {
+            if (modalElement) {
+                modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+            }
+        };
+    }, []);
 
 
 
@@ -227,7 +239,7 @@ export default function Register() {
                         <h3 style={{ textAlign: 'center', marginTop: '-50px' }} className="form-title" id="RegisterLabel">
                             Register
                         </h3>
-                        <form ref={regFormRef} className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
+                        <form className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
                                     <div className='d-flex flex-column position-relative w-75'>
@@ -311,7 +323,6 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             required
-                                            pattern='[a-z0-9._%+!$&*=^|~#%`?{}\/\-]+@([a-z0-9\-]+\.)+(com|bg)'
                                             title="Please, enter valid email. Email must finish with .com or .bg"
 
                                         />
@@ -433,7 +444,7 @@ export default function Register() {
                                                 className={
                                                     `${touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated ? 'is-invalid' : ''}
                                              ${touched.BirthDate && validation['BirthDate'] && validation['BirthDate'].validated ? 'is-valid' : ''}
-                                              shadow-sm form-control form-control-sm`}
+                                              shadow-sm form-control form-control-sm w-100`}
                                                 id="registerBirthDate"
                                                 type="text"
                                                 placeholder='DD/MM/YYYY'
@@ -443,7 +454,6 @@ export default function Register() {
                                                 name={RegisterFormKeys.BirthDate}
                                                 value={values[RegisterFormKeys.BirthDate]}
                                                 required
-                                                pattern="^(?:0[1-9]|[12]\d|3[01])([\/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$"
                                                 title="Birth date must be in format DD/MM/YYYY."
                                                 onChange={onChange}
                                                 onInput={handleBlur}
@@ -455,19 +465,32 @@ export default function Register() {
                                             )}
                                         </div>
 
-                                        <div className='d-flex flex-column position-relative'>
+                                        <div className='d-flex flex-column position-relative w-75'>
                                             <label htmlFor="registerName" className="">
                                                 *Gender
                                             </label>
-                                            <select className='shadow-sm form-control form-control-sm'
-                                             name={RegisterFormKeys.RepeatPassword}
-                                             id="registerGender"
-
-                                             >
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="female">Other</option>
+                                            <select
+                                                className={
+                                                    `${touched.Gender && validation['Gender'] && !validation['Gender'].validated ? 'is-invalid' : ''}
+                                             ${touched.Gender && validation['Gender'] && validation['Gender'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
+                                                name={RegisterFormKeys.Gender}
+                                                value={values[RegisterFormKeys.Gender]}
+                                                id="registerGender"
+                                                onChange={onChange}
+                                                onInput={onChange}
+                                                onBlur={handleBlur}
+                                                onFocus={clearErrors}
+                                                required
+                                                title="Please, select your gender"
+                                            >
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
                                             </select>
+                                            {touched.Gender && validation['Gender'] && !validation['Gender'].validated && (
+                                                <p className={styles.errorMsg}>{validation['Gender'].error}</p>
+                                            )}
                                         </div>
 
                                     </div>

@@ -90,6 +90,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
         }, 30000);
     };
 
+    // focus last or first item on sorting comments
     function sortHandler(e) {
         e.preventDefault();
         const command = e.target.id;
@@ -105,12 +106,10 @@ export default function ContactInfo({ data, toggleContactForm }) {
     }
 
     useEffect(() => {
-        // Фокусирай последния елемент при маунтване на компонента
             focusLastItem();
-        // Ако искаш да фокусираш първия елемент, използвай focusFirstItem() вместо focusLastItem()
     }, [comments]);
 
-
+    // loading all comments
     const loadComments = async () => {
         try {
             const data = await commentsService.loadComments(personData._id);

@@ -94,17 +94,17 @@ function App() {
 
   const registerSubmitHandler = async (values) => {
     try {
-
+      console.log(values);
       registerValidator(values);
 
-      const result = await authService.register(values.email, values.password);
-      if (result.name === 'Error') throw new Error(result.message, { toastId: "registerError" });
+      // const result = await authService.register(values.email, values.password);
+      // if (result.name === 'Error') throw new Error(result.message, { toastId: "registerError" });
 
-      setAuth(result);
-      localService.setItem(result);
-      toast.showSuccessToast("Register Successfull!", { toastId: "registerSuccess" });
+      // setAuth(result);
+      // localService.setItem(result);
+      // toast.showSuccessToast("Register Successfull!", { toastId: "registerSuccess" });
 
-      navigate('/');
+      // navigate('/');
 
     } catch (error) {
       // alert(error.message);
