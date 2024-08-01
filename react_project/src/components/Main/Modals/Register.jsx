@@ -10,7 +10,7 @@ const RegisterFormKeys = {
     LastName: 'LastName',
     Phone: 'Phone',
     City: 'City',
-    BirthDate: 'Birthdate',
+    BirthDate: 'BirthDate',
     Gender: 'Gender',
     Email: 'Email',
     Password: 'Password',
@@ -63,6 +63,19 @@ export default function Register() {
         number: /\d/.test(values.Password),
         specialChar: /[@$!%*?&_\-]/.test(values.Password)
     };
+
+
+    useEffect(() => {
+        if(touched.BirthDate && values.BirthDate){
+            console.log(values.BirthDate);
+            let value = values.BirthDate.replace(/\D/g, '');
+            if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
+            if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
+            if (value.length > 10) value = value.slice(0, 10);
+            values.BirthDate = value;
+        }
+       
+    }, [values])
 
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
@@ -122,18 +135,12 @@ export default function Register() {
 
     // input validators
     useEffect(() => {
-        // const timeoutId = setTimeout(() => {
-        // }, 300);
-        // return () => clearTimeout(timeoutId);
-
         for (let item of Object.keys(touched)) {
             if (item) {
                 if (!values[item]) {
                     const error = `*${item} is required!`
                     setValidation(state => ({ ...state, [item]: { error, validated: false } }));
                 } else {
-                    // setValidation(state => ({ ...state, [item]: '' }));
-
                     console.log('key ->>', item);
                     console.log('values ->>', values);
                     if (values == undefined) {
@@ -147,10 +154,6 @@ export default function Register() {
             }
         }
     }, [touched]);
-
-    useEffect(() => {
-        console.log(values);
-    }, [values])
 
 
     const confirmPasswordInputValidator = () => {
@@ -229,7 +232,8 @@ export default function Register() {
                                             *Name
                                         </label>
                                         <input
-                                            className={`border ${touched.Name && validation['Name'] && !validation['Name'].validated ? 'is-invalid' : ''}
+                                            className={`
+                                            ${touched.Name && validation['Name'] && !validation['Name'].validated ? 'is-invalid' : ''}
                                              ${touched.Name && validation['Name'] && validation['Name'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm w-100`}
                                             id="registerName"
@@ -246,7 +250,7 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             ref={nameRef}
                                             required
-                                            
+
                                         />
                                         {touched.Name && validation['Name'] && !validation['Name'].validated && (
                                             <p className={styles.errorMsg}>{validation['Name'].error}</p>
@@ -258,7 +262,8 @@ export default function Register() {
                                             *Last name
                                         </label>
                                         <input
-                                            className={`${touched.LastName && validation['LastName'] && !validation['LastName'].validated ? 'is-invalid' : ''}
+                                            className={`
+                                            ${touched.LastName && validation['LastName'] && !validation['LastName'].validated ? 'is-invalid' : ''}
                                              ${touched.LastName && validation['LastName'] && validation['LastName'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm w-100`}
                                             id="registerLastName"
@@ -287,7 +292,8 @@ export default function Register() {
                                             *Email
                                         </label>
                                         <input type="email"
-                                            className={`${touched.Email && validation['Email'] && !validation['Email'].validated ? 'is-invalid' : ''}
+                                            className={`
+                                            ${touched.Email && validation['Email'] && !validation['Email'].validated ? 'is-invalid' : ''}
                                              ${touched.Email && validation['Email'] && validation['Email'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm w-100`}
                                             id="registerEmail3"
@@ -304,20 +310,21 @@ export default function Register() {
                                             required
                                             pattern='[a-z0-9._%+!$&*=^|~#%`?{}\/\-]+@([a-z0-9\-]+\.)+(com|bg)'
                                             title="Please, enter valid email. Email must finish with .com or .bg"
-                                            
+
                                         />
-                                        {touched.Email &&  validation['Email'] && !validation['Email'].validated && (
+                                        {touched.Email && validation['Email'] && !validation['Email'].validated && (
                                             <p className={styles.errorMsg}>{validation['Email'].error}</p>
                                         )}
 
                                     </div>
                                     <div className='d-flex flex-column position-relative w-75'>
-                                        <button className={styles.revealPassword} onClick={revealPasswordHandler}><i class={`fas ${!revealPassword ? 'fa-eye': 'fa-eye-slash'}`}></i></button>
+                                        <button className={styles.revealPassword} onClick={revealPasswordHandler}><i className={`fas ${!revealPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i></button>
                                         <label htmlFor="registerPassword3" className="">
                                             *Password
                                         </label>
-                                        <input type={!revealPassword ? 'password': 'text'}
-                                            className={`${touched.Password && validation['Password'] && !validation['Password'].validated ? 'is-invalid' : ''}
+                                        <input type={!revealPassword ? 'password' : 'text'}
+                                            className={`
+                                            ${touched.Password && validation['Password'] && !validation['Password'].validated ? 'is-invalid' : ''}
                                              ${touched.Password && validation['Password'] && validation['Password'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm w-100`}
                                             name={RegisterFormKeys.Password}
@@ -332,17 +339,16 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                             required
-                                            pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}'
-                                             />
+                                        />
 
-                                        {touched.Password && validation['Password'] &&  !validation['Password'].validated && (
+                                        {touched.Password && validation['Password'] && !validation['Password'].validated && (
                                             <p className={styles.errorMsg}>{validation['Password'].error}</p>
                                         )}
 
                                         {touched.Password && validation['Password'] && !validation['Password'].validated && (
                                             <ul className={styles.passwordTips}>
                                                 <li>Password must contain:</li>
-                                                <li style={{color: !conditions.minLength ? 'red': 'gray'}}><i className={`fas ${!conditions.minLength ? 'fa-times' : 'fa-check'}`}></i> min 6 characters</li>
+                                                <li style={{ color: !conditions.minLength ? 'red' : 'gray' }}><i className={`fas ${!conditions.minLength ? 'fa-times' : 'fa-check'}`}></i> min 6 characters</li>
                                                 <li style={{ color: !conditions.capitalLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.capitalLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 capital letter</li>
                                                 <li style={{ color: !conditions.smallLetter ? 'red' : 'gray' }}><i className={`fas ${!conditions.smallLetter ? 'fa-times' : 'fa-check'}`}></i> min 1 small letter</li>
                                                 <li style={{ color: !conditions.number ? 'red' : 'gray' }}><i className={`fas ${!conditions.number ? 'fa-times' : 'fa-check'}`}></i> min 1 digit</li>
@@ -360,9 +366,12 @@ export default function Register() {
                                             *Phone number
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-100'
+                                            className={
+                                                `${touched.Phone && validation['Phone'] && !validation['Phone'].validated ? 'is-invalid' : ''}
+                                             ${touched.Phone && validation['Phone'] && validation['Phone'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             id="registerPhone"
-                                            type="number"
+                                            type="tel"
                                             placeholder='Phone number'
                                             name={RegisterFormKeys.Phone}
                                             value={values[RegisterFormKeys.Phone]}
@@ -377,17 +386,38 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
+                                        {touched.Phone && validation['Phone'] && !validation['Phone'].validated && (
+                                            <p className={styles.errorMsg}>{validation['Phone'].error}</p>
+                                        )}
                                     </div>
                                     <div className='d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerCity" className="">
                                             *City
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-100'
+                                            className={
+                                                `${touched.City && validation['City'] && !validation['City'].validated ? 'is-invalid' : ''}
+                                             ${touched.City && validation['City'] && validation['City'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             id="registerCity"
                                             type="text"
                                             placeholder='City'
+                                            minLength="2"
+                                            maxLength="50"
+                                            name={RegisterFormKeys.City}
+                                            value={values[RegisterFormKeys.City]}
+                                            autoComplete="off"
+                                            pattern="^[A-Za-zА-Яа-я\s]{2,50}$"
+                                            title="City must have between 2-50 charachters only."
+                                            required
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            onBlur={handleBlur}
+                                            onFocus={clearErrors}
                                         />
+                                        {touched.City && validation['City'] && !validation['City'].validated && (
+                                            <p className={styles.errorMsg}>{validation['City'].error}</p>
+                                        )}
                                     </div>
 
                                     <div className="d-flex w-75 position-relative">
@@ -397,11 +427,29 @@ export default function Register() {
                                             </label>
 
                                             <input
-                                                className='shadow-sm form-control form-control-sm'
+                                                className={
+                                            `${touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated ? 'is-invalid' : ''}
+                                             ${touched.BirthDate && validation['BirthDate'] && validation['BirthDate'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm`}
                                                 id="registerBirthDate"
                                                 type="text"
-                                                placeholder='dd/mm/yy'
+                                                placeholder='DD/MM/YYYY'
+                                                minLength="10"
+                                                maxLength="10"
+                                                autoComplete="off"
+                                                name={RegisterFormKeys.BirthDate}
+                                                value={values[RegisterFormKeys.BirthDate]}
+                                                required
+                                                pattern="^(?:0[1-9]|[12]\d|3[01])([\/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$"
+                                                title="Birth date must be in format DD/MM/YYYY."
+                                                onChange={onChange}
+                                                onInput={handleBlur}
+                                                onBlur={handleBlur}
+                                                onFocus={clearErrors}
                                             />
+                                            {touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated && (
+                                                <p className={styles.errorMsg}>{validation['BirthDate'].error}</p>
+                                            )}
                                         </div>
 
                                         <div className='d-flex flex-column position-relative'>
@@ -423,12 +471,15 @@ export default function Register() {
                                             className={`shadow-sm form-control form-control-sm w-100 {${confirmInputError ? 'is-invalid' : ''}}`}
                                             name={RegisterFormKeys.ConfirmPassword}
                                             id="ConfirmPassword3"
-                                            onChange={onChange}
                                             value={values[RegisterFormKeys.ConfirmPassword]}
                                             placeholder='Repeat-password'
-                                            autoComplete="on"
+                                            autoComplete="off"
+                                            onChange={onChange}
+                                            onInput={handleBlur}
+                                            onBlur={handleBlur}
                                             onFocus={clearErrors}
-                                            onBlur={confirmPasswordInputValidator} />
+                                            title="Re-Password should match with Password"
+                                            required />
                                         {/* {confirmInputError && (
                                             <p className={styles.confirmError}>{confirmInputError}</p>
                                         )} */}

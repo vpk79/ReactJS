@@ -2,6 +2,7 @@
 const emailRegex = new RegExp(/[a-z0-9._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.)+(com|bg)/, 'i');
 const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{6,}$/)
 const nameRegex = new RegExp(/^[A-Za-zА-Яа-я]+$/);
+const birthDayRegex = new RegExp(/^(?:0[1-9]|[12]\d|3[01])([\/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$/);
 const validatedValues = {};
 let error = false;
 let validated = false;
@@ -16,21 +17,6 @@ export function loginValidator(values) {
 
 }
 
-export function emailValidator(value) {
-    if (!emailRegex.test(value)) {
-        error = 'Email is invalid!'
-    } else {
-        error = false;
-    }
-
-    validated = !!error ? false : true;
-    return {
-        error,
-        validated
-    }
-}
-
-
 export function registerValidator(values) {
     if (values.email !== '') {
         const isValid = emailValidator(values.email);
@@ -43,6 +29,20 @@ export function registerValidator(values) {
 
     return true;
 
+}
+
+
+export function emailValidator(value) {
+    if (!emailRegex.test(value)) {
+        error = 'Email is invalid!'
+    } else {
+        error = false;
+    }
+    validated = !!error ? false : true;
+    return {
+        error,
+        validated
+    }
 }
 
 
@@ -63,13 +63,64 @@ export function nameValidator(value) {
     }
 }
 
-export function passwordValidator(value) {
-    if (!passwordRegex.test(value)) {
-        error = 'Password is invalid!'
+export function phoneValidator(value) {
+
+    if (!/^\d{8,15}$/.test(value)){
+        error = 'Phone is invalid!'
     } else {
         error = false;
     }
 
+    validated = !!error ? false : true;
+    return {
+        error,
+        validated
+    }
+}
+export function cityValidator(value) {
+
+    if (!/^[A-Za-zА-Яа-я\s]{2,50}$/.test(value)){
+        error = 'City is invalid!'
+    }
+    else {
+        error = false;
+    }
+    validated = !!error ? false : true;
+    return {
+        error,
+        validated
+    }
+}
+
+export function birthDateValidator(value) {
+
+    if (!birthDayRegex.test(value)){
+        console.log(value);
+        console.log(!birthDayRegex.test(value));
+        error = 'Birth date is invalid!'
+    } else {
+        error = false;
+    }
+    validated = !!error ? false : true;
+    return {
+        error,
+        validated
+    }
+}
+
+export function passwordValidator(value) {
+
+    if (!/[A-Z]/.test(value)) {
+        error = 'At least 1 capital letter'
+    } else if (!/[a-z]/.test(value)) {
+        error = 'At least 1 small letter'
+    } else if (!/\d/.test(value)) {
+        error = 'At least 1 digit'
+    } else if (!/[@$!%*?&_\-]/.test(value)) {
+        error = 'At least 1 special symbol'
+    } else {
+        error = false;
+    }
     validated = !!error ? false : true;
     return {
         error,
@@ -102,22 +153,12 @@ export function validatorHandler(key, value) {
         case 'LastName': test = nameValidator(value); break;
         case 'Email': test = emailValidator(value); break
         case 'Password': test = passwordValidator(value); break;
+        case 'Phone': test = phoneValidator(value); break;
+        case 'City': test = cityValidator(value); break;
+        case 'BirthDate': test = birthDateValidator(value); break;
         default:
             break;
     }
-
-    // const result = !test ? {
-    //     error: `${key} is invalid!`,
-    //     validated: false
-    // } :
-    //     {
-    //         error: false,
-    //         validated: true
-    //     };
-
     validatedValues[key] = test;
-
-
     return test;
-
 }
