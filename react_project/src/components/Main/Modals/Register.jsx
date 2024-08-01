@@ -224,14 +224,14 @@ export default function Register() {
                         <form ref={regFormRef} className={`col ${styles.registerForm}`} onSubmit={onSubmit} autoComplete="off">
                             <div className={styles.registerWrapper}>
                                 <div className={styles.registerLeftSide}>
-                                    <div className='d-flex flex-column position-relative'>
+                                    <div className='d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerName" className="">
                                             *Name
                                         </label>
                                         <input
-                                            className={`${touched.Name && !validation['Name'].validated ? 'is-invalid' : ''}
-                                             ${touched.Name && validation['Name'].validated ? 'is-valid' : ''}
-                                              shadow-sm form-control form-control-sm w-75`}
+                                            className={`border ${touched.Name && validation['Name'] && !validation['Name'].validated ? 'is-invalid' : ''}
+                                             ${touched.Name && validation['Name'] && validation['Name'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             id="registerName"
                                             type="text"
                                             placeholder='Name'
@@ -245,19 +245,19 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             ref={nameRef}
                                         />
-                                        {touched.Name && !validation['Name'].validated && (
+                                        {touched.Name && validation['Name'] && !validation['Name'].validated && (
                                             <p className={styles.errorMsg}>{validation['Name'].error}</p>
                                         )}
 
                                     </div>
-                                    <div className=' d-flex flex-column position-relative'>
+                                    <div className=' d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerLastName" className="">
                                             *Last name
                                         </label>
                                         <input
-                                            className={`${touched.LastName && !validation['LastName'].validated ? 'is-invalid' : ''}
-                                             ${touched.LastName && validation['LastName'].validated ? 'is-valid' : ''}
-                                              shadow-sm form-control form-control-sm w-75`}
+                                            className={`${touched.LastName && validation['LastName'] && !validation['LastName'].validated ? 'is-invalid' : ''}
+                                             ${touched.LastName && validation['LastName'] && validation['LastName'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             id="registerLastName"
                                             type="text"
                                             placeholder='Last name'
@@ -270,21 +270,21 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {touched.LastName && !validation['LastName'].validated && (
+                                        {touched.LastName && validation['LastName'] && !validation['LastName'].validated && (
                                             <p className={styles.errorMsg}>{validation['LastName'].error}</p>
                                         )}
 
 
                                     </div>
 
-                                    <div className=' d-flex flex-column position-relative'>
+                                    <div className=' d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerEmail3" className="">
                                             *Email
                                         </label>
                                         <input type="email"
-                                            className={`${touched.Email && !validation['Email'].validated ? 'is-invalid' : ''}
-                                             ${touched.Email && validation['Email'].validated ? 'is-valid' : ''}
-                                              shadow-sm form-control form-control-sm w-75`}
+                                            className={`${touched.Email && validation['Email'] && !validation['Email'].validated ? 'is-invalid' : ''}
+                                             ${touched.Email && validation['Email'] && validation['Email'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             id="registerEmail3"
                                             name={RegisterFormKeys.Email}
                                             value={values[RegisterFormKeys.Email]}
@@ -296,36 +296,37 @@ export default function Register() {
                                             onBlur={handleBlur}
                                             onFocus={clearErrors}
                                         />
-                                        {touched.Email && !validation['Email'].validated && (
+                                        {touched.Email &&  validation['Email'] && !validation['Email'].validated && (
                                             <p className={styles.errorMsg}>{validation['Email'].error}</p>
                                         )}
 
                                     </div>
-                                    <div className='d-flex flex-column position-relative'>
+                                    <div className='d-flex flex-column position-relative w-75'>
                                         <button className={styles.revealPassword} onClick={revealPasswordHandler}><i class={`fas ${!revealPassword ? 'fa-eye': 'fa-eye-slash'}`}></i></button>
                                         <label htmlFor="registerPassword3" className="">
                                             *Password
                                         </label>
                                         <input type={!revealPassword ? 'password': 'text'}
-                                            className={`${touched.Password && !validation['Password'].validated ? 'is-invalid' : ''}
-                                             ${touched.Password && validation['Password'].validated ? 'is-valid' : ''}
-                                              shadow-sm form-control form-control-sm w-75`}
+                                            className={`${touched.Password && validation['Password'] && !validation['Password'].validated ? 'is-invalid' : ''}
+                                             ${touched.Password && validation['Password'] && validation['Password'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
                                             name={RegisterFormKeys.Password}
                                             value={values[RegisterFormKeys.Password]}
                                             id="registerPassword3"
                                             placeholder='Password'
                                             autoComplete="off"
+                                            minLength="6"
                                             maxLength='50'
                                             onChange={onChange}
                                             onInput={handleBlur}
                                             onBlur={handleBlur}
                                             onFocus={clearErrors} />
 
-                                        {touched.Password && !validation['Password'].validated && (
+                                        {touched.Password && validation['Password'] &&  !validation['Password'].validated && (
                                             <p className={styles.errorMsg}>{validation['Password'].error}</p>
                                         )}
 
-                                        {touched.Password && !validation['Password'].validated && (
+                                        {touched.Password && validation['Password'] && !validation['Password'].validated && (
                                             <ul className={styles.passwordTips}>
                                                 <li>Password must contain:</li>
                                                 <li style={{color: !conditions.minLength ? 'red': 'gray'}}><i className={`fas ${!conditions.minLength ? 'fa-times' : 'fa-check'}`}></i> min 6 characters</li>
@@ -341,23 +342,28 @@ export default function Register() {
 
                                 <div className={styles.registerRightSide}>
 
-                                    <div className='d-flex flex-column position-relative'>
+                                    <div className='d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerPnone" className="">
                                             *Phone number
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-75'
+                                            className='shadow-sm form-control form-control-sm w-100'
                                             id="registerPhone"
                                             type="tel"
                                             placeholder='Phone number'
+                                            minLength="8"
+                                            maxLength="15"
+                                            pattern="^\d{8,15}$"
+                                            required
+                                            title="You must enter a valid phone number between 8 and 15 digits"
                                         />
                                     </div>
-                                    <div className='d-flex flex-column position-relative'>
+                                    <div className='d-flex flex-column position-relative w-75'>
                                         <label htmlFor="registerCity" className="">
                                             *City
                                         </label>
                                         <input
-                                            className='shadow-sm form-control form-control-sm w-75'
+                                            className='shadow-sm form-control form-control-sm w-100'
                                             id="registerCity"
                                             type="text"
                                             placeholder='City'
@@ -374,7 +380,7 @@ export default function Register() {
                                                 className='shadow-sm form-control form-control-sm'
                                                 id="registerBirthDate"
                                                 type="text"
-                                                placeholder='Birth date'
+                                                placeholder='dd/mm/yy'
                                             />
                                         </div>
 
@@ -389,12 +395,12 @@ export default function Register() {
                                         </div>
 
                                     </div>
-                                    <div className='d-flex flex-column position-relative'>
+                                    <div className='d-flex flex-column position-relative w-75'>
                                         <label htmlFor="ConfirmPassword3" className="">
                                             *Repeat-Password
                                         </label>
                                         <input type="password"
-                                            className={`shadow-sm form-control form-control-sm w-75 {${confirmInputError ? 'is-invalid' : ''}}`}
+                                            className={`shadow-sm form-control form-control-sm w-100 {${confirmInputError ? 'is-invalid' : ''}}`}
                                             name={RegisterFormKeys.ConfirmPassword}
                                             id="ConfirmPassword3"
                                             onChange={onChange}
