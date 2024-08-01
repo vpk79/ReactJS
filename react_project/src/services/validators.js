@@ -32,7 +32,7 @@ export function registerValidator(values) {
 }
 
 
-export function emailValidator(value) {
+function emailValidator(value) {
     if (!emailRegex.test(value)) {
         error = 'Email is invalid!'
     } else {
@@ -46,7 +46,7 @@ export function emailValidator(value) {
 }
 
 
-export function nameValidator(value) {
+function nameValidator(value) {
 
     if (!nameRegex.test(value)) {
         error = 'Only characters allowed.'
@@ -63,7 +63,7 @@ export function nameValidator(value) {
     }
 }
 
-export function phoneValidator(value) {
+function phoneValidator(value) {
 
     if (!/^\d{8,15}$/.test(value)){
         error = 'Phone is invalid!'
@@ -77,7 +77,7 @@ export function phoneValidator(value) {
         validated
     }
 }
-export function cityValidator(value) {
+function cityValidator(value) {
 
     if (!/^[A-Za-zА-Яа-я\s]{2,50}$/.test(value)){
         error = 'City is invalid!'
@@ -92,7 +92,7 @@ export function cityValidator(value) {
     }
 }
 
-export function birthDateValidator(value) {
+function birthDateValidator(value) {
 
     if (!birthDayRegex.test(value)){
         console.log(value);
@@ -108,7 +108,7 @@ export function birthDateValidator(value) {
     }
 }
 
-export function passwordValidator(value) {
+function passwordValidator(value) {
 
     if (!/[A-Z]/.test(value)) {
         error = 'At least 1 capital letter'

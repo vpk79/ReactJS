@@ -56,7 +56,8 @@ export default function Register() {
         });
     }
 
-    const conditions = {
+    // dynamic set conditions for valid password
+    const conditions = {                    
         minLength: values.Password.length >= 6,
         capitalLetter: /[A-Z]/.test(values.Password),
         smallLetter: /[a-z]/.test(values.Password),
@@ -65,6 +66,7 @@ export default function Register() {
     };
 
 
+    // set birthday separators
     useEffect(() => {
         if(touched.BirthDate && values.BirthDate){
             console.log(values.BirthDate);
@@ -75,6 +77,13 @@ export default function Register() {
             values.BirthDate = value;
         }
        
+    }, [values])
+
+    useEffect(() => {
+        if (touched.ConfirmPassword && values.ConfirmPassword) {
+          
+        }
+
     }, [values])
 
     // closing the form when is necessary
@@ -124,6 +133,7 @@ export default function Register() {
             }
         };
     }, []);
+
 
     const handleBlur = (e) => {
         const name = e.target.name;
