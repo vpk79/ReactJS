@@ -32,7 +32,7 @@ export function registerValidator(values) {
 }
 
 
-function emailValidator(value) {
+export function emailValidator(value) {
     if (!emailRegex.test(value)) {
         error = 'Email is invalid!'
     } else {

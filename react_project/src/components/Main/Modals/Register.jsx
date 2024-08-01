@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Register.module.css';
 import useForm from '../../../hooks/useForm';
 import AuthContext from '../../../contexts/authContext';
-import { emailValidator, validatorHandler } from '../../../services/validators';
+import { validatorHandler } from '../../../services/validators';
 import { showErrorToast } from '../../../Toasts/toastsMsg';
 
 const RegisterFormKeys = {
@@ -14,7 +14,7 @@ const RegisterFormKeys = {
     Gender: 'Gender',
     Email: 'Email',
     Password: 'Password',
-    ConfirmPassword: 'ConfirmPassword'
+    RepeatPassword: 'RepeatPassword'
 }
 
 
@@ -31,14 +31,10 @@ export default function Register() {
         [RegisterFormKeys.Gender]: '',
         [RegisterFormKeys.Email]: '',
         [RegisterFormKeys.Password]: '',
-        [RegisterFormKeys.ConfirmPassword]: ''
+        [RegisterFormKeys.RepeatPassword]: ''
     });
 
-    const [emailInputError, setEmailInputError] = useState('');
-    const [passwordInputError, setPasswordInputError] = useState('');
-    const [confirmInputError, setConfirmInputError] = useState('');
     const [touched, setTouched] = useState({});
-    const [inputError, setInputError] = useState(false);
     const [validation, setValidation] = useState({});
     const [revealPassword, setRevealPassword] = useState(false);
     const regFormRef = useRef(null);
@@ -52,12 +48,12 @@ export default function Register() {
         setValues({
             [RegisterFormKeys.Email]: '',
             [RegisterFormKeys.Password]: '',
-            [RegisterFormKeys.ConfirmPassword]: ''
+            [RegisterFormKeys.RepeatPassword]: ''
         });
     }
 
     // dynamic set conditions for valid password
-    const conditions = {                    
+    const conditions = {
         minLength: values.Password.length >= 6,
         capitalLetter: /[A-Z]/.test(values.Password),
         smallLetter: /[a-z]/.test(values.Password),
@@ -68,7 +64,8 @@ export default function Register() {
 
     // set birthday separators
     useEffect(() => {
-        if(touched.BirthDate && values.BirthDate){
+        if (validation.BirthDate && validation.BirthDate.validated) return;
+        if (touched.BirthDate && values.BirthDate) {
             console.log(values.BirthDate);
             let value = values.BirthDate.replace(/\D/g, '');
             if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
@@ -76,15 +73,32 @@ export default function Register() {
             if (value.length > 10) value = value.slice(0, 10);
             values.BirthDate = value;
         }
-       
-    }, [values])
+
+    }, [values]);
 
     useEffect(() => {
-        if (touched.ConfirmPassword && values.ConfirmPassword) {
-          
+        console.log('entered');
+        const matched = {};
+        if (touched.RepeatPassword && values.RepeatPassword) {
+            if (values.Password && validation['Password'] && !validation['Password'].validated) {
+                if (values.RepeatPassword === values.Password) {
+                    matched.error = false;
+                    matched.validated = true;
+                    console.log('matched');
+                } else {
+                    matched.error = 'Re-password not match!';
+                    matched.validated = false;
+                }
+            } else {
+                console.log('Notmatched2');
+                matched.error = 'Re-password not match!';
+                matched.validated = false;
+            }
+            setValidation(state => ({ ...state, RepeatPassword: matched }));
         }
 
-    }, [values])
+        console.log('validation', validation);
+    }, [values]);
 
     // closing the form when is necessary
     const closeBtnRef = useRef(null);
@@ -103,6 +117,7 @@ export default function Register() {
 
         setRevealPassword(false);
     };
+
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -134,7 +149,8 @@ export default function Register() {
         };
     }, []);
 
-
+    
+    // handle all inputs
     const handleBlur = (e) => {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: true }));
@@ -157,8 +173,9 @@ export default function Register() {
                         showErrorToast('Validation error', { toastId: 'validationError' });
                         return;
                     }
+                    if(item === 'RepeatPassword') return;
                     const checkValidation = validatorHandler(item, values[item]);
-                    console.log(checkValidation);
+                    // console.log(checkValidation);
                     setValidation(state => ({ ...state, [item]: checkValidation }));
                 }
             }
@@ -166,14 +183,6 @@ export default function Register() {
     }, [touched]);
 
 
-    const confirmPasswordInputValidator = () => {
-        if (values['confirm-password'] === '') {
-            setConfirmInputError('*confirm password is required!')
-        } else if ((values.password || !values.password) && values.password !== values['confirm-password']) {
-            setConfirmInputError('*passwords did not match!')
-
-        }
-    }
 
     function revealPasswordHandler(e) {
         e.preventDefault();
@@ -184,22 +193,6 @@ export default function Register() {
         const name = e.target.name;
         setTouched(state => ({ ...state, [name]: false }));
         // setValidation(state => ({ ...state, [name]: '' }));
-
-        // console.log(e.target.name);
-        // if (e.target.name === 'email') {
-        //     setEmailInputError('');
-        //     setTouched(false);
-        // } else if (e.target.name === 'password') {
-        //     setPasswordInputError('');
-        // } else if (e.target.name === 'confirm-password') {
-        //     setConfirmInputError('');
-        // }
-        // else if (e.target.name === 'closeBtn') {
-        //     setEmailInputError('');
-        //     setPasswordInputError('');
-        //     setConfirmInputError('');
-        //     setTouched(false);
-        // }
     }
 
 
@@ -438,7 +431,7 @@ export default function Register() {
 
                                             <input
                                                 className={
-                                            `${touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated ? 'is-invalid' : ''}
+                                                    `${touched.BirthDate && validation['BirthDate'] && !validation['BirthDate'].validated ? 'is-invalid' : ''}
                                              ${touched.BirthDate && validation['BirthDate'] && validation['BirthDate'].validated ? 'is-valid' : ''}
                                               shadow-sm form-control form-control-sm`}
                                                 id="registerBirthDate"
@@ -466,22 +459,30 @@ export default function Register() {
                                             <label htmlFor="registerName" className="">
                                                 *Gender
                                             </label>
-                                            <select className='shadow-sm form-control form-control-sm ' name="" id="registerGender">
+                                            <select className='shadow-sm form-control form-control-sm'
+                                             name={RegisterFormKeys.RepeatPassword}
+                                             id="registerGender"
+
+                                             >
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
+                                                <option value="female">Other</option>
                                             </select>
                                         </div>
 
                                     </div>
                                     <div className='d-flex flex-column position-relative w-75'>
-                                        <label htmlFor="ConfirmPassword3" className="">
+                                        <label htmlFor="RepeatPassword3" className="">
                                             *Repeat-Password
                                         </label>
                                         <input type="password"
-                                            className={`shadow-sm form-control form-control-sm w-100 {${confirmInputError ? 'is-invalid' : ''}}`}
-                                            name={RegisterFormKeys.ConfirmPassword}
-                                            id="ConfirmPassword3"
-                                            value={values[RegisterFormKeys.ConfirmPassword]}
+                                            className={
+                                                `${touched.RepeatPassword && validation['RepeatPassword'] && !validation['RepeatPassword'].validated ? 'is-invalid' : ''}
+                                             ${touched.RepeatPassword && validation['RepeatPassword'] && validation['RepeatPassword'].validated ? 'is-valid' : ''}
+                                              shadow-sm form-control form-control-sm w-100`}
+                                            name={RegisterFormKeys.RepeatPassword}
+                                            id="RepeatPassword3"
+                                            value={values[RegisterFormKeys.RepeatPassword]}
                                             placeholder='Repeat-password'
                                             autoComplete="off"
                                             onChange={onChange}
@@ -490,9 +491,9 @@ export default function Register() {
                                             onFocus={clearErrors}
                                             title="Re-Password should match with Password"
                                             required />
-                                        {/* {confirmInputError && (
-                                            <p className={styles.confirmError}>{confirmInputError}</p>
-                                        )} */}
+                                        {touched.RepeatPassword && validation['RepeatPassword'] && !validation['RepeatPassword'].validated && (
+                                            <p className={styles.errorMsg}>{validation['RepeatPassword'].error}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
