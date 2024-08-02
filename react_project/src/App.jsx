@@ -28,6 +28,7 @@ import * as toast from "./Toasts/toastsMsg";
 import AuthModal from './components/Main/Modals/AuthModal';
 import Register from './components/Main/Modals/Register';
 import Login from './components/Main/Modals/Login';
+import { UserProfile } from './components/UserProfile/UserProfile';
 
 
 const CurrentPath = () => {
@@ -140,6 +141,7 @@ function App() {
     '/feature': 'Feature',
     '/appointment': 'Appointment',
     '/testimonial': 'Testemonial',
+    '/userProfile': 'User Profile',
     '/404': '404 Error'
   };
 
@@ -194,6 +196,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
+          
+          <Route path="/userProfile" element={<AuthGuard><UserProfile /></AuthGuard>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard>} />
           <Route path="/contact" element={<ContactPage />} />
@@ -205,7 +209,7 @@ function App() {
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-
+          
         <Footer />
 
         <ToastContainer
