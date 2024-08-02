@@ -7,6 +7,7 @@ function initPlugin(settings) {
     return function decorateContext(context, request) {
         context.auth = {
             register,
+            update,
             login,
             logout
         };
@@ -51,6 +52,42 @@ function initPlugin(settings) {
                 return result;
             }
         }
+
+        function update(data) {
+            const body = JSON.parse(data);
+            const userId = body._id;
+            // console.log('body', body);
+            // console.log('userid',userId);
+            // Проверка за липсващи полета
+            // if (body.hasOwnProperty(identity) === false || body[identity].length == 0) {
+            //     throw new RequestError('Missing fields');
+            // }
+
+            // Проверка дали потребителят съществува
+            // const existingUser = context.protectedStorage.query('users', { _id: userId });
+            const existingUser = context.protectedStorage.get('users', userId);
+            console.log('existtinguser', existingUser);
+            // if (existingUser.length === 0) {
+            //     throw new NotFoundError(`User with id ${userId} not found`);
+            // }
+
+            // Проверка дали съществува друг потребител със същата идентичност
+            // if (context.protectedStorage.query('users', { [identity]: body[identity], _id: { $ne: userId } }).length !== 0) {
+            //     throw new ConflictError$1(`A user with the same ${identity} already exists`);
+            // }
+
+            // Обновяване на потребителските данни
+            // const updatedUser = Object.assign({}, existingUser[0], body, {
+            //     [identity]: body[identity],
+            //     hashedPassword: body.password ? hash(body.password) : existingUser[0].hashedPassword
+            // });
+
+            const result = context.protectedStorage.merge('users', userId, body);
+            // delete result.hashedPassword;
+            console.log('data received', body);
+            return result;
+        }
+
 
         function login(body) {
             const targetUser = context.protectedStorage.query('users', { [identity]: body[identity] });

@@ -1,0 +1,13 @@
+.profile-image-wrapper {
+    width: 200px;
+    height: 200px;
+
+    overflow: hidden;
+}
+
+
+.profile-image-wrapper img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}

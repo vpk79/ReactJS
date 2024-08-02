@@ -10,6 +10,7 @@ const userService = new Service();
 
 userService.get('me', getSelf);
 userService.post('register', onRegister);
+userService.post('update', onUpdate);
 userService.post('login', onLogin);
 userService.get('logout', onLogout);
 
@@ -26,6 +27,9 @@ function getSelf(context, tokens, query, body) {
 
 function onRegister(context, tokens, query, body) {
     return context.auth.register(body);
+}
+function onUpdate(context, tokens, query, body) {
+    return context.auth.update(body);
 }
 
 function onLogin(context, tokens, query, body) {

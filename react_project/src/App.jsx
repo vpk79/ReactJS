@@ -119,6 +119,10 @@ function App() {
     }
   }
 
+  function updateHandler(value){
+    setAuth(value);
+  }
+
   const logoutHandler = () => {
     try {
       setAuth({});
@@ -157,8 +161,9 @@ function App() {
   const values = {
     loginSubmitHandler,
     registerSubmitHandler,
+    updateHandler,
     logoutHandler,
-    username: auth.name ? auth.name || auth.email.split('@')[0]: 'guest',
+    username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0]: 'guest',
     email: auth.email,
     userId: auth._id,
     isAuthenticated: !!auth.accessToken

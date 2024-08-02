@@ -35,6 +35,15 @@ export const register = (values) => {
         return error;
     }
 }
+export const update = (values) => {
+    try {
+       const result = request.post(`${baseUrl}/update`, values);
+        return result;
+    } catch (error) {
+        // console.log('register error', error);
+        return error;
+    }
+}
 
 
 export const logout = async () => {
