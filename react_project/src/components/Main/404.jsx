@@ -1,5 +1,5 @@
 import Footer from "./Footer";
-import Topbar from "./Topbar";
+import Topbar from "./Topbar/Topbar";
 
 export default function ErrorPage(){
     return(

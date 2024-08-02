@@ -1,0 +1,16 @@
+.top-profile-picture {
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 40px;
+}
+
+.top-profile-picture img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+}
+

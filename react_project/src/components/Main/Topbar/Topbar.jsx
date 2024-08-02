@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "../../contexts/authContext.js";
-import UploadForm from "./LoadImage.jsx";
-
+import AuthContext from "../../../contexts/authContext.js";
+import './Topbar.css'
 
 export default function Topbar() {
 
@@ -30,10 +29,7 @@ export default function Topbar() {
                             <small>+012 345 6789</small>
                         </div>
                     </div>
-                    {/* <div>
-                        <h1>Image Upload Example</h1>
-                        <UploadForm />
-                    </div> */}
+
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
                             
@@ -47,10 +43,13 @@ export default function Topbar() {
                                     data-bs-target="#Register">Register</button>
                                 </div>
                                 )}
-
+                               
                                 {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
-                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;</span>
+                                    <div className="top-profile-picture">
+                                        <img src="../../../public/img/user_profile.jpg" alt="" />
+                                    </div>
                                     <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>
                                         </div>
                                 )}

@@ -14,7 +14,7 @@ import TeamPage from './components/TeamPage/TeamPage';
 import FeaturePage from './components/FeaturePage/FeaturePage';
 import AppointmentPage from './components/AppointmentPage/AppointmentPage';
 import ErrorPage from './components/Main/404';
-import Topbar from './components/Main/Topbar';
+import Topbar from './components/Main/Topbar/Topbar';
 import Footer from './components/Main/Footer';
 import Navbar from './components/Main/Navbar';
 import HomeHeader from './components/Main/HomeHeader';
@@ -28,7 +28,6 @@ import * as toast from "./Toasts/toastsMsg";
 import AuthModal from './components/Main/Modals/AuthModal';
 import Register from './components/Main/Modals/Register';
 import Login from './components/Main/Modals/Login';
-import { LoadSpinner } from './assets/Spinners/LoadSpinner';
 
 
 const CurrentPath = () => {
