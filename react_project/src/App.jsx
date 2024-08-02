@@ -156,7 +156,7 @@ function App() {
     loginSubmitHandler,
     registerSubmitHandler,
     logoutHandler,
-    // username: auth.username || auth.email,
+    username: auth.name || auth.email.split('@')[0],
     email: auth.email,
     userId: auth._id,
     isAuthenticated: !!auth.accessToken

@@ -5,7 +5,7 @@ import AuthContext from "../../contexts/authContext.js";
 
 export default function Topbar() {
 
-    const { isAuthenticated, email } = useContext(AuthContext);
+    const { isAuthenticated, email, username } = useContext(AuthContext);
 
     return (
         <>
@@ -45,7 +45,7 @@ export default function Topbar() {
 
                                 {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
-                                    <span>Welcome, {email}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>
                                         </div>
                                 )}

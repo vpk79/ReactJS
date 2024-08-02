@@ -13,7 +13,7 @@ import { ConfirmToast } from 'react-confirm-toast'
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
-    const { isAuthenticated, email, userId } = useContext(AuthContext);
+    const { isAuthenticated, email, userId, username } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
     const [chat, setChat] = useState([]);
@@ -49,7 +49,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let userName = 'Patient';
     let personName = 'Dr.'
 
-    if (email) userName = email.split('@')[0]; // create username for chat
+    if(username) userName = username;
+    // if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
     useEffect(() => {

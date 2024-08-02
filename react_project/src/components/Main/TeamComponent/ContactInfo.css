@@ -449,6 +449,7 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 70px;
+    /* border: 1px solid black; */
 }
 
 .message-section.modal-header.with-form .displayMsg .doctorMsg {
@@ -458,7 +459,7 @@
 }
 
 .message-section.modal-header.with-form .displayMsg .userText {
-    width: 100%;
+    max-width: 250px;
     font-weight: 660;
     color: blue;
     margin-right: 5px;
@@ -468,7 +469,7 @@
     display: inline-block;
     background-color: white;
     word-wrap: break-word;
-    text-align: center;
+    text-align: right;
 }
 
 
