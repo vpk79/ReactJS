@@ -28,6 +28,7 @@ import * as toast from "./Toasts/toastsMsg";
 import AuthModal from './components/Main/Modals/AuthModal';
 import Register from './components/Main/Modals/Register';
 import Login from './components/Main/Modals/Login';
+import { LoadSpinner } from './assets/Spinners/LoadSpinner';
 
 
 const CurrentPath = () => {
@@ -156,7 +157,7 @@ function App() {
     loginSubmitHandler,
     registerSubmitHandler,
     logoutHandler,
-    username: auth.name || auth.email.split('@')[0],
+    username: auth.name ? auth.name || auth.email.split('@')[0]: 'guest',
     email: auth.email,
     userId: auth._id,
     isAuthenticated: !!auth.accessToken
@@ -181,7 +182,7 @@ function App() {
       {/* Spinner End */}
 
       <AuthContext.Provider value={values}>
-
+        
         <Topbar />
         <Navbar handleCloseAuthModal={handleCloseAuthModal}/>
         <Header />

@@ -10,6 +10,7 @@ import * as commentsService from '../../../services/commentsService';
 import * as request from '../../../lib/request';
 import * as url from '../../../const/const'
 import { ConfirmToast } from 'react-confirm-toast'
+import { LoadSpinner } from '../../../assets/Spinners/LoadSpinner';
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
@@ -36,6 +37,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const MAX_CHAR_COUNT = 250;
     const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
     const [showArrow, setShowArrow] = useState(false);
+    const [spinner, setSpinner] = useState(true);
 
     const msgAreaRef = useRef(null);
     const commentRef = useRef(null);
@@ -49,7 +51,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     let userName = 'Patient';
     let personName = 'Dr.'
 
-    if(username) userName = username;
+    if (username) userName = username;
     // if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
@@ -107,7 +109,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     }
 
     useEffect(() => {
-            focusLastItem();
+        focusLastItem();
     }, [comments]);
 
     // loading all comments
@@ -271,7 +273,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             const deletePost = await commentsService.deleteComment(commentId);
             const edited = comments.filter(x => x._id !== commentId);
             setComments(edited);
-            showSuccessToast('Delete completed', {toastId: 'deleteSuccess'});
+            showSuccessToast('Delete completed', { toastId: 'deleteSuccess' });
 
         } catch (error) {
             throw showErrorToast(error.message, { toastId: 'deleteComment' });
@@ -604,6 +606,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             clearTimeout(timeoutIdRef.current);
             timeoutIdRef.current = null;
         }
+        setPersonData({});
         setActiveTab('about');
         setMsgHeader(false);
         setCommentHeader(false);
@@ -646,69 +649,66 @@ export default function ContactInfo({ data, toggleContactForm }) {
         };
     }, []);
 
-
     return (
         <>
             {personData && (
-
                 <div className="modal fade" ref={modalRef} id="contactInfoModal" tabIndex="-1" aria-labelledby="contactInfoModal" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            {
-                                msgHeader && (
-                                    <div className="message-section modal-header with-form">
-                                        <div className="image-section">
-                                            <div className="image-wrapper">
-                                                <img src={personData.imageUrl} alt=""></img>
-                                            </div>
-                                            <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
-                                            <p className='person-department'>{personData.department}</p>
-                                            <div className='left-btn-container'>
-                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                                <button type="button" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
-                                                {showArrow && <div className='arrow-wrapper'>
-                                                    <img src="../../../../public/img/arrow.gif" alt="" />
-                                                </div>}
-                                            </div>
+                            {msgHeader && (
+                                <div className="message-section modal-header with-form">
+                                    <div className="image-section">
+                                        <div className="image-wrapper">
+                                            <img src={personData.imageUrl} alt=""></img>
                                         </div>
-
-                                        <div className="messages-wrapper">
-                                            <div className='displayMsg'>
-                                                <ul>
-                                                    {chat.map((data, index) => (
-                                                        data.user == 'doctor' ?
-
-                                                            <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
-                                                                <span className='doctorText'>{data.message}</span>
-                                                            </li>
-
-                                                            :
-                                                            <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
-                                                                <span className='userName'>{data.name}</span>
-                                                            </li>
-                                                    ))
-
-                                                    }
-                                                    {loadingMessage && (
-                                                        <li>
-                                                            <span className='doctorName'>{loadingMessage.name}</span>
-                                                            <svg height={40} width={40} className="loader">
-                                                                <circle className="dot" cx={10} cy={20} r={3} style={{ fill: "grey" }} />
-                                                                <circle className="dot" cx={20} cy={20} r={3} style={{ fill: "grey" }} />
-                                                                <circle className="dot" cx={30} cy={20} r={3} style={{ fill: "grey" }} />
-                                                            </svg>
-                                                        </li>
-
-                                                    )}
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div className="close-modal">
-                                            <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
+                                        <p className='person-department'>{personData.department}</p>
+                                        <div className='left-btn-container'>
+                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                            <button type="button" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
+                                            {showArrow && <div className='arrow-wrapper'>
+                                                <img src="../../../../public/img/arrow.gif" alt="" />
+                                            </div>}
                                         </div>
                                     </div>
-                                )
+
+                                    <div className="messages-wrapper">
+                                        <div className='displayMsg'>
+                                            <ul>
+                                                {chat.map((data, index) => (
+                                                    data.user == 'doctor' ?
+
+                                                        <li key={index} className='doctorMsg'><span className='doctorName'>{data.name}</span>
+                                                            <span className='doctorText'>{data.message}</span>
+                                                        </li>
+
+                                                        :
+                                                        <li key={index} className='userMsg'><span className='userText'>{data.message}</span>
+                                                            <span className='userName'>{data.name}</span>
+                                                        </li>
+                                                ))
+
+                                                }
+                                                {loadingMessage && (
+                                                    <li>
+                                                        <span className='doctorName'>{loadingMessage.name}</span>
+                                                        <svg height={40} width={40} className="loader">
+                                                            <circle className="dot" cx={10} cy={20} r={3} style={{ fill: "grey" }} />
+                                                            <circle className="dot" cx={20} cy={20} r={3} style={{ fill: "grey" }} />
+                                                            <circle className="dot" cx={30} cy={20} r={3} style={{ fill: "grey" }} />
+                                                        </svg>
+                                                    </li>
+
+                                                )}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className="close-modal">
+                                        <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            )
                             }
 
                             {
@@ -722,8 +722,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <p className='person-department'>{personData.department}</p>
                                             <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
                                             <button type="button" className="btn btn-primary btn-sm appointment">Appointment</button>
-
-
                                         </div>
 
                                         <div className="comments-wrapper">
@@ -774,8 +772,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                                             </div>
                                                         </li>
                                                     ))}
-
-
                                                 </ul>
 
                                             </div>

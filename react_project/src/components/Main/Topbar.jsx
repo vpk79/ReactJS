@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext.js";
+import UploadForm from "./LoadImage.jsx";
 
 
 export default function Topbar() {
@@ -29,6 +30,10 @@ export default function Topbar() {
                             <small>+012 345 6789</small>
                         </div>
                     </div>
+                    {/* <div>
+                        <h1>Image Upload Example</h1>
+                        <UploadForm />
+                    </div> */}
                     <div className="col-lg-5 px-5 text-end">
                         <div className="h-100 d-inline-flex align-items-center py-1 me-4">
                             
