@@ -97,6 +97,7 @@ function App() {
     try {
       // console.log('values', values);
       registerValidator(values);
+      values.imageUrl = '';
       
       const keysToLowerCase = obj => {
         return Object.keys(obj).reduce((acc, key) => {

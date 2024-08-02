@@ -25,7 +25,7 @@ async function uploadImage(file) {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBBKEY}`, { // Замести YOUR_API_KEY с твоя API ключ
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBBKEY}`, {
         method: 'POST',
         body: formData,
     });
