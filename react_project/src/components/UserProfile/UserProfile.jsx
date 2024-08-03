@@ -37,7 +37,7 @@ export function UserProfile() {
                                 <img src="../../../public/img/people/smilled-woman2.png" alt="" />
                             </div>
                             <div class="file-upload">
-                                <input type="file" id="file" className="file-input" />
+                                <input type="file" id="file" className="file-input" accept=".jpg, .jpeg, .png, .gif" />
                                 <label for="file" className="file-label" data-bs-toggle="tooltip" title="Change Your Picture">+</label>
                                     {/* <span className="file-name">Няма избран файл</span> */}
                             </div>
