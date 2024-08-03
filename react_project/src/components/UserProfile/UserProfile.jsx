@@ -142,7 +142,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper">
                                             <label htmlFor="name" className="form-label my-0">Name:</label>
                                             <input type="text"
-                                                className={`user-form-input ${editMode ? 'form-control-sm' : 'form-control-plaintext'}`}
+                                                className={` ${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="name"
                                                 name='name'
                                                 value={userData.name || userData.username}
@@ -153,7 +153,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper">
                                             <label htmlFor="lastname" className="form-label my-0">Last Name:</label>
                                             <input type="text"
-                                                className={`user-form-input ${editMode ? 'form-control-sm' : 'form-control-plaintext'}`}
+                                                className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="lastName"
                                                 name='lastname'
                                                 value={userData.lastname || ''}
@@ -163,7 +163,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper">
                                             <label htmlFor="email" className="form-label my-0">Email:</label>
                                             <input type="email"
-                                                className="user-form-input form-control-plaintext"
+                                                className="form-control-plaintext"
                                                 id="email"
                                                 name='email'
                                                 tabIndex="-1"
@@ -176,7 +176,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper">
                                             <label htmlFor="phone" className="form-label my-0">Phone:</label>
                                             <input type="tel"
-                                                className={`user-form-input ${editMode ? 'form-control-sm' : 'form-control-plaintext'}`} id="phone"
+                                                className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`} id="phone"
                                                 name='phone'
                                                 value={userData.phone || ''}
                                                 onChange={handleInputChange}
@@ -185,7 +185,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper">
                                             <label htmlFor="city" className="form-label my-0">City:</label>
                                             <input type="text"
-                                                className={`user-form-input ${editMode ? 'form-control-sm' : 'form-control-plaintext'}`}
+                                                className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="city"
                                                 value={userData.city || ''}
                                                 name='city'
@@ -195,7 +195,7 @@ export function UserProfile() {
                                         <div className="col-md-8 input-wrapper" >
                                             <label htmlFor="birthdate" className="form-label my-0">Birth Date:</label>
                                             <input type="text"
-                                                className="user-form-input form-control-plaintext"
+                                                className="form-control-plaintext"
                                                 name='date'
                                                 id="birthdate"
                                                 tabIndex="-1"
