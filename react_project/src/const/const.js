@@ -6,5 +6,6 @@ export const MESSAGES = `${BASE_URL}/data/messages`;
 export const COMMENTS = `${BASE_URL}/data/comments`;
 export const LIKES = `${BASE_URL}/data/likers`;
 export const DISLIKES = `${BASE_URL}/data/dislikes`;
+export const FEEDBACK = `${BASE_URL}/data/feedback`
 
 export const IMGBBKEY = 'b3c7f7bf40818946b7b6645125690e18'

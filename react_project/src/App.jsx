@@ -201,7 +201,7 @@ function App() {
         <CurrentPath />
         <Login />
         <Register />
-        <FeedbackModal />
+        
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
           

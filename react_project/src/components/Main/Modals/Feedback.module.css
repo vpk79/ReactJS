@@ -6,7 +6,7 @@
 
 .feedbackContent {
     width: 600px !important;
-    height: 400px !important;
+    height: 450px !important;
     /* background-color: black; */
     border: 1px solid black;
 }
@@ -14,6 +14,7 @@
 .feedbackFooter {
     display: flex;
     justify-content: space-between;
+    margin-top: -20px;
 }
 
 .feedbackTitle {
@@ -30,4 +31,10 @@
 
 .feedbackTextarea::placeholder{
     opacity: 0.5;
+}
+
+.showChars {
+    display: flex;
+    justify-content: space-between;
+   
 }

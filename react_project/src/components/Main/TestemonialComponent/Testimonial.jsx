@@ -1,19 +1,49 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import OwlCarousel from 'react-owl-carousel';
 import { options } from './carousel';
 import AuthContext from '../../../contexts/authContext';
+import { FEEDBACK } from '../../../const/const';
+import * as request from '../../../lib/request';
+import { showErrorToast } from '../../../Toasts/toastsMsg';
+import TestemonialCard from './TestimonialCard';
+import FeedbackModal from '../Modals/FeedbackModal';
 
 export default function Testemonial() {
     const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
+    const [feedback, setFeedback] = useState([]);
+    const [carouselKey, setCarouselKey] = useState(0);
 
+    useEffect(() => {
+        const loadComments = async () => {
+            try {
+                const getData = await request.get(FEEDBACK);
+                // console.log(getData);
+                setFeedback(getData);
+            } catch (error) {
+                showErrorToast(error.message, { toastId: 'feedbackError' })
+            }
+        }
+        loadComments();
+    }, [])
 
+    const updateFeedback = (data) => {
+            setFeedback(state => ([...state, data]));
+    }
+
+    // re-initiliaze carousel with new items.
+    // changing key force react to re-render again,
+    // need two re-renders to load new items
+    
+    useEffect(() => {
+        setCarouselKey(prevKey => prevKey + 1);
+    }, [feedback]);
 
     return (
         <>
             {/* Testimonial Start */}
-            <div className="container-xxl py-5">
+            {feedback.length > 0 && <div className="container-xxl py-5">
                 <div className="container d-flex flex-column align-items-center ">
                     <div
                         className="text-center mx-auto mb-5 wow fadeInUp"
@@ -25,58 +55,8 @@ export default function Testemonial() {
                         </p>
                         <h1>What Say Our Patients!</h1>
                     </div>
-                    <OwlCarousel className="owl-carousel testimonial-carousel wow fadeInUp owl-theme" {...options}>
-                        <div className="testimonial-item text-center">
-                            <img
-                                className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
-                                src="img/testimonial-1.jpg"
-                                alt="Patient 1"
-                                style={{ width: 100, height: 100 }}
-                            />
-                            <div className="testimonial-text rounded text-center p-4">
-                                <p>
-                                    Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo
-                                    duo labore sed sed. Magna ut diam sit et amet stet eos sed clita
-                                    erat magna elitr erat sit sit erat at rebum justo sea clita.
-                                </p>
-                                <h5 className="mb-1">Patient Name</h5>
-                                <span className="fst-italic">Profession</span>
-                            </div>
-                        </div>
-                        <div className="testimonial-item text-center">
-                            <img
-                                className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
-                                src="img/testimonial-2.jpg"
-                                alt="Patient 2"
-                                style={{ width: 100, height: 100 }}
-                            />
-                            <div className="testimonial-text rounded text-center p-4">
-                                <p>
-                                    Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo
-                                    duo labore sed sed. Magna ut diam sit et amet stet eos sed clita
-                                    erat magna elitr erat sit sit erat at rebum justo sea clita.
-                                </p>
-                                <h5 className="mb-1">Patient Name</h5>
-                                <span className="fst-italic">Profession</span>
-                            </div>
-                        </div>
-                        <div className="testimonial-item text-center">
-                            <img
-                                className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
-                                src="img/testimonial-3.jpg"
-                                alt="Patient 3"
-                                style={{ width: 100, height: 100 }}
-                            />
-                            <div className="testimonial-text rounded text-center p-4">
-                                <p>
-                                    Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo
-                                    duo labore sed sed. Magna ut diam sit et amet stet eos сед clita
-                                    erat magna elitr erat sit sit erat at rebum justo sea clita.
-                                </p>
-                                <h5 className="mb-1">Patient Name</h5>
-                                <span className="fst-italic">Profession</span>
-                            </div>
-                        </div>
+                    <OwlCarousel key={carouselKey}  className="owl-carousel testimonial-carousel wow fadeInUp owl-theme" {...options}>
+                        {feedback.map(data => (<TestemonialCard key={data._id} data={data} />))}
                     </OwlCarousel>
                     <div className='my-5'>
                         {isAuthenticated && <button className='btn btn-primary my-5' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
@@ -89,8 +69,8 @@ export default function Testemonial() {
                         </>}
                     </div>
                 </div>
-
-            </div>
+                <FeedbackModal updateFeedback={updateFeedback} />
+            </div>}
             {/* Testimonial End */}
         </>
     );
