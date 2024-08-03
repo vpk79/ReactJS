@@ -29,6 +29,7 @@ import AuthModal from './components/Main/Modals/AuthModal';
 import Register from './components/Main/Modals/Register';
 import Login from './components/Main/Modals/Login';
 import { UserProfile } from './components/UserProfile/UserProfile';
+import FeedbackModal from './components/Main/Modals/FeedbackModal';
 
 
 const CurrentPath = () => {
@@ -200,7 +201,7 @@ function App() {
         <CurrentPath />
         <Login />
         <Register />
-
+        <FeedbackModal />
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
           
@@ -218,7 +219,7 @@ function App() {
         </Routes>
           
         <Footer />
-
+       
         <ToastContainer
           progressClassName="toastProgress"
           bodyClassName="toastBody"

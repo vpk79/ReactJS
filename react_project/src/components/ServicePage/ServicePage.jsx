@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import Appointment from "../Main/Appointment";
-import Testemonial from "../Main/Testimonial";
 import ServiceHeader from "./ServiceHeader";
 import ServiceComponent from "../Main/ServiceComponent/ServiceComponent";
+import Testemonial from "../Main/TestemonialComponent/Testimonial";
 
 export default function ServicePage() {
     return (

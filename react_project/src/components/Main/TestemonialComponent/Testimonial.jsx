@@ -2,33 +2,13 @@ import React, { useContext } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import OwlCarousel from 'react-owl-carousel';
-import AuthContext from '../../contexts/authContext';
+import { options } from './carousel';
+import AuthContext from '../../../contexts/authContext';
 
 export default function Testemonial() {
     const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
 
-    const options = {
-        loop: true,
-        nav: true,
-        autoplay: true,
-        autoplayTimeout: 3000,
-        autoplayHoverPause: true,
-        smartSpeed: 1000,
-        center: true,
-        dots: false,
-        navText: [
-            '<i class="bi bi-arrow-left"></i>',
-            '<i class="bi bi-arrow-right"></i>'
-        ],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            }
-        }
-    };
+
 
     return (
         <>
@@ -99,7 +79,7 @@ export default function Testemonial() {
                         </div>
                     </OwlCarousel>
                     <div className='my-5'>
-                        {isAuthenticated && <button className='btn btn-primary my-5'>Comment</button>}
+                        {isAuthenticated && <button className='btn btn-primary my-5' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
                         {!isAuthenticated && <>
                             <h5>You must  <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#Login">Login</button>

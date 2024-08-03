@@ -1,0 +1,12 @@
+.feedbackDialog {
+    width: 400px !important;
+    height: 400px !important;
+    top: 30%;
+}
+
+.feedbackContent {
+    width: 600px !important;
+    height: 300px !important;
+    /* background-color: black; */
+    border: 1px solid black;
+}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Testemonial from "../Main/Testimonial";
 import TestemonialHeader from "./TestemonialHeader";
+import Testemonial from "../Main/TestemonialComponent/Testimonial";
 
 export default function TestimonialPage() {
     return (
