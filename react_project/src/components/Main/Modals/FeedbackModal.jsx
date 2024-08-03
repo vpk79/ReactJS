@@ -91,7 +91,7 @@ export default function FeedbackModal({ updateFeedback }) {
                                         onChange={handleProfessionChange} />
                                 </div>
                                 {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button> */}
-                                <button type="submit" className="btn btn-primary px-4">Send</button>
+                                <button type="submit" className="btn btn-primary bg-primary text-white bg-gradient px-4">Send</button>
                             </div>
                         </form>
 

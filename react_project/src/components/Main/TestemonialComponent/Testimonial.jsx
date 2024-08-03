@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import './Testimonial.css';
 import OwlCarousel from 'react-owl-carousel';
 import { options } from './carousel';
 import AuthContext from '../../../contexts/authContext';
@@ -9,6 +10,7 @@ import * as request from '../../../lib/request';
 import { showErrorToast } from '../../../Toasts/toastsMsg';
 import TestemonialCard from './TestimonialCard';
 import FeedbackModal from '../Modals/FeedbackModal';
+
 
 export default function Testemonial() {
     const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
@@ -35,7 +37,7 @@ export default function Testemonial() {
     // re-initiliaze carousel with new items.
     // changing key force react to re-render again,
     // need two re-renders to load new items
-    
+
     useEffect(() => {
         setCarouselKey(prevKey => prevKey + 1);
     }, [feedback]);
@@ -59,7 +61,7 @@ export default function Testemonial() {
                         {feedback.map(data => (<TestemonialCard key={data._id} data={data} />))}
                     </OwlCarousel>
                     <div className='my-5'>
-                        {isAuthenticated && <button className='btn btn-primary my-5' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
+                        {isAuthenticated && <button className='btn commentBtn btn-primary my-5 bg-primary text-white bg-gradient' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
                         {!isAuthenticated && <>
                             <h5>You must  <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#Login">Login</button>

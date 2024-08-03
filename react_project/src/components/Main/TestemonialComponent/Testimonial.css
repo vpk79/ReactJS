@@ -1,0 +1,9 @@
+.commentBtn:hover {
+    transition: 0.5s;
+    scale: 1.1;
+    background-color: rgb(52, 52, 252) !important;
+}
+.commentBtn:active {
+    transition: 0.5s;
+    scale: 1;
+}
