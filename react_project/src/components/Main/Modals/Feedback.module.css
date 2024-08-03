@@ -6,7 +6,28 @@
 
 .feedbackContent {
     width: 600px !important;
-    height: 300px !important;
+    height: 400px !important;
     /* background-color: black; */
     border: 1px solid black;
+}
+
+.feedbackFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.feedbackTitle {
+    text-align: center;
+    margin-left: 90px;
+}
+
+.feedbackTextarea {
+    resize: none;
+    border: 2px groove rgb(234, 231, 255);
+    padding: 5px 5px 5px 10px;
+    border-radius: 5px;
+}
+
+.feedbackTextarea::placeholder{
+    opacity: 0.5;
 }
