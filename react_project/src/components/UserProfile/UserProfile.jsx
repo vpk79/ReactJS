@@ -14,6 +14,7 @@ export function UserProfile() {
     const [file, setFile] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [tempData, setTempData] = useState({});
+    const [menu, setMenu] = useState('Profile')
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -26,10 +27,16 @@ export function UserProfile() {
         setEditMode(true);
     }
 
+    function menuHandler(e) {
+        e.preventDefault();
+        const value = e.target.textContent;
+        setMenu(value);
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if(name === 'email' || name === 'date'){
-            showErrorToast('Change not allowed!', {toastId:"changeError"});
+        if (name === 'email' || name === 'date') {
+            showErrorToast('Change not allowed!', { toastId: "changeError" });
             setUserData(tempData);
             return;
         }
@@ -86,17 +93,17 @@ export function UserProfile() {
 
 
     // form submit
-    function updateUserHandler(e){
+    function updateUserHandler(e) {
         e.preventDefault();
         console.log(userData);
         try {
             updateUser(userData);
-            setEditMode(false); 
-            showSuccessToast('User profil updated!', {toastId: 'updateSuccess'})
+            setEditMode(false);
+            showSuccessToast('User profil updated!', { toastId: 'updateSuccess' })
         } catch (error) {
-            showErrorToast(error.message, {toastId:'errorUpdate'})
+            showErrorToast(error.message, { toastId: 'errorUpdate' })
         }
-        
+
     }
 
     /* update user on server */
@@ -134,8 +141,16 @@ export function UserProfile() {
                                 <label htmlFor="file" className="file-label" data-bs-toggle="tooltip" title="Change Your Picture">+</label>
                                 {/* <span className="file-name">Няма избран файл</span> */}
                             </div>
+                            <div className="sub-menu-wrapper">
+                                <ul className="sub-menu" >
+                                    <li className="bg-light btn" onClick={menuHandler}>Profile</li>
+                                    <li className="bg-light btn" onClick={menuHandler}>My Appointments</li>
+                                    <li className="bg-light btn" onClick={menuHandler}>Last Appointments</li>
+                                    <li className="bg-light btn" onClick={menuHandler}>History</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div className="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
+                        {menu === 'Profile' && <div className="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
                             <div className="bg-light rounded-3 shadow">
                                 <form className="row py-5" onSubmit={updateUserHandler}>
                                     <div className="form-side col-md-6 d-flex flex-column justify-content-center align-items-center">
@@ -231,6 +246,12 @@ export function UserProfile() {
                                 </form>
                             </div>
                         </div>
+                        }
+                        {menu === 'My Appointments' && 
+                            <div className="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
+                                <h3>MY Appointments</h3>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

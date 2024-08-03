@@ -17,7 +17,6 @@ export default function Navbar({handleCloseAuthModal}) {
         return;
     }
     
-
     return (
         <>
             {/* Navbar Start */}
@@ -76,7 +75,11 @@ export default function Navbar({handleCloseAuthModal}) {
                                 <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/testimonial">
                                     Testimonial
                                 </NavLink>
-                                
+                                {isAuthenticated && 
+                                    <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/userProfile">
+                                        User Profile
+                                    </NavLink>
+                                }
                             </div>
                         </div>
                         <NavLink className={({ isActive }) => isActive ? "nav-item nav-link active" : "nav-item nav-link"} to="/contact">

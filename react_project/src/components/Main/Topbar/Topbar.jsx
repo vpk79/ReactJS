@@ -48,8 +48,8 @@ export default function Topbar() {
                                
                                 {isAuthenticated && (
                                     <div className="h-100 d-inline-flex align-items-center me-4">
-                                    <span>Welcome, {username}&nbsp;&nbsp;&nbsp;</span>
-                                    <div className="top-profile-picture">
+                                    <span className="fw-normal">Welcome, {username}&nbsp;&nbsp;&nbsp;</span>
+                                    <div className="top-profile-picture" data-bs-toggle="tooltip" data-bs-placement="top" title="Visit Your Profile">
                                         <Link to="/userProfile"><img src={profileImage || defaultUserPic} alt="" /></Link>
                                     </div>
                                     <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import OwlCarousel from 'react-owl-carousel';
+import AuthContext from '../../contexts/authContext';
 
 export default function Testemonial() {
+    const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
+
     const options = {
         loop: true,
         nav: true,
@@ -31,7 +34,7 @@ export default function Testemonial() {
         <>
             {/* Testimonial Start */}
             <div className="container-xxl py-5">
-                <div className="container">
+                <div className="container d-flex flex-column align-items-center ">
                     <div
                         className="text-center mx-auto mb-5 wow fadeInUp"
                         data-wow-delay="0.1s"
@@ -95,7 +98,18 @@ export default function Testemonial() {
                             </div>
                         </div>
                     </OwlCarousel>
+                    <div className='my-5'>
+                        {isAuthenticated && <button className='btn btn-primary my-5'>Comment</button>}
+                        {!isAuthenticated && <>
+                            <h5>You must  <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#Login">Login</button>
+                                &nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;
+                                <button className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#Register">Register</button>&nbsp;&nbsp;to make a comment.</h5>
+                        </>}
+                    </div>
                 </div>
+
             </div>
             {/* Testimonial End */}
         </>
