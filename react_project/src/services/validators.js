@@ -62,7 +62,7 @@ export function emailValidator(value) {
 }
 
 
-function nameValidator(value) {
+export function nameValidator(value) {
 
     if (!nameRegex.test(value)) {
         error = 'Only characters allowed.'
@@ -79,7 +79,7 @@ function nameValidator(value) {
     }
 }
 
-function phoneValidator(value) {
+export function phoneValidator(value) {
 
     if (!/^\d{8,15}$/.test(value)) {
         error = 'Phone is invalid!'
@@ -93,7 +93,7 @@ function phoneValidator(value) {
         validated
     }
 }
-function cityValidator(value) {
+export function cityValidator(value) {
 
     if (!/^[A-Za-zА-Яа-я\s]{2,50}$/.test(value)) {
         error = 'City is invalid!'
@@ -108,7 +108,7 @@ function cityValidator(value) {
     }
 }
 
-function DateValidator(value) {
+export function DateValidator(value) {
 
     let [day, month, year] = value.split('/');
     console.log(day, month, year);
@@ -130,7 +130,7 @@ function DateValidator(value) {
     }
 }
 
-function passwordValidator(value) {
+export function passwordValidator(value) {
 
     if (!/[A-Z]/.test(value)) {
         error = 'At least 1 capital letter'
@@ -150,7 +150,7 @@ function passwordValidator(value) {
     }
 }
 
-function genderValidation(value) {
+export function genderValidation(value) {
     if (value === 'Male' || value === 'Female' || value === 'Other') {
         error = false;
     } else {

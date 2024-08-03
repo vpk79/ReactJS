@@ -73,6 +73,8 @@ function initPlugin(settings) {
             // Обновяване на потребителските данни
             const result = context.protectedStorage.merge('users', userId, body);
             // console.log('data received', body);
+            delete result.password;
+            delete result.repeatpassword;
             return result;
         }
 

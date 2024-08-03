@@ -28,21 +28,27 @@
     pointer-events: none;
     text-align: right;
     display: inline;
-    width: 100%;
+    width: 60%;
+    overflow: scroll;
     font-weight: 600;
     /* border: 1px solid black; */
     /* margin-left: -20px; */
 }
-.form-control {
+.user-form-input {
 
     padding-left: 10px;
     pointer-events: all;
     text-align: right;
     display: inline;
+    overflow: scroll;
     width: 100%;
     font-weight: 600;
     /* border: 1px solid black; */
     /* margin-left: -20px; */
+}
+
+.form-side {
+    gap: 10px;
 }
 
 
