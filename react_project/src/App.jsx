@@ -97,7 +97,7 @@ function App() {
     try {
       // console.log('values', values);
       registerValidator(values);
-      values.imageUrl = '';
+      values.imageUrl = '/img/user_profile.jpg';
       
       const keysToLowerCase = obj => {
         return Object.keys(obj).reduce((acc, key) => {
@@ -167,7 +167,8 @@ function App() {
     username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0]: 'guest',
     email: auth.email,
     userId: auth._id,
-    isAuthenticated: !!auth.accessToken
+    isAuthenticated: !!auth.accessToken,
+    profileImage: auth.imageurl
   }
 
   return (

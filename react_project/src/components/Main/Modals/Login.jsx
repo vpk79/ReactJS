@@ -9,7 +9,6 @@ const LoginFormKeys = {
     Password: 'password'
 }
 
-
 export default function Login() {
 
     const { isAuthenticated, loginSubmitHandler } = useContext(AuthContext);
@@ -77,6 +76,9 @@ export default function Login() {
 
             if (modalElement) {
                 modalElement.removeEventListener('shown.bs.modal', handleShown);
+                setTouched(false);
+                setEmailInputError('');
+                setPasswordInputError('');
             }
         };
     }, []);
@@ -114,12 +116,33 @@ export default function Login() {
             setTouched(false);
         } else if (e.target.name === 'password') {
             setPasswordInputError('');
+           
         } else if (e.target.name === 'closeBtn') {
             setEmailInputError('');
             setPasswordInputError('');
             setTouched(false);
         }
     }
+
+
+    // handle backdrop close
+    useEffect(() => {
+        const modalElement = modalRef.current;
+        const handleModalHidden = () => {
+            closeForm();
+            // console.log('form clear');
+        };
+
+        if (modalElement) {
+            modalElement.addEventListener('hidden.bs.modal', handleModalHidden);
+        }
+
+        return () => {
+            if (modalElement) {
+                modalElement.removeEventListener('hidden.bs.modal', handleModalHidden);
+            }
+        };
+    }, []);
 
     return (
 

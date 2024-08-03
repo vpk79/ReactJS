@@ -5,7 +5,9 @@ import './Topbar.css'
 
 export default function Topbar() {
 
-    const { isAuthenticated, email, username } = useContext(AuthContext);
+    const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
+
+    const defaultUserPic = '/img/user_profile.jpg';
 
     return (
         <>
@@ -48,7 +50,7 @@ export default function Topbar() {
                                     <div className="h-100 d-inline-flex align-items-center me-4">
                                     <span>Welcome, {username}&nbsp;&nbsp;&nbsp;</span>
                                     <div className="top-profile-picture">
-                                        <Link to="/userProfile"><img src="../../../public/img/user_profile.jpg" alt="" /></Link>
+                                        <Link to="/userProfile"><img src={profileImage || defaultUserPic} alt="" /></Link>
                                     </div>
                                     <Link to="/logout" className="btn btn-primary btn-sm" >Logout</Link>
                                         </div>

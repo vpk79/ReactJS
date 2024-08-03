@@ -116,16 +116,14 @@ export default function Register() {
     function closeForm() {
         try {
             formReset();
+            setRevealPassword(false);
             if (closeBtnRef.current) {
-
                 closeBtnRef.current.click();
             };
         } catch (error) {
             console.error('Error closing form:', error);
             return null;
         }
-
-        setRevealPassword(false);
     };
 
     // close form if user is already authenticated
@@ -206,7 +204,7 @@ export default function Register() {
         const modalElement = modalRef.current;
         const handleModalHidden = () => {
             closeForm();
-            console.log('form clear');
+            // console.log('form clear');
         };
 
         if (modalElement) {

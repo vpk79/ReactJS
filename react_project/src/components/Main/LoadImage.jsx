@@ -21,23 +21,7 @@ const UploadForm = ({ uploadImage }) => {
     };
 
 
-async function uploadImage(file) {
-    const formData = new FormData();
-    formData.append('image', file);
 
-    const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBBKEY}`, {
-        method: 'POST',
-        body: formData,
-    });
-
-    const data = await response.json();
-    console.log(data);
-    if (data.success) {
-        return data.data.url; // Връща линка към каченото изображение
-    } else {
-        throw new Error('Image upload failed');
-    }
-}
 
 
 
