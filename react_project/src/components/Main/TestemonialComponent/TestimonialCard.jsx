@@ -1,30 +1,41 @@
 import { useContext, useState } from 'react';
 import './TestimonialCard.css'
 import AuthContext from '../../../contexts/authContext';
-import * as request  from '../../../lib/request';
+import * as request from '../../../lib/request';
 import { FEEDBACK } from '../../../const/const';
 import { showErrorToast, showSuccessToast } from '../../../Toasts/toastsMsg';
 import { ConfirmToast } from 'react-confirm-toast';
 
-export default function TestemonialCard({ data, feedback, updateFeedback }) {
+export default function TestemonialCard({ openFeedbackModal, data, feedback, updateFeedback }) {
     const { isAuthenticated, userId } = useContext(AuthContext);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    async function deleteHandler(id){
+
+    async function deleteHandler(id) {
         console.log('delete');
         try {
             const response = await request.remove(`${FEEDBACK}/${id}`);
             const remainingFeedback = feedback.filter(x => x._id !== id);
-            updateFeedback(remainingFeedback);
-            showSuccessToast('Post deleted successfully.', {toastId: 'deletedFeedback'})
+            updateFeedback(remainingFeedback.sort((a, b) => b._createdOn - a._createdOn));
+            showSuccessToast('Post deleted successfully.', { toastId: 'deletedFeedback' })
         } catch (error) {
-            showErrorToast(error.message, {toastId: 'deleteFeedback'});
+            showErrorToast(error.message, { toastId: 'deleteFeedback' });
         }
     }
 
+    function editHandler(data) {
+        data.editMode = true;
+        openFeedbackModal(data);
+    }
+
+    const sayclick = () => {
+        console.log('click');
+    }
+
+
     return (
         <>
-            <div className="testimonial-item text-center">
+            <div className="testimonial-item text-center" onClick={sayclick}>
                 <img
                     className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
                     src={data.img}
@@ -38,9 +49,13 @@ export default function TestemonialCard({ data, feedback, updateFeedback }) {
                 </div>
                 {userId === data._ownerId && <div className="btnWrapper">
                     <button className="btn btn-primary btn-sm m-2"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Comment"><i className="fas fa-edit"></i></button>
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        onClick={() => editHandler(data)}
+                        title="Edit Comment"><i className="fas fa-edit"></i></button>
                     <button className="btn btn-primary btn-sm"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Comment" onClick={()=>setShowConfirm(true, {passive: true})}><i className="fas fa-trash-alt"></i></button>
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Delete Comment"
+                        onClick={() => setShowConfirm(true)}><i className="fas fa-trash-alt"></i></button>
                 </div>
                 }
                 {showConfirm && <ConfirmToast
@@ -56,6 +71,7 @@ export default function TestemonialCard({ data, feedback, updateFeedback }) {
                     toastText='Are you sure?'
                 />}
             </div>
+
         </>
     )
 }

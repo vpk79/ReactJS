@@ -93,9 +93,13 @@
 }
 
 
-
+.btn:hover {
+    transition: 0.3s !important;
+    scale: 1.1 !important;
+}
 .btn:active {
-    scale: 0.9;
+    transition: 0.3s !important;
+    scale: 1.0 !important;
 }
 
 /*** Navbar ***/

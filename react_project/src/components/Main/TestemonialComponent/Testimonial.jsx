@@ -10,19 +10,34 @@ import * as request from '../../../lib/request';
 import { showErrorToast } from '../../../Toasts/toastsMsg';
 import TestemonialCard from './TestimonialCard';
 import FeedbackModal from '../Modals/FeedbackModal';
-
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 export default function Testemonial() {
     const { isAuthenticated, email, username, profileImage } = useContext(AuthContext);
     const [feedback, setFeedback] = useState([]);
     const [carouselKey, setCarouselKey] = useState(0);
+    const modalRef = useRef(null);
+    const[modalData, setModalData] = useState(null);
+
+    const openFeedbackModal = (data) => {
+        setModalData(state => ({...state, ...data}));
+        setTimeout(() => {
+            const modalElement = modalRef.current;
+            if (modalElement) {
+                const modal = new window.bootstrap.Modal(modalElement);
+                modal.show();
+            }
+        }, 100);
+      
+    };
 
     useEffect(() => {
         const loadComments = async () => {
             try {
                 const getData = await request.get(FEEDBACK);
                 // console.log(getData);
-                setFeedback(getData);
+                setFeedback(getData.sort((a, b) => b._createdOn - a._createdOn));
             } catch (error) {
                 showErrorToast(error.message, { toastId: 'feedbackError' })
             }
@@ -30,11 +45,17 @@ export default function Testemonial() {
         loadComments();
     }, [])
 
-    const updateFeedback = (data) => {
-        if(data.length > 1) {
+    const updateFeedback = (data, edited) => {
+        if(edited){
+            const temp = feedback.slice();
+            const id = data[0]._id;
+            const index = temp.findIndex(x => x._id === id);
+            temp[index] = data[0];
+            setFeedback(temp.reverse());
+        } else  if(data.length > 1) {
             setFeedback(data.slice());
         } else {
-            setFeedback(state => ([...state, data]));
+            setFeedback(state => ([...state, ...data].sort((a, b) => b._createdOn - a._createdOn)));
         }
     }
 
@@ -43,7 +64,7 @@ export default function Testemonial() {
     // need two re-renders to load new items
 
     useEffect(() => {
-    
+        console.log('feedback', feedback);
         setCarouselKey(prevKey => prevKey + 1);
     }, [feedback]);
 
@@ -63,7 +84,7 @@ export default function Testemonial() {
                         <h1>What Say Our Patients!</h1>
                     </div>
                     <OwlCarousel key={carouselKey}  className="owl-carousel testimonial-carousel wow fadeInUp owl-theme" {...options}>
-                        {feedback.map(data => (<TestemonialCard key={data._id} data={data} feedback={feedback} updateFeedback={updateFeedback} />))}
+                        {feedback.map(data => (<TestemonialCard openFeedbackModal={openFeedbackModal} key={data._id} data={data} feedback={feedback} updateFeedback={updateFeedback} />))}
                     </OwlCarousel>
                     <div className='my-5'>
                         {isAuthenticated && <button className='btn commentBtn btn-primary my-5 bg-primary text-white bg-gradient' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
@@ -76,7 +97,7 @@ export default function Testemonial() {
                         </>}
                     </div>
                 </div>
-                <FeedbackModal updateFeedback={updateFeedback} />
+                <FeedbackModal updateFeedback={updateFeedback} ref={modalRef} data={modalData} />
             </div>}
             {/* Testimonial End */}
         </>

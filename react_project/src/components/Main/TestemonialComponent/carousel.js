@@ -1,4 +1,5 @@
 // carusel settings
+
 export const options = {
     loop: true,
     nav: true,
@@ -8,6 +9,7 @@ export const options = {
     smartSpeed: 1000,
     center: true,
     dots: false,
+    mouseDrag: false,
     navText: [
         '<i class="bi bi-arrow-left"></i>',
         '<i class="bi bi-arrow-right"></i>'
