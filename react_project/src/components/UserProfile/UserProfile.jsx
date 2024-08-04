@@ -143,10 +143,10 @@ export function UserProfile() {
                             </div>
                             <div className="sub-menu-wrapper">
                                 <ul className="sub-menu" >
-                                    <li className="bg-light btn" onClick={menuHandler}>Profile</li>
-                                    <li className="bg-light btn" onClick={menuHandler}>My Appointments</li>
-                                    <li className="bg-light btn" onClick={menuHandler}>Last Appointments</li>
-                                    <li className="bg-light btn" onClick={menuHandler}>History</li>
+                                    <li className={`bg-light btn ${menu === 'Profile' ? 'selected': ''}`} onClick={menuHandler}>Profile</li>
+                                    <li className={`bg-light btn ${menu === 'My Appointments' ? 'selected' : ''}`} onClick={menuHandler}>My Appointments</li>
+                                    <li className={`bg-light btn ${menu === 'Last Appointments' ? 'selected' : ''}`} onClick={menuHandler}>Last Appointments</li>
+                                    <li className={`bg-light btn ${menu === 'History' ? 'selected' : ''}`} onClick={menuHandler}>History</li>
                                 </ul>
                             </div>
                         </div>
@@ -160,6 +160,7 @@ export function UserProfile() {
                                                 className={` ${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="name"
                                                 name='name'
+                                                tabIndex='-1'
                                                 value={userData.name || userData.username}
                                                 required
                                                 onChange={handleInputChange}
@@ -171,6 +172,7 @@ export function UserProfile() {
                                                 className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="lastName"
                                                 name='lastname'
+                                                tabIndex='-1'
                                                 value={userData.lastname || ''}
                                                 onChange={handleInputChange}
                                                 required />
@@ -193,6 +195,7 @@ export function UserProfile() {
                                             <input type="tel"
                                                 className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`} id="phone"
                                                 name='phone'
+                                                tabIndex='-1'
                                                 value={userData.phone || ''}
                                                 onChange={handleInputChange}
                                                 required />
@@ -202,6 +205,7 @@ export function UserProfile() {
                                             <input type="text"
                                                 className={`${editMode ? 'form-control-sm user-form-input' : 'form-control-plaintext'}`}
                                                 id="city"
+                                                tabIndex='-1'
                                                 value={userData.city || ''}
                                                 name='city'
                                                 onChange={handleInputChange}
@@ -221,22 +225,22 @@ export function UserProfile() {
                                     </div>
                                     {!editMode && <div className="col-12 d-flex justify-content-center mt-5">
                                         <button
-                                            className="btn btn-primary col-2"
+                                            className="btn text-white bg-primary bg-gradient col-2 editBtn"
                                             data-bs-toggle="tooltip"
                                             title="Edit Your Data"
                                             onClick={editModeHandle}
                                         >Edit</button>
                                     </div>
                                     }
-                                    {editMode && <div className="col-12 d-flex justify-content-center mt-5">
+                                    {editMode && <div className="col-12 wrapper d-flex justify-content-center  mt-5">
                                         <button
                                             type="submit"
-                                            className="btn btn-primary col-2"
+                                            className="btn text-white bg-primary bg-gradient col-2 editBtn "
                                             data-bs-toggle="tooltip"
                                             title="Edit Your Data"
                                         >Save</button>
                                         <button
-                                            className="btn btn-primary col-2"
+                                            className="btn text-white bg-primary bg-gradient col-2 editBtn "
                                             data-bs-toggle="tooltip"
                                             title="Edit Your Data"
                                             onClick={cancelHandler}

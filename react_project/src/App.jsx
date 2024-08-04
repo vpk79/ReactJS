@@ -196,12 +196,12 @@ function App() {
         <Navbar handleCloseAuthModal={handleCloseAuthModal}/>
         <Header />
         
+        <Login />
+        <Register />
           {!values.isAuthenticated && isAuthModalOpen && <AuthModal onClose={handleCloseAuthModal} />}
         
         <CurrentPath />
-        <Login />
-        <Register />
-        
+       
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
           

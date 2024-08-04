@@ -1,0 +1,14 @@
+.btnWrapper button:hover {
+    transition: 0.3s;
+    scale: 1.2;
+
+}
+
+.btnWrapper button:active {
+    transition: 0.3s;
+    scale: 1;
+}
+
+.btnWrapper button {
+    z-index: 10000;
+}

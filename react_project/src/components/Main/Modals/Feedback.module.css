@@ -1,7 +1,8 @@
 .feedbackDialog {
     width: 400px !important;
     height: 400px !important;
-    top: 30%;
+    top: 20%;
+    left: -3%;
 }
 
 .feedbackContent {

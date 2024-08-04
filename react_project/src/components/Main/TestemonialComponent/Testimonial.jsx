@@ -31,14 +31,19 @@ export default function Testemonial() {
     }, [])
 
     const updateFeedback = (data) => {
+        if(data.length > 1) {
+            setFeedback(data.slice());
+        } else {
             setFeedback(state => ([...state, data]));
+        }
     }
 
-    // re-initiliaze carousel with new items.
+    // !!! re-initiliaze carousel with new items.
     // changing key force react to re-render again,
     // need two re-renders to load new items
 
     useEffect(() => {
+    
         setCarouselKey(prevKey => prevKey + 1);
     }, [feedback]);
 
@@ -58,7 +63,7 @@ export default function Testemonial() {
                         <h1>What Say Our Patients!</h1>
                     </div>
                     <OwlCarousel key={carouselKey}  className="owl-carousel testimonial-carousel wow fadeInUp owl-theme" {...options}>
-                        {feedback.map(data => (<TestemonialCard key={data._id} data={data} />))}
+                        {feedback.map(data => (<TestemonialCard key={data._id} data={data} feedback={feedback} updateFeedback={updateFeedback} />))}
                     </OwlCarousel>
                     <div className='my-5'>
                         {isAuthenticated && <button className='btn commentBtn btn-primary my-5 bg-primary text-white bg-gradient' data-bs-toggle="modal" data-bs-target="#feedbackModal">Comment</button>}
