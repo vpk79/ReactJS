@@ -51,7 +51,7 @@ export default function Testemonial() {
             const id = data[0]._id;
             const index = temp.findIndex(x => x._id === id);
             temp[index] = data[0];
-            setFeedback(temp.reverse());
+            setFeedback(temp.sort((a, b) => b._createdOn - a._createdOn));
         } else  if(data.length > 1) {
             setFeedback(data.slice());
         } else {
@@ -64,7 +64,7 @@ export default function Testemonial() {
     // need two re-renders to load new items
 
     useEffect(() => {
-        console.log('feedback', feedback);
+        // console.log('feedback', feedback);
         setCarouselKey(prevKey => prevKey + 1);
     }, [feedback]);
 

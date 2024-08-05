@@ -20,7 +20,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
     const maxChars = 300;
 
     useEffect(() => {
-        console.log('newdata', data);
+        // console.log('newdata', data);
         if (data && data.editMode == true) {
             setEditMode(true);
             setFeedbackText(data.comment);
@@ -94,7 +94,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
             showSuccessToast('Thank you for your feedback!', { toastId: 'successFeedaback' });
             updateFeedback([postFeedback], false);
             closeModal();
-            console.log(postFeedback);
+            // console.log(postFeedback);
 
         } catch (error) {
             showErrorToast(error.message, { toastId: 'feedbackError' });

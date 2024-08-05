@@ -125,7 +125,7 @@ export function UserProfile() {
         <>
             {/* <UserProfileHeader /> */}
 
-            {userData && <div className="container-xxl py-5">
+            {!!userData.email && <div className="container-xxl py-5">
                 <div className="container">
                     <div className="row g-5 justify-content-center">
                         <div className="col-sm-3 wow fadeInUp" data-wow-delay="0.1s">
@@ -143,10 +143,10 @@ export function UserProfile() {
                             </div>
                             <div className="sub-menu-wrapper">
                                 <ul className="sub-menu" >
-                                    <li className={`bg-light btn ${menu === 'Profile' ? 'selected': ''}`} onClick={menuHandler}>Profile</li>
-                                    <li className={`bg-light btn ${menu === 'My Appointments' ? 'selected' : ''}`} onClick={menuHandler}>My Appointments</li>
-                                    <li className={`bg-light btn ${menu === 'Last Appointments' ? 'selected' : ''}`} onClick={menuHandler}>Last Appointments</li>
-                                    <li className={`bg-light btn ${menu === 'History' ? 'selected' : ''}`} onClick={menuHandler}>History</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'Profile' ? 'selected': ''}`} onClick={menuHandler}>Profile</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'My Appointments' ? 'selected' : ''}`} onClick={menuHandler}>My Appointments</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'Last Appointments' ? 'selected' : ''}`} onClick={menuHandler}>Last Appointments</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'History' ? 'selected' : ''}`} onClick={menuHandler}>History</li>
                                 </ul>
                             </div>
                         </div>

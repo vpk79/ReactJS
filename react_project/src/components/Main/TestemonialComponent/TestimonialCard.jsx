@@ -28,19 +28,15 @@ export default function TestemonialCard({ openFeedbackModal, data, feedback, upd
         openFeedbackModal(data);
     }
 
-    const sayclick = () => {
-        console.log('click');
-    }
-
 
     return (
         <>
-            <div className="testimonial-item text-center" onClick={sayclick}>
+            <div className="testimonial-item text-center">
                 <img
                     className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
                     src={data.img}
-                    alt="Patient 1"
-                    style={{ width: 100, height: 100 }}
+                    alt="Patient"
+                    style={{ width: 100, height: 100, objectFit: 'cover' }}
                 />
                 <div className="testimonial-text rounded text-center p-4">
                     <p>{data.comment}</p>

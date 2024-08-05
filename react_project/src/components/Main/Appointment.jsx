@@ -1,5 +1,140 @@
-export default function Appointment(){
-    return(
+import { useContext, useEffect, useRef, useState } from "react";
+import AuthContext from "../../contexts/authContext";
+import useForm from "../../hooks/useForm";
+import '@eonasdan/tempus-dominus/dist/css/tempus-dominus.css';
+
+import { TempusDominus, version } from '@eonasdan/tempus-dominus';
+import { EMPLOYERS } from "../../const/const";
+import * as request from "../../lib/request";
+import { showErrorToast } from "../../Toasts/toastsMsg";
+
+const AppoitmentFormKeys = {
+    Name: 'Name',
+    LastName: 'LastName',
+    Phone: 'Phone',
+    Date: 'Date',
+    Email: 'Email',
+    Description: 'Descritpion',
+    Departments: 'Departments',
+    Doctor: 'Doctor'
+}
+
+export default function Appointment() {
+    const intialValues = {
+        [AppoitmentFormKeys.Name]: '',
+        [AppoitmentFormKeys.LastName]: '',
+        [AppoitmentFormKeys.Phone]: '',
+        [AppoitmentFormKeys.Date]: '',
+        [AppoitmentFormKeys.Email]: '',
+        [AppoitmentFormKeys.Description]: '',
+        [AppoitmentFormKeys.Departments]: '',
+        [AppoitmentFormKeys.Doctor]: ''
+
+    };
+
+    const { isAuthenticated, appointmentSubmitHandler } = useContext(AuthContext);
+    const { values, onChange, onSubmit, setValues } = useForm(appointmentSubmitHandler, intialValues);
+    const [employers, setEmployers] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [doctors, setDoctors] = useState('');
+    const dateTimePickerRef = useRef(null);
+
+    useEffect(() => {
+        request.get(EMPLOYERS)
+            .then(data => {
+                setEmployers(data);
+                let specials = [];
+                for (const item of data) {
+                    // console.log(item['department']);
+                    specials.push(item['department'])
+                }
+                setDepartments(specials);
+            })
+            .catch(err => {
+                console.log(err.message);
+                showErrorToast(err.message, { toastId: 'requestError' })
+            });
+    }, []);
+
+    useEffect(() => {
+        // console.log(values.Departments);
+        if (values.Departments === 'Choose Specialist') {
+            setDoctors(employers);
+        } else {
+            const data = employers.filter(x => x.department === values.Departments);
+            setDoctors(data);
+        }
+
+    }, [values])
+
+
+
+    useEffect(() => {
+        if (dateTimePickerRef.current) {
+            new TempusDominus(dateTimePickerRef.current, {
+                display: {
+                    icons: {
+                        type: 'icons',
+                        time: 'fas fa-clock',
+                        date: 'fas fa-calendar',
+                        up: 'fas fa-arrow-up',
+                        down: 'fas fa-arrow-down',
+                        previous: 'fas fa-chevron-left',
+                        next: 'fas fa-chevron-right',
+                        today: 'fas fa-calendar-check',
+                        clear: 'fas fa-trash',
+                        close: 'fas fa-xmark'
+                    },
+                    sideBySide: false,
+                    calendarWeeks: false,
+                    viewMode: 'calendar',
+                    toolbarPlacement: 'bottom',
+                    keepOpen: false,
+                    buttons: {
+                        today: false,
+                        clear: false,
+                        close: false
+                    },
+                    components: {
+                        calendar: true,
+                        date: true,
+                        month: true,
+                        year: true,
+                        decades: true,
+                        clock: true,
+                        hours: true,
+                        minutes: true,
+                        seconds: false,
+                        //deprecated use localization.hourCycle = 'h24' instead
+                        useTwentyfourHour: undefined
+                    },
+                    inline: false,
+                    theme: 'auto'
+                }
+            });
+
+            dateTimePickerRef.current.addEventListener('change.td', (event) => {
+                const { date } = event.detail; // Вземете новата дата от събитието
+                event.target.value = date;
+                event.target.name = 'Date';
+                onChange(event);
+            });
+        }
+        return () => {
+            if (dateTimePickerRef.current) {
+                dateTimePickerRef.current.removeEventListener('change.td', () => { });
+            }
+        };
+
+    }, []);
+
+
+    useEffect(() => {
+        console.log(values);
+    }, [values])
+
+
+    return (
         <>
             {/* Appointment Start */}
             <div className="container-xxl py-5">
@@ -42,7 +177,17 @@ export default function Appointment(){
                         </div>
                         <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                             <div className="bg-light rounded h-100 d-flex align-items-center p-5">
-                                <form>
+                                <form onSubmit={onSubmit}>
+                                    {/* <div className="col-12 col-sm-6">
+                                        <div className="time" id="time" data-target-input="nearest">
+                                            <input
+                                                type="datetime-local"
+                                                className="form-control border-0 "
+                                                placeholder="Choose Date"
+                                                style={{ height: 55, fontSize: '1.2rem' }}
+                                            />
+                                        </div>
+                                    </div> */}
                                     <div className="row g-3">
                                         <div className="col-12 col-sm-6">
                                             <input
@@ -50,6 +195,22 @@ export default function Appointment(){
                                                 className="form-control border-0"
                                                 placeholder="Your Name"
                                                 style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.Name}
+                                                value={values[AppoitmentFormKeys.Name]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
+                                            />
+                                        </div>
+                                        <div className="col-12 col-sm-6">
+                                            <input
+                                                type="text"
+                                                className="form-control border-0"
+                                                placeholder="Your Last Name"
+                                                style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.LastName}
+                                                value={values[AppoitmentFormKeys.LastName]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
                                             />
                                         </div>
                                         <div className="col-12 col-sm-6">
@@ -58,6 +219,10 @@ export default function Appointment(){
                                                 className="form-control border-0"
                                                 placeholder="Your Email"
                                                 style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.Email}
+                                                value={values[AppoitmentFormKeys.Email]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
                                             />
                                         </div>
                                         <div className="col-12 col-sm-6">
@@ -66,56 +231,100 @@ export default function Appointment(){
                                                 className="form-control border-0"
                                                 placeholder="Your Mobile"
                                                 style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.Phone}
+                                                value={values[AppoitmentFormKeys.Phone]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
                                             />
                                         </div>
                                         <div className="col-12 col-sm-6">
                                             <select
                                                 className="form-select border-0"
                                                 style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.Departments}
+                                                value={values[AppoitmentFormKeys.Departments]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
                                             >
-                                                <option>Choose Doctor</option>
-                                                <option value={1}>Doctor 1</option>
-                                                <option value={2}>Doctor 2</option>
-                                                <option value={3}>Doctor 3</option>
+                                                <option>Choose Specialist</option>
+                                                {departments.length > 0 && departments.map((data, index) =>
+                                                    <option value={data} key={index}>{data}</option>
+                                                )}
                                             </select>
                                         </div>
                                         <div className="col-12 col-sm-6">
-                                            <div className="date" id="date" data-target-input="nearest">
-                                                <input
-                                                    type="text"
-                                                    className="form-control border-0 datetimepicker-input"
-                                                    placeholder="Choose Date"
-                                                    data-target="#date"
-                                                    data-toggle="datetimepicker"
-                                                    style={{ height: 55 }}
-                                                />
-                                            </div>
+                                            <select
+                                                className="form-select border-0"
+                                                style={{ height: 55 }}
+                                                name={AppoitmentFormKeys.Doctor}
+                                                value={values[AppoitmentFormKeys.Doctor]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
+                                            >
+                                                <option>Choose Doctor</option>
+                                                {doctors.length > 0 && doctors.map((data, index) =>
+                                                    <option value={data.name} key={index}>{data.name}
+                                                        <span><img className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src={data.imageUrl} alt="" /></span>
+                                                    </option>
+                                                )}
+                                            </select>
                                         </div>
-                                        <div className="col-12 col-sm-6">
-                                            <div className="time" id="time" data-target-input="nearest">
+
+
+                                        <div className="container col-12">
+
+                                            <div
+                                                className="input-group"
+                                                id="datetimepicker1"
+                                                ref={dateTimePickerRef}
+                                                data-td-target-input="nearest"
+                                                data-td-target-toggle="nearest"
+                                            >
                                                 <input
+                                                    id="datetimepicker1Input"
                                                     type="text"
-                                                    className="form-control border-0 datetimepicker-input"
                                                     placeholder="Choose Date"
-                                                    data-target="#time"
-                                                    data-toggle="datetimepicker"
+                                                    className="form-control border-0"
+                                                    data-td-target="#datetimepicker1"
                                                     style={{ height: 55 }}
+                                                    name={AppoitmentFormKeys.Date}
+                                                    disabled={!isAuthenticated}
+
                                                 />
+                                                <span
+                                                    className="input-group-text"
+                                                    data-td-target="#datetimepicker1"
+                                                    data-td-toggle="datetimepicker"
+                                                >
+                                                    <span className="fas fa-calendar"></span>
+                                                </span>
                                             </div>
+
                                         </div>
                                         <div className="col-12">
                                             <textarea
                                                 className="form-control border-0"
                                                 rows={5}
                                                 placeholder="Describe your problem"
-                                                defaultValue={""}
+                                                name={AppoitmentFormKeys.Description}
+                                                value={values[AppoitmentFormKeys.Description]}
+                                                onChange={onChange}
+                                                disabled={!isAuthenticated}
                                             />
                                         </div>
                                         <div className="col-12">
-                                            <button className="btn btn-primary w-100 py-3" type="submit">
+                                            <button className="btn btn-primary w-100 py-3" type="submit" disabled={!isAuthenticated}>
                                                 Book Appointment
                                             </button>
                                         </div>
+                                        {!isAuthenticated && <p className="my-4"> To use this form you must&nbsp; <span>
+                                            <button
+                                                className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#Login">Login</button></span>&nbsp;or
+                                            &nbsp;<span>
+                                                <button
+                                                    className="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#Register">Register</button></span></p>}
                                     </div>
                                 </form>
                             </div>

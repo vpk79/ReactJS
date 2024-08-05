@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@eonasdan/tempus-dominus": "^6.9.9",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "5.0",
     "counterup2": "^2.0.2",
     "default-passive-events": "^2.0.0",

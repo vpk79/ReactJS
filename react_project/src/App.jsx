@@ -43,6 +43,7 @@ const CurrentPath = () => {
 };
 
 function App() {
+
   const navigate = useNavigate();
   const [auth, setAuth] = usePersistedState({})
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -65,6 +66,10 @@ function App() {
       return
     }
   };
+
+  const appointmentSubmitHandler = (values) => {
+    console.log(values);
+  }
 
   const handleScroll = () => {
   let scrollThreshold = 0;
@@ -163,6 +168,7 @@ function App() {
   const values = {
     loginSubmitHandler,
     registerSubmitHandler,
+    appointmentSubmitHandler,
     updateHandler,
     logoutHandler,
     username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0]: 'guest',

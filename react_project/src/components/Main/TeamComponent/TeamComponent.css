@@ -89,3 +89,6 @@
     border-color: var(--primary); 
 }
 
+.team-carousel{
+    height: 480px;
+}

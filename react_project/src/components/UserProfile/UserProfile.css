@@ -149,6 +149,7 @@
     /* background-color: rgb(84, 184, 247) !important; */
     /* outline: 2px rgb(202, 177, 243) solid; */
     color: white;
+    scale: 1 !important;
 }
 
 .selected {

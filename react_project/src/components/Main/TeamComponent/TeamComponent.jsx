@@ -75,7 +75,7 @@ export default function TeamComponent() {
                         <h1>Our Experience Doctors</h1>
                     </div>
                     <div className="row g-4">
-                        <div id="carouselTeamFade" ref={carouselRef} className="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div id="carouselTeamFade" ref={carouselRef} className="carousel team-carousel slide carousel-fade" data-bs-ride="carousel">
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
                                     <div className="row">
