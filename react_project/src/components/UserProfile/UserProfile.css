@@ -37,6 +37,47 @@
     margin-bottom: -10px;
 }
 
+.calendar-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+.calendar-wrapper:hover {
+    /* transition: 0.3s; */
+    border: 5px solid rgba(166, 126, 230, 0.2);
+    border-radius: 10px;
+    
+}
+
+.calendar-wrapper:active{
+    transition: 0.3s;
+    border: none;
+    outline: 5px solid rgba(166, 126, 230, 0.2);
+}
+
+.date-wrapper {
+    font-family: 'Segoe Script', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 35%;
+    left: 28%;
+    line-height: 1;
+}
+
+.date-wrapper .date-day{
+    font-size: 42px;
+}
+.date-wrapper .date-month{
+    font-size: 28px;
+    /* margin-bottom: 30px; */
+}
+.date-wrapper .date-hour{
+    font-size: 22px;
+    transform: translateY(10px);
+   
+}
+
+
 .profile-image-wrapper {
     display: flex;
     justify-self: center;
@@ -50,6 +91,8 @@
     overflow: hidden;
 
 }
+
+
 
 
 .profile-image-wrapper img {

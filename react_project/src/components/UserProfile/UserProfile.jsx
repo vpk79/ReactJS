@@ -273,20 +273,72 @@ export function UserProfile() {
                         </div>
                         }
                         {menu === 'My Appointments' &&
-                            <div className="col-lg-9 d-flex py-2 flex-column align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
+                            <div className="col-lg-9 d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
                                 {/* <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
                                     <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
                                     <h4>You have not any appoitments yet</h4>
                                     <p className="fw-bold">Choose a doctor and make appointment now!</p>
                                     <Link to="/appointment" className="btn btn-primary">Appointment</Link>
                                 </div> */}
-                                {!showInfo && 
-                                <div className="col-sm-3 align-self-start justify-self-start" onClick={toggleShowInfo}>
-                                    <img
-                                        src="../../../public/img/calendar_frame.png" alt=""
-                                        className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                    ></img>
-                                </div>}
+                                {!showInfo &&
+                                    <div className="col-12 d-flex py-2 flex-row align-self-baseline flex-wrap">
+                                        <div className="col-sm-3 calendar-wrapper" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light p-2 mx-auto mb-4"
+                                            ></img>
+                                            <div className="date-wrapper d-flex flex-column align-items-center justify-content-center">
+                                                <p className="date-day my-0">28</p>
+                                                <p className="date-month my-0">март</p>
+                                                <p className="date-hour my-0">14:30 h</p>
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
+                                            <img
+                                                src="../../../public/img/calendar_frame.png" alt=""
+                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
+                                            ></img>
+                                        </div>
+                                    </div>
+
+
+                                }
                                 {showInfo && <div className="col-12 d-flex py-2 flex-column align-items-center justify-content-center">
                                     <div className="row col-12">
                                         <div className="col-2 border py-2">
