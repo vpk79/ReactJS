@@ -129,11 +129,6 @@ export default function Appointment() {
     }, []);
 
 
-    useEffect(() => {
-        console.log(values);
-    }, [values])
-
-
     return (
         <>
             {/* Appointment Start */}
@@ -263,8 +258,7 @@ export default function Appointment() {
                                             >
                                                 <option>Choose Doctor</option>
                                                 {doctors.length > 0 && doctors.map((data, index) =>
-                                                    <option value={data.name} key={index}>{data.name}
-                                                        <span><img className="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src={data.imageUrl} alt="" /></span>
+                                                    <option value={data.name} key={index}>Dr.&nbsp;{data.name}
                                                     </option>
                                                 )}
                                             </select>

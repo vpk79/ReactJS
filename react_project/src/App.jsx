@@ -29,7 +29,9 @@ import AuthModal from './components/Main/Modals/AuthModal';
 import Register from './components/Main/Modals/Register';
 import Login from './components/Main/Modals/Login';
 import { UserProfile } from './components/UserProfile/UserProfile';
-import FeedbackModal from './components/Main/Modals/FeedbackModal';
+import * as request from './lib/request';
+import { APPOINTMENTS } from './const/const';
+import { appointment } from './utils/handlers';
 
 
 const CurrentPath = () => {
@@ -68,7 +70,7 @@ function App() {
   };
 
   const appointmentSubmitHandler = (values) => {
-    console.log(values);
+    appointment(values, auth._id);
   }
 
   const handleScroll = () => {

@@ -1,3 +1,42 @@
+
+.backBtn {
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+    padding: 10px;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 5px rgba(0,0,0, 0.5);
+}
+
+.backBtn i {
+    font-size: 20px;
+}
+
+.btnCancel {
+    opacity: 0.8;
+}
+
+.calendarBtn {
+    margin-left: 20px;
+}
+
+.apoitments-empty {
+    gap: 20px;
+}
+
+.apoitments-empty i{
+    padding: 10px;
+    /* background-color: white; */
+}
+
+.calendar-icon {
+    font-size: 80px;
+    margin-bottom: -10px;
+}
+
 .profile-image-wrapper {
     display: flex;
     justify-self: center;

@@ -134,7 +134,7 @@ function createHandler(plugins, services) {
                         result = result.length;
                     }
 
-                    console.log('new result', result);
+                    // console.log('new result', result);
                 }
              
             }

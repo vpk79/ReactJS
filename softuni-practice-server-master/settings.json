@@ -139,6 +139,12 @@
                         "email": "lisazking@gmail.com",
                         "linkedin": "linkedin.com/in/lisazking",
                         "twitter": "twitter.com/lisazking"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
@@ -182,20 +188,26 @@
                         "email": "johnanderson@gmail.com",
                         "linkedin": "linkedin.com/in/johnanderson",
                         "twitter": "twitter.com/johnanderson"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
-               "responses": [
-                "Hello, how can i help you?",
-                "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I shall see what can I do.",
-                "Sorry, I got to go. Come, visit us and we shall help you.",
-                "Have, a nice day!",
-                "I need more information",
-                "Please, give me more details",
-                "Please, i need to hear more",
-                "Ok, try using more than 20 letters."
-            ],
+                "responses": [
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
+                    "I need more information",
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
+                ],
                 "favorities": [],
                 "_id": "02"
             },
@@ -225,6 +237,12 @@
                         "email": "jessicamiller@gmail.com",
                         "linkedin": "linkedin.com/in/jessicamiller",
                         "twitter": "twitter.com/jessicamiller"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
@@ -268,6 +286,12 @@
                         "email": "michaelroberts@gmail.com",
                         "linkedin": "linkedin.com/in/michaelroberts",
                         "twitter": "twitter.com/michaelroberts"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
@@ -284,7 +308,8 @@
                 ],
                 "favorities": [],
                 "_id": "04"
-            },"05": {
+            },
+            "05": {
                 "name": "Emily Harris",
                 "title": "M.D.",
                 "department": "Pediatrics",
@@ -310,23 +335,30 @@
                         "email": "emilyharris@gmail.com",
                         "linkedin": "linkedin.com/in/emilyharris",
                         "twitter": "twitter.com/emilyharris"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
                 "responses": [
-                "Hello, how can i help you?",
-                "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I shall see what can I do.",
-                "Sorry, I got to go. Come, visit us and we shall help you.",
-                "Have, a nice day!",
-                "I need more information",
-                "Please, give me more details",
-                "Please, i need to hear more",
-                "Ok, try using more than 20 letters."
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
+                    "I need more information",
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "05"
-            },"06": {
+            },
+            "06": {
                 "name": "David Johnson",
                 "title": "M.D.",
                 "department": "Neurology",
@@ -352,23 +384,30 @@
                         "email": "davidjohnson@gmail.com",
                         "linkedin": "linkedin.com/in/davidjohnson",
                         "twitter": "twitter.com/davidjohnson"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
-               "responses": [
-                "Hello, how can i help you?",
-                "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I shall see what can I do.",
-                "Sorry, I got to go. Come, visit us and we shall help you.",
-                "Have, a nice day!",
-                "I need more information",
-                "Please, give me more details",
-                "Please, i need to hear more",
-                "Ok, try using more than 20 letters."
-            ],
+                "responses": [
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
+                    "I need more information",
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
+                ],
                 "favorities": [],
                 "_id": "06"
-            },"07": {
+            },
+            "07": {
                 "name": "Laura Davis",
                 "title": "M.D.",
                 "department": "Ophthalmology",
@@ -394,23 +433,30 @@
                         "email": "lauradavis@gmail.com",
                         "linkedin": "linkedin.com/in/lauradavis",
                         "twitter": "twitter.com/lauradavis"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
-               "responses": [
-                "Hello, how can i help you?",
-                "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I shall see what can I do.",
-                "Sorry, I got to go. Come, visit us and we shall help you.",
-                "Have, a nice day!",
-                "I need more information",
-                "Please, give me more details",
-                "Please, i need to hear more",
-                "Ok, try using more than 20 letters."
-            ],
+                "responses": [
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
+                    "I need more information",
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
+                ],
                 "favorities": [],
                 "_id": "07"
-            },"08": {
+            },
+            "08": {
                 "name": "James Williams",
                 "title": "M.D.",
                 "department": "Surgery",
@@ -436,25 +482,31 @@
                         "email": "jameswilliams@gmail.com",
                         "linkedin": "linkedin.com/in/jameswilliams",
                         "twitter": "twitter.com/jameswilliams"
+                    },
+                    "cabinet": {
+                        "city": "Stara Zagora",
+                        "address": "str. Tzar Ivan Shishman 81, fl.1",
+                        "days": "Monday, Wednesday, Friday",
+                        "time": "8:30 - 13:30"
                     }
                 },
                 "comments": [],
                 "responses": [
-                "Hello, how can i help you?",
-                "Please, describe your problem here.",
-                "I undestand, please, make an appointment and I shall see what can I do.",
-                "Sorry, I got to go. Come, visit us and we shall help you.",
-                "Have, a nice day!",
-                "I need more information",
-                "Please, give me more details",
-                "Please, i need to hear more",
-                "Ok, try using more than 20 letters."
+                    "Hello, how can i help you?",
+                    "Please, describe your problem here.",
+                    "I undestand, please, make an appointment and I shall see what can I do.",
+                    "Sorry, I got to go. Come, visit us and we shall help you.",
+                    "Have, a nice day!",
+                    "I need more information",
+                    "Please, give me more details",
+                    "Please, i need to hear more",
+                    "Ok, try using more than 20 letters."
                 ],
                 "favorities": [],
                 "_id": "08"
             }
         },
-        "comments": [],          
+        "comments": [],
         "records": {
             "i01": {
                 "name": "John1",
