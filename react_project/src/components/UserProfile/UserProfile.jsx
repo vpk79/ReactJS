@@ -8,8 +8,11 @@ import { uploadImage } from "../../services/imageUpload";
 import { showErrorToast, showSuccessToast } from "../../Toasts/toastsMsg";
 import { delay } from "../../utils/utils";
 import * as request from "../../lib/request";
-import { APPOINTMENTS } from "../../const/const";
+import { APPOINTMENTS, EMPLOYERS } from "../../const/const";
 import { Link } from "react-router-dom";
+import AppointmentInfo from "./ApoitmentInfo";
+import AppointmentsCard from "./AppointmentsCard";
+
 
 export function UserProfile() {
     const { updateHandler, userId } = useContext(AuthContext);
@@ -20,6 +23,8 @@ export function UserProfile() {
     const [menu, setMenu] = useState('Profile')
     const [appointments, setAppointments] = useState([]);
     const [showInfo, setShowInfo] = useState(false);
+    const [employerData, setEmployerData] = useState([]);
+    const [doctorName, setDoctorName] = useState('');
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -35,6 +40,25 @@ export function UserProfile() {
         loadAppointments();
     }, [])
 
+    useEffect(() => {
+        if (showInfo && !!doctorName) {
+            try {
+                const getEmployersData = async () => {
+                    const data = await request.get(`${EMPLOYERS}?where=name%3D%22${doctorName}%22`);
+                    console.log(data);
+                    setEmployerData(data);
+                }
+                getEmployersData();
+            } catch (error) {
+                showErrorToast(error.message, { toastId: 'getEmployerError' })
+            }
+
+        }
+    }, [showInfo, doctorName])
+
+
+
+    // handle edit profile data
     const editModeHandle = (e) => {
         e.preventDefault();
         setEditMode(true);
@@ -69,7 +93,7 @@ export function UserProfile() {
         e.preventDefault();
         setUserData((state) => ({ ...state, ...tempData }));
         setEditMode(false);
-        console.log(userData);
+        // console.log(userData);
     }
 
     const handleFileChange = (e) => {
@@ -111,6 +135,13 @@ export function UserProfile() {
 
     const toggleShowInfo = () => {
         setShowInfo(!showInfo);
+    }
+
+    const changeDoctorName = (name) => {
+        console.log(name);
+        if (!!name) {
+            setDoctorName(name);
+        }
     }
 
     // form submit
@@ -282,127 +313,22 @@ export function UserProfile() {
                                 </div> */}
                                 {!showInfo &&
                                     <div className="col-12 d-flex py-2 flex-row align-self-baseline flex-wrap">
-                                        <div className="col-sm-3 calendar-wrapper" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light p-2 mx-auto mb-4"
-                                            ></img>
-                                            <div className="date-wrapper d-flex flex-column align-items-center justify-content-center">
-                                                <p className="date-day my-0">28</p>
-                                                <p className="date-month my-0">март</p>
-                                                <p className="date-hour my-0">14:30 h</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-sm-3 align-self-baseline justify-self-start" onClick={toggleShowInfo}>
-                                            <img
-                                                src="../../../public/img/calendar_frame.png" alt=""
-                                                className="img-fluid bg-light  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
+                                        {appointments && appointments.map((data, index) =>
+                                            <AppointmentsCard
+                                                key={index}
+                                                data={data}
+                                                toggleShowInfo={toggleShowInfo}
+                                                changeDoctorName={changeDoctorName}>
+                                            </AppointmentsCard>
+                                        )}
                                     </div>
-
-
                                 }
-                                {showInfo && <div className="col-12 d-flex py-2 flex-column align-items-center justify-content-center">
-                                    <div className="row col-12">
-                                        <div className="col-2 border py-2">
-                                            <button onClick={toggleShowInfo} className="btn btn-secondary btn-sm backBtn">
-                                                <i class="fas fa-times"></i></button>
-                                            <p className="fs-1 my-0 btn calendarBtn"><i className="far fa-calendar-alt"></i></p>
-                                            <p className="py-0 fw-bold">Change date</p>
-                                        </div>
-                                        <div className="col-4 border py-2 d-flex flex-column justify-content-center">
-                                            <p className="my-2">Час в кабинета:</p>
-                                            <h6>Вторник, 26 март 2024, 16:00</h6>
-
-                                        </div >
-                                        <div className="col-6 border d-flex justify-content-between py-2">
-                                            <div className="d-flex flex-column justify-content-center">
-                                                <p className="my-2">Оставащо време:</p>
-                                                <h6>4 дена и 12 часа</h6>
-                                            </div>
-                                            <div>
-                                                <button className="btn btn-sm btn-secondary btnCancel">Отмяна на часа</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row col-12">
-                                        <div className="col-2 border d-flex flex-column justify-content-center align-items-center">
-                                            <img
-                                                src="/img/team-1.jpg" alt=""
-                                                className="img-fluid  p-2 mx-auto mb-4"
-                                            ></img>
-                                        </div>
-                                        <div className="col-4 border d-flex flex-column justify-content-center align-items-center">
-                                            <h6>Д-р Стоянова</h6>
-                                            <p>Дентален специалист</p>
-                                        </div >
-                                        <div className="col-6 border">
-                                            <div>
-                                                <p className="my-1 text-decoration-underline">Кабинет:</p>
-                                                <h6>str. Tzar Ivan Shishman 81, fl.1</h6>
-                                            </div>
-                                            <div className="">
-                                                <p className="my-1 text-decoration-underline">Работно време:</p>
-                                                <p className="my-1 fw-bold text-center">Monday Wednesday Friday</p>
-                                                <h6 className="text-center">8:30 - 13:30</h6>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div className="row col-12 ">
-                                        <div className="col-2 border d-flex flex-column justify-content-center align-items-center">
-                                            <img
-                                                src={userData.imageurl} alt=""
-                                                className="img-fluid p-0 mx-auto"
-                                            ></img>
-                                        </div>
-                                        <div className="col-4 border d-flex flex-column justify-content-center align-items-center">
-                                            <h6>Patient:</h6>
-                                            <p>{userData.name}&nbsp;&nbsp;{userData.lastname}</p>
-                                        </div >
-                                        <div className="col-6 border py-2 d-flex flex-column justify-content-center align-items-center">
-                                            <h6>Complaints:</h6>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel facilis nemo quas quibusdam accusamus unde vero autem totam modi est?</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                {showInfo && employerData.length > 0 &&
+                                    <AppointmentInfo
+                                        employerData={employerData}
+                                        toggleShowInfo={toggleShowInfo}
+                                        userData={userData}
+                                    ></AppointmentInfo>
                                 }
                             </div>
 

@@ -7,6 +7,7 @@ import { TempusDominus, version } from '@eonasdan/tempus-dominus';
 import { EMPLOYERS } from "../../const/const";
 import * as request from "../../lib/request";
 import { showErrorToast } from "../../Toasts/toastsMsg";
+import { Link } from "react-router-dom";
 
 const AppoitmentFormKeys = {
     Name: 'Name',
@@ -311,6 +312,7 @@ export default function Appointment() {
                                                 Book Appointment
                                             </button>
                                         </div>
+                                        {isAuthenticated && <p><i class="text-primary fs-4 fas fa-info-circle"></i> You can check your apointments in your <Link to="/userProfile">profile</Link>.</p>}
                                         {!isAuthenticated && <p className="my-4"> To use this form you must&nbsp; <span>
                                             <button
                                                 className="btn btn-primary btn-sm" data-bs-toggle="modal"
