@@ -14,7 +14,7 @@ import { LoadSpinner } from '../../../assets/Spinners/LoadSpinner';
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
-    console.log(data);
+    // console.log(data);
 
     const { isAuthenticated, email, userId, username } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState('about'); // Default tab

@@ -16,6 +16,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
     const textRef = useRef(null);
     const modalRef = useRef(null);
 
+    // console.log(data);
     const minChars = 20;
     const maxChars = 300;
 
@@ -25,7 +26,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
             setEditMode(true);
             setFeedbackText(data.comment);
             setProfession(data.profession);
-            console.log(data);
+            // console.log(data);
         }
     }, [data])
 
@@ -76,7 +77,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
             editedData.comment = feedbackText;
             editedData.profession = profession;
             updateUserFeedback(editedData);
-            console.log(editedData);
+            // console.log(editedData);
         } else {
             const newFeedback = {
                 name: username,
@@ -106,8 +107,6 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
             const response = await request.patch(`${FEEDBACK}/${data._id}`, data);
             showSuccessToast('Feedback updated successfully!', { toastId: 'successFeedaback2' });
             updateFeedback([response], true);
-            delete data.editMode;
-            setEditMode(false);
             closeModal();
         } catch (error) {
             showErrorToast(error.message, { toastId: 'feedbackError2' });
@@ -143,7 +142,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
         setBtnDisabled(true);
         setFeedbackText('');
         setProfession('');
-        delete data.editMode;
+       if(data) delete data.editMode;
         setEditMode(false);
         btnClose.current.click();
     }
@@ -177,7 +176,7 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
                                 </div>
                             </div>
                             <div className={`modal-footer ${styles.feedbackFooter}`}>
-                                <div>
+                                <div className=''>
                                     <label htmlFor="profesion">*Your Profession:</label>
                                     <input
                                         type="text"
@@ -187,12 +186,14 @@ const FeedbackModal = forwardRef(({ updateFeedback, data }, ref) => {
                                         maxLength='20'
                                         value={profession}
                                         onChange={handleProfessionChange} />
+                                    <span className={!editMode ? styles.proffesionMinChars : styles.proffesionEditMinChars}>*Min 5 characters</span>
                                 </div>
+                                
                                 {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button> */}
                                 {!editMode && <button type="submit" className="btn btn-primary bg-primary text-white bg-gradient px-4" disabled={btnDisabled}>Send</button>
                                 }
                                 {editMode &&
-                                    <div className='col-12 py-2 d-flex justify-content-center'>
+                                    <div className='col-12 py-1 my-3 d-flex justify-content-center'>
                                         <button type="submit" className="btn btn-primary bg-primary mx-3 text-white bg-gradient px-4" disabled={btnDisabled}>Save</button>
                                         <button type="button" onClick={closeModal} className="btn btn-primary bg-primary text-white bg-gradient px-4" >Cancel</button>
                                     </div>}

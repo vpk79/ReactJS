@@ -23,6 +23,22 @@
     margin-left: 90px;
 }
 
+.proffesionMinChars {
+    position: absolute;
+    left: 33%;
+    bottom: 13%;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.proffesionEditMinChars {
+    position: absolute;
+    left: 33%;
+    bottom: 14.5%;
+    font-size: 13px;
+    font-style: italic;
+}
+
 .feedbackTextarea {
     resize: none;
     border: 2px groove rgb(234, 231, 255);
