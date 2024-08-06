@@ -41,7 +41,7 @@ const CurrentPath = () => {
   //   console.log('Текущ път:', location.pathname);
   // }, [location]);
 
-  return null; 
+  return null;
 };
 
 function App() {
@@ -70,36 +70,48 @@ function App() {
   };
 
   const appointmentSubmitHandler = (values) => {
+   
+    console.log(form);
     console.log(values);
     console.log(Object.values(values));
-    for(let item of Object.values(values)){
-      if(item === '' || item === 'Choose Doctor'){
-        toast.showErrorToast('You must fill all fields!',{toastId: 'errorAppointment'})
+    for (let item of Object.values(values)) {
+      if (item === '' || item === 'Choose Doctor') {
+        toast.showErrorToast('You must fill all fields!', { toastId: 'errorAppointment' })
         return;
       }
 
     }
     const currentDate = new Date();
     const selectedDate = new Date(values.Date)
+    const hour = selectedDate.getHours();
+    const minutes = selectedDate.getMinutes();
 
-    console.log(currentDate);
-    console.log(selectedDate);
-
+   
     if (selectedDate < currentDate) {
       toast.showErrorToast('You cannot make appointment with past date!', { toastId: 'errorAppointmentDate' });
       return
-    } 
+    }
+
+    if (hour < 8 || hour > 13 || hour === 8 && minutes < 30 || hour === 13 && minutes > 10) {
+      toast.showErrorToast('Incorrect hour (8.30 - 13.30) only!', { toastId: 'errorAppointmentDate' });
+      return
+    }
     appointment(values, auth._id);
+    const form = document.getElementById('appointmentForm');
+    const textarea = document.getElementById('textAreaAppointment');
+    form.reset();
+    textarea.value = '';
+    
   }
 
   const handleScroll = () => {
-  let scrollThreshold = 0;
+    let scrollThreshold = 0;
 
-  if(location.pathname == '/'){
-    scrollThreshold = 1000;
-  } else {
-    scrollThreshold = 400;
-  }
+    if (location.pathname == '/') {
+      scrollThreshold = 1000;
+    } else {
+      scrollThreshold = 400;
+    }
 
     if (window.scrollY >= scrollThreshold) {
       setIsAuthModalOpen(true);
@@ -125,7 +137,7 @@ function App() {
       // console.log('values', values);
       registerValidator(values);
       values.imageUrl = '/img/user_profile.jpg';
-      
+
       const keysToLowerCase = obj => {
         return Object.keys(obj).reduce((acc, key) => {
           acc[key.toLowerCase()] = obj[key];
@@ -147,7 +159,7 @@ function App() {
     }
   }
 
-  function updateHandler(value){
+  function updateHandler(value) {
     setAuth(value);
   }
 
@@ -192,7 +204,7 @@ function App() {
     appointmentSubmitHandler,
     updateHandler,
     logoutHandler,
-    username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0]: 'guest',
+    username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0] : 'guest',
     lastname: auth.lastname || '',
     email: auth.email,
     userId: auth._id,
@@ -220,20 +232,20 @@ function App() {
       {/* Spinner End */}
 
       <AuthContext.Provider value={values}>
-        
+
         <Topbar />
-        <Navbar handleCloseAuthModal={handleCloseAuthModal}/>
+        <Navbar handleCloseAuthModal={handleCloseAuthModal} />
         <Header />
-        
+
         <Login />
         <Register />
-          {!values.isAuthenticated && isAuthModalOpen && <AuthModal onClose={handleCloseAuthModal} />}
-        
+        {!values.isAuthenticated && isAuthModalOpen && <AuthModal onClose={handleCloseAuthModal} />}
+
         <CurrentPath />
-       
+
         <Routes>
           <Route path="/" element={<><HomePage /></>} />
-          
+
           <Route path="/userProfile" element={<AuthGuard><UserProfile /></AuthGuard>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/service" element={<AuthGuard><ServicePage /></AuthGuard>} />
@@ -246,9 +258,9 @@ function App() {
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-          
+
         <Footer />
-       
+
         <ToastContainer
           progressClassName="toastProgress"
           bodyClassName="toastBody"

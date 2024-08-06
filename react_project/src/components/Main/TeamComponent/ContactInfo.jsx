@@ -14,6 +14,8 @@ import { LoadSpinner } from '../../../assets/Spinners/LoadSpinner';
 
 
 export default function ContactInfo({ data, toggleContactForm }) {
+    console.log(data);
+
     const { isAuthenticated, email, userId, username } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState('about'); // Default tab
     const [personData, setPersonData] = useState(data);
@@ -56,7 +58,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
     useEffect(() => {
-        setPersonData(data);
+        setPersonData((state)=>({...state, ...data}));
+        return (() => setPersonData({}))
     }, [data])
 
     useEffect(() => {
@@ -606,7 +609,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
             clearTimeout(timeoutIdRef.current);
             timeoutIdRef.current = null;
         }
-        setPersonData({});
+        // setPersonData({});
         setActiveTab('about');
         setMsgHeader(false);
         setCommentHeader(false);

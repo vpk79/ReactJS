@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import AppointmentInfo from "./ApoitmentInfo";
 import AppointmentsCard from "./AppointmentsCard";
 
-
 export function UserProfile() {
     const { updateHandler, userId } = useContext(AuthContext);
     const [userData, setUserData] = useState({});
@@ -58,6 +57,10 @@ export function UserProfile() {
     }, [showInfo, doctorName])
 
 
+    const cancelAppointmentHandle = (id) => {
+        const data = appointments.filter(x=> x._id !== id);
+        setAppointments(data);
+    }
 
     // handle edit profile data
     const editModeHandle = (e) => {
@@ -76,6 +79,7 @@ export function UserProfile() {
 
         setMenu(value);
     }
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -310,12 +314,12 @@ export function UserProfile() {
 
                             <div className="col-lg-9 d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
                                 {appointments.length < 1 &&
-                                 <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
-                                    <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
-                                    <h4>You have not any appoitments yet</h4>
-                                    <p className="fw-bold">Choose a doctor and make appointment now!</p>
-                                    <Link to="/appointment" className="btn btn-primary">Appointment</Link>
-                                </div>
+                                    <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
+                                        <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
+                                        <h4>You have not any appoitments yet</h4>
+                                        <p className="fw-bold">Choose a doctor and make appointment now!</p>
+                                        <Link to="/appointment" className="btn btn-primary">Appointment</Link>
+                                    </div>
 
                                 }
                                 {!showInfo &&
@@ -326,7 +330,7 @@ export function UserProfile() {
                                                 data={data}
                                                 toggleShowInfo={toggleShowInfo}
                                                 choosedAppointment={choosedAppointment}
-                                                >
+                                            >
                                             </AppointmentsCard>
                                         )}
                                     </div>
@@ -337,14 +341,14 @@ export function UserProfile() {
                                         toggleShowInfo={toggleShowInfo}
                                         userData={userData}
                                         appointmentData={appointmentData}
+                                        cancelAppointmentHandle={cancelAppointmentHandle}
                                     ></AppointmentInfo>
                                 }
                             </div>
-
                         }
                     </div>
                 </div>
-            </div >
+            </div>
             }
         </>
     )

@@ -27,8 +27,7 @@ export default function TeamComponent() {
     }, [toggleContact]);
 
     const handleContactClick = () => {
-        toggleContact = !toggleContact;
-        setToggleContact(toggleContact);
+        setToggleContact(!toggleContact);
     }
 
     // workaround for WOW problem with carousel - elements not show up until scrolling

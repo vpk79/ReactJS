@@ -179,7 +179,7 @@ export default function Appointment() {
                         </div>
                         <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                             <div className="bg-light rounded h-100 d-flex align-items-center p-5">
-                                <form onSubmit={onSubmit}>
+                                <form onSubmit={onSubmit} id="appointmentForm">
                                     {/* <div className="col-12 col-sm-6">
                                         <div className="time" id="time" data-target-input="nearest">
                                             <input
@@ -304,6 +304,7 @@ export default function Appointment() {
                                         </div>
                                         <div className="col-12">
                                             <textarea
+                                            id="textAreaAppointment"
                                                 className="form-control border-0"
                                                 rows={5}
                                                 placeholder="Describe your problem"
