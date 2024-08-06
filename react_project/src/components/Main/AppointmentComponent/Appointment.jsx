@@ -1,13 +1,15 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import AuthContext from "../../contexts/authContext";
-import useForm from "../../hooks/useForm";
+import AuthContext from "../../../contexts/authContext";
+import useForm from "../../../hooks/useForm";
 import '@eonasdan/tempus-dominus/dist/css/tempus-dominus.css';
 
 import { TempusDominus, version } from '@eonasdan/tempus-dominus';
-import { EMPLOYERS } from "../../const/const";
-import * as request from "../../lib/request";
-import { showErrorToast } from "../../Toasts/toastsMsg";
+import { EMPLOYERS } from "../../../const/const";
+import * as request from "../../../lib/request";
+import { showErrorToast } from "../../../Toasts/toastsMsg";
 import { Link } from "react-router-dom";
+import { datePickerConfig } from "../../../utils/datePickerConfig";
+
 
 const AppoitmentFormKeys = {
     Name: 'Name',
@@ -23,7 +25,6 @@ const AppoitmentFormKeys = {
 export default function Appointment() {
 
     const { isAuthenticated, appointmentSubmitHandler, username, lastname, phone, email } = useContext(AuthContext);
-
 
     const intialValues = {
         [AppoitmentFormKeys.Name]: username || '',
@@ -42,9 +43,6 @@ export default function Appointment() {
     const [departments, setDepartments] = useState([]);
     const [doctors, setDoctors] = useState('');
     const dateTimePickerRef = useRef(null);
-
-
-
 
     useEffect(() => {
         request.get(EMPLOYERS)
@@ -74,54 +72,12 @@ export default function Appointment() {
 
     }, [values])
 
-
-
     useEffect(() => {
         if (dateTimePickerRef.current) {
-            new TempusDominus(dateTimePickerRef.current, {
-                display: {
-                    icons: {
-                        type: 'icons',
-                        time: 'fas fa-clock',
-                        date: 'fas fa-calendar',
-                        up: 'fas fa-arrow-up',
-                        down: 'fas fa-arrow-down',
-                        previous: 'fas fa-chevron-left',
-                        next: 'fas fa-chevron-right',
-                        today: 'fas fa-calendar-check',
-                        clear: 'fas fa-trash',
-                        close: 'fas fa-xmark'
-                    },
-                    sideBySide: false,
-                    calendarWeeks: false,
-                    viewMode: 'calendar',
-                    toolbarPlacement: 'bottom',
-                    keepOpen: false,
-                    buttons: {
-                        today: false,
-                        clear: false,
-                        close: false
-                    },
-                    components: {
-                        calendar: true,
-                        date: true,
-                        month: true,
-                        year: true,
-                        decades: true,
-                        clock: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: false,
-                        //deprecated use localization.hourCycle = 'h24' instead
-                        useTwentyfourHour: undefined
-                    },
-                    inline: false,
-                    theme: 'auto'
-                }
-            });
+            new TempusDominus(dateTimePickerRef.current, datePickerConfig);
 
             dateTimePickerRef.current.addEventListener('change.td', (event) => {
-                const { date } = event.detail; // Вземете новата дата от събитието
+                const { date } = event.detail; 
                 event.target.value = date;
                 event.target.name = 'Date';
                 onChange(event);

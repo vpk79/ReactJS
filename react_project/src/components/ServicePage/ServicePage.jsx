@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Appointment from "../Main/Appointment";
+import Appointment from "../Main/AppointmentComponent/Appointment";
 import ServiceHeader from "./ServiceHeader";
 import ServiceComponent from "../Main/ServiceComponent/ServiceComponent";
 import Testemonial from "../Main/TestemonialComponent/Testimonial";
