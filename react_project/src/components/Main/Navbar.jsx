@@ -67,7 +67,7 @@ export default function Navbar({handleCloseAuthModal}) {
                                     Feature
                                 </NavLink>
                                 <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/team">
-                                    Our Doctor
+                                    Our Doctors
                                 </NavLink>
                                 <NavLink className={({ isActive }) => isActive ? "dropdown-item active" : "dropdown-item"} to="/appointment">
                                     Appointment

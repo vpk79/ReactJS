@@ -1,4 +1,3 @@
-import UserProfileHeader from "./UserProfileHeader";
 import './UserProfile.css'
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/authContext";
@@ -58,7 +57,7 @@ export function UserProfile() {
 
 
     const cancelAppointmentHandle = (id) => {
-        const data = appointments.filter(x=> x._id !== id);
+        const data = appointments.filter(x => x._id !== id);
         setAppointments(data);
     }
 
@@ -347,6 +346,91 @@ export function UserProfile() {
                                 }
                             </div>
                         }
+
+                        {menu === 'Messages' &&
+                            <div className="col-lg-9 border d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
+                                <div className='messages-header col-12 border row'>
+                                    <div className='col-6'>
+                                        <span className='col-2 mx-3 d-inline-block'>
+                                            <input type="checkbox" />
+                                        </span>
+                                        <span className='col-2 mx-n4 d-inline-block'><i className="far fa-envelope-open"></i></span>
+                                        <span className='col-1 mx-5 d-inline-block'><button><i className="fas fa-sync-alt"></i></button></span>
+                                        <span className='col-2 d-inline-block'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
+
+                                    </div>
+                                    <div className='col-6'>
+                                        <span className='col-2 d-inline-block'><button className="btn btn-secondary btn-sm">Sent</button></span>
+                                        <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Received</button></span>
+                                        <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Unreaded</button></span>
+                                    </div>
+                                   
+                                </div >
+                                <div className='messages row col-12'>
+                                    <ul className='col-12 border messages-container'>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+                                        <li
+                                            className='col-12 d-block border'>
+                                            <input type="checkbox" className='col-1' />
+                                            <span className='col-1 d-inline-block'>
+                                                <i className="far fa-envelope"></i></span>
+                                            <span className='col-3 d-inline-block'>Потребител</span>
+                                            <span className='col-6 d-inline-block'>Заглавие</span>
+                                            <span className='col-1 d-inline-block'>Дата</span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <h6>Messages</h6>
+
+
+
+                            </div>}
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import './ContactInfo.css'
 import AuthContext from '../../../contexts/authContext';
 import sendSound from '../../../media/sendMsg.mp3'
 import receiveSound from '../../../media/receiveMsg.mp3'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { showErrorToast, showSuccessToast } from '../../../Toasts/toastsMsg';
 import * as utils from '../../../utils/utils';
 import * as commentsService from '../../../services/commentsService';
@@ -13,7 +13,7 @@ import { ConfirmToast } from 'react-confirm-toast'
 import { LoadSpinner } from '../../../assets/Spinners/LoadSpinner';
 
 
-export default function ContactInfo({ data, toggleContactForm }) {
+export default function ContactInfo({ data }) {
     // console.log(data);
 
     const { isAuthenticated, email, userId, username } = useContext(AuthContext);
@@ -40,6 +40,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
     const [showArrow, setShowArrow] = useState(false);
     const [spinner, setSpinner] = useState(true);
+    const navigate = useNavigate();
 
     const msgAreaRef = useRef(null);
     const commentRef = useRef(null);
@@ -58,7 +59,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
     useEffect(() => {
-        setPersonData((state)=>({...state, ...data}));
+        setPersonData((state) => ({ ...state, ...data }));
         return (() => setPersonData({}))
     }, [data])
 
@@ -617,7 +618,6 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setMoreInfoCounter(5);
         setComments([]);
         setPosting(false);
-        toggleContactForm();
         setEditPost(false);
         setShowArrow(false);
         setRemainingChars(MAX_CHAR_COUNT)
@@ -632,6 +632,11 @@ export default function ContactInfo({ data, toggleContactForm }) {
         setRemainingChars(MAX_CHAR_COUNT - newText.length);
 
     };
+
+    const navigateHandler = (path) => {
+        clearForm();
+        navigate(`/${path}`);
+    }
 
 
     // handle backdrop close
@@ -667,8 +672,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                         <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                         <p className='person-department'>{personData.department}</p>
                                         <div className='left-btn-container'>
-                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                            <button type="button" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
+                                            <button onClick={() => navigateHandler('Favorites')} type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                            <button onClick={() => navigateHandler('Appointment')} type="button" data-bs-dismiss="modal" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
                                             {showArrow && <div className='arrow-wrapper'>
                                                 <img src="../../../../public/img/arrow.gif" alt="" />
                                             </div>}
@@ -708,7 +713,7 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                     </div>
 
                                     <div className="close-modal">
-                                        <button type="button" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" id="btnClose" onClick={clearForm} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                 </div>
                             )
@@ -723,8 +728,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             </div>
                                             <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                             <p className='person-department'>{personData.department}</p>
-                                            <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                            <button type="button" className="btn btn-primary btn-sm appointment">Appointment</button>
+                                            <button onClick={() => navigateHandler('Favorites')} type="button" className="btn btn-primary btn-sm add-to-favorities" data-bs-dismiss="modal">Add to Favorities</button>
+                                            <button onClick={() => navigateHandler('Appointment')} type="button" className="btn btn-primary btn-sm appointment" data-bs-dismiss="modal">Appointment</button>
                                         </div>
 
                                         <div className="comments-wrapper">
@@ -799,8 +804,8 @@ export default function ContactInfo({ data, toggleContactForm }) {
                                             <div className='person-name-wrapper'>
                                                 <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                                 <p className='person-department'>{personData.department}</p>
-                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                                <button type="button" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
+                                                <button onClick={() => navigateHandler('Favorites')}  type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                                <button onClick={() => navigateHandler('Appointment')}  type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
                                             </div>
                                             <div className="image-section">
                                                 <div className="image-wrapper">

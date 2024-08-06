@@ -1,8 +1,6 @@
 import { showErrorToast, showSuccessToast } from "../Toasts/toastsMsg";
-import { APPOINTMENTS } from "../const/const";
+import { APPOINTMENTS, MAILS } from "../const/const";
 import * as request from "../lib/request";
-import { loginValidator } from "../services/validators";
-
 
 export const appointment = async (values, userId) => {
 
@@ -26,8 +24,10 @@ export const appointment = async (values, userId) => {
     } catch (error) {
         showErrorToast(error.message, {toastId: 'appointmentError2'})
     }
-  
+}
 
-    // console.log(values);
-    // console.log(loadData);
+export const contactUs = async(values) => {
+
+    const response = await request.post(MAILS, values);
+    console.log(response);
 }

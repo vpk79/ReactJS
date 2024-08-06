@@ -1,14 +1,13 @@
-
 .backBtn {
-   width: 20px;
-   height: 20px;
-   border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
     padding: 10px;
     opacity: 0.8;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 0 5px rgba(0,0,0, 0.5);
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .backBtn i {
@@ -22,7 +21,7 @@
 .calendarBtn {
     margin-left: 10px;
     /* margin-bottom: 20px; */
-  
+
 }
 
 .calendarBtn:hover {
@@ -34,7 +33,7 @@
     gap: 20px;
 }
 
-.apoitments-empty i{
+.apoitments-empty i {
     padding: 10px;
     /* background-color: white; */
 }
@@ -48,14 +47,15 @@
     position: relative;
     cursor: pointer;
 }
+
 .calendar-wrapper:hover {
     /* transition: 0.3s; */
     border: 5px solid rgba(166, 126, 230, 0.2);
     border-radius: 10px;
-    
+
 }
 
-.calendar-wrapper:active{
+.calendar-wrapper:active {
     transition: 0.3s;
     border: none;
     outline: 5px solid rgba(166, 126, 230, 0.2);
@@ -71,20 +71,22 @@
     line-height: 1;
 }
 
-.date-wrapper .date-day{
+.date-wrapper .date-day {
     font-size: 42px;
 }
-.date-wrapper .date-month{
+
+.date-wrapper .date-month {
     font-size: 28px;
     /* margin-bottom: 30px; */
 }
-.date-wrapper .date-hour{
+
+.date-wrapper .date-hour {
     font-size: 22px;
     transform: translateY(10px);
-   
+
 }
 
-.more-info-btn{
+.more-info-btn {
     font-size: 12px;
 }
 
@@ -257,10 +259,11 @@
 }
 
 .editBtn:hover {
-    background-color: rgb(66, 63, 226)!important;
+    background-color: rgb(66, 63, 226) !important;
     transition: 0.5s;
     scale: 1.1;
 }
+
 .editBtn:active {
     transition: 0.5s;
     scale: 1;
@@ -268,4 +271,23 @@
 
 .wrapper {
     gap: 15px;
+}
+
+.messages-container {
+    list-style: none;
+    padding: 0;
+    margin-top: 2px
+}
+
+.messages-container li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    height: 60px;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 15px;
+background-color: #FFDEE9;
+    background-image: linear-gradient(0deg, #FFDEE9 0%, #def5f5 9%, #ffffff 80%);
 }

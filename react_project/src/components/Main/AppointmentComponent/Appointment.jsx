@@ -278,7 +278,7 @@ export default function Appointment() {
                                                 Book Appointment
                                             </button>
                                         </div>
-                                        {isAuthenticated && <p><i className="text-primary fs-4 fas fa-info-circle"></i> You can check your apointments in your <Link to="/userProfile">profile</Link>.</p>}
+                                        {isAuthenticated && <p className="mt-0" style={{fontSize: '18px', paddingTop: '20px', marginBottom: '-20px'}}><i className="text-primary fs-6 fas fa-info-circle"></i> You can check your appointments in your <Link to="/userProfile">profile</Link>.</p>}
                                         {!isAuthenticated && <p className="my-4"> To use this form you must&nbsp; <span>
                                             <button
                                                 className="btn btn-primary btn-sm" data-bs-toggle="modal"

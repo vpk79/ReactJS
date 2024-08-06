@@ -35,7 +35,7 @@ export function registerValidator(values) {
             }
         }
         if (validatedValues[item] && validatedValues[item].value === values[item] && validatedValues[item].validated && result === true) {
-            console.log(`${item} ---> passed`);
+            // console.log(`${item} ---> passed`);
             continue;
         } else {
             result = false;
@@ -111,7 +111,7 @@ export function cityValidator(value) {
 export function DateValidator(value) {
 
     let [day, month, year] = value.split('/');
-    console.log(day, month, year);
+    // console.log(day, month, year);
     if (Number(day) < 1 || Number(day) > 31) {
         error = "Day is invalid(1-31)"
     } else if (Number(month) < 1 || Number(month) > 12) {

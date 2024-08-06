@@ -1,7 +1,29 @@
-import { Link } from "react-router-dom";
-import ContactHeader from "./ContactHeader";
+import { useContext } from "react";
+import AuthContext from "../../contexts/authContext";
+import useForm from "../../hooks/useForm";
+
+const ContactFormKeys = {
+    Name: 'Name',
+    Email: 'Email',
+    Subject: 'Subject',
+    Message: 'Message'
+}
 
 export default function ContactPage() {
+
+    const { isAuthenticated, contactUsHandler, username, email } = useContext(AuthContext);
+
+    const intialValues = {
+        [ContactFormKeys.Name]: username || '',
+        [ContactFormKeys.Email]: email || '',
+        [ContactFormKeys.Subject]: '',
+        [ContactFormKeys.Message]: '',
+    };
+
+    const { values, onChange, onSubmit, setValues } = useForm(contactUsHandler, intialValues);
+
+
+
     return (
         <>
             {/* Page Header Start */}
@@ -60,13 +82,8 @@ export default function ContactPage() {
                                     Contact Us
                                 </p>
                                 <h1 className="mb-4">Have Any Query? Please Contact Us!</h1>
-                                <p className="mb-4">
-                                    The contact form is currently inactive. Get a functional and
-                                    working contact form with Ajax &amp; PHP in a few minutes. Just
-                                    copy and paste the files, add a little code and you're done.{" "}
-                                    <Link to="https://htmlcodex.com/contact-form">Download Now</Link>.
-                                </p>
-                                <form>
+                               
+                                <form onSubmit={onSubmit}>
                                     <div className="row g-3">
                                         <div className="col-md-6">
                                             <div className="form-floating">
@@ -75,6 +92,10 @@ export default function ContactPage() {
                                                     className="form-control"
                                                     id="name"
                                                     placeholder="Your Name"
+                                                    name={ContactFormKeys.Name}
+                                                    value={values[ContactFormKeys.Name]}
+                                                    onChange={onChange}
+                                                    disabled={!isAuthenticated}
                                                 />
                                                 <label htmlFor="name">Your Name</label>
                                             </div>
@@ -86,6 +107,10 @@ export default function ContactPage() {
                                                     className="form-control"
                                                     id="email"
                                                     placeholder="Your Email"
+                                                    name={ContactFormKeys.Email}
+                                                    value={values[ContactFormKeys.Email]}
+                                                    onChange={onChange}
+                                                    disabled={!isAuthenticated}
                                                 />
                                                 <label htmlFor="email">Your Email</label>
                                             </div>
@@ -97,6 +122,10 @@ export default function ContactPage() {
                                                     className="form-control"
                                                     id="subject"
                                                     placeholder="Subject"
+                                                    name={ContactFormKeys.Subject}
+                                                    value={values[ContactFormKeys.Subject]}
+                                                    onChange={onChange}
+                                                    disabled={!isAuthenticated}
                                                 />
                                                 <label htmlFor="subject">Subject</label>
                                             </div>
@@ -107,8 +136,12 @@ export default function ContactPage() {
                                                     className="form-control"
                                                     placeholder="Leave a message here"
                                                     id="message"
-                                                    style={{ height: 100 }}
-                                                    defaultValue={""}
+                                                    style={{ height: 130 }}
+                                                    
+                                                    name={ContactFormKeys.Message}
+                                                    value={values[ContactFormKeys.Message]}
+                                                    onChange={onChange}
+                                                    disabled={!isAuthenticated}
                                                 />
                                                 <label htmlFor="message">Message</label>
                                             </div>

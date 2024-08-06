@@ -31,7 +31,7 @@ import Login from './components/Main/Modals/Login';
 import { UserProfile } from './components/UserProfile/UserProfile';
 import * as request from './lib/request';
 import { APPOINTMENTS } from './const/const';
-import { appointment } from './utils/handlers';
+import { appointment, contactUs } from './utils/handlers';
 import { appointmentValidator } from './utils/utils';
 
 
@@ -69,6 +69,11 @@ function App() {
       return
     }
   };
+
+  const contactUsHandler = (values) => {
+    contactUs(values);
+    console.log(values);
+  }
 
   const appointmentSubmitHandler = (values) => {
    
@@ -190,6 +195,7 @@ function App() {
     appointmentSubmitHandler,
     updateHandler,
     logoutHandler,
+    contactUsHandler,
     username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0] : 'guest',
     lastname: auth.lastname || '',
     email: auth.email,

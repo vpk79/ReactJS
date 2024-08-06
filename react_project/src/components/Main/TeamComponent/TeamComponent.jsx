@@ -12,7 +12,6 @@ export default function TeamComponent() {
 
     const [employers, setEmployers] = useState([]);
     const [personData, setPersonData] = useState({});
-    let [toggleContact, setToggleContact] = useState(false);
     const carouselRef = useRef(null);
 
     useEffect(() => {
@@ -24,12 +23,13 @@ export default function TeamComponent() {
                 console.log(err.message);
                 toast.showErrorToast(err.message, {toastId: 'requestError'})
             });
-    }, [toggleContact]);
 
-    const handleContactClick = () => {
-        setToggleContact(!toggleContact);
-    }
+            return (() => {
+                setEmployers([]);
+            })
+    }, []);
 
+ 
     // workaround for WOW problem with carousel - elements not show up until scrolling
     useEffect(() => {
         const handleScroll = () => {
@@ -57,7 +57,6 @@ export default function TeamComponent() {
             return;
         }
         setPersonData(data);
-        handleContactClick();
     };
 
     return (
@@ -105,7 +104,7 @@ export default function TeamComponent() {
                 </div>
             </div >
             {/* Team End */}
-            {handleContactClick && <ContactInfo data={personData} toggleContactForm={handleContactClick} />}
+            {<ContactInfo data={personData}  />}
 
         </>
     )
