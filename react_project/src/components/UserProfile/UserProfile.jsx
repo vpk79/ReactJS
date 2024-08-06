@@ -205,7 +205,8 @@ export function UserProfile() {
                                     <li className={`bg-light btn menuBtn ${menu === 'Profile' ? 'selected' : ''}`} onClick={menuHandler}>Profile</li>
                                     <li className={`bg-light btn menuBtn ${menu === 'My Appointments' ? 'selected' : ''}`} onClick={menuHandler}>My Appointments</li>
                                     <li className={`bg-light btn menuBtn ${menu === 'Last Appointments' ? 'selected' : ''}`} onClick={menuHandler}>Last Appointments</li>
-                                    <li className={`bg-light btn menuBtn ${menu === 'History' ? 'selected' : ''}`} onClick={menuHandler}>History</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'Messages' ? 'selected' : ''}`} onClick={menuHandler}>Messages</li>
+                                    <li className={`bg-light btn menuBtn ${menu === 'Favorites' ? 'selected' : ''}`} onClick={menuHandler}>Favorites</li>
                                 </ul>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import { showErrorToast } from "../Toasts/toastsMsg";
 
 export function generateUID() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -61,4 +62,30 @@ export const calculateTime = (time) => {
     seconds = seconds < 10 ? `0${seconds}` : seconds;
 
     return [days, hours, minutes, seconds]
+}
+
+
+export const appointmentValidator = (values) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(values.Date)
+    const hour = selectedDate.getHours();
+    const minutes = selectedDate.getMinutes();
+    const day = selectedDate.getDay();
+
+    if (selectedDate < currentDate) {
+        showErrorToast('You cannot make appointment with past date!', { toastId: 'errorAppointmentDate' });
+        return false;
+    } else
+
+        if (day == 0 || day == 2 || day == 4 || day == 6 || day == 7) {
+            showErrorToast('Incorrect day - (Mo, We, Fr) only!', { toastId: 'errorAppointmentDay' });
+            return false;
+        } else
+
+            if (hour < 8 || hour > 13 || hour === 8 && minutes < 30 || hour === 13 && minutes > 10) {
+                showErrorToast('Incorrect hour (8.30 - 13.30) only!', { toastId: 'errorAppointmentDate' });
+                return false;
+            } else
+
+                return true;
 }

@@ -32,6 +32,7 @@ import { UserProfile } from './components/UserProfile/UserProfile';
 import * as request from './lib/request';
 import { APPOINTMENTS } from './const/const';
 import { appointment } from './utils/handlers';
+import { appointmentValidator } from './utils/utils';
 
 
 const CurrentPath = () => {
@@ -71,9 +72,6 @@ function App() {
 
   const appointmentSubmitHandler = (values) => {
    
-    console.log(form);
-    console.log(values);
-    console.log(Object.values(values));
     for (let item of Object.values(values)) {
       if (item === '' || item === 'Choose Doctor') {
         toast.showErrorToast('You must fill all fields!', { toastId: 'errorAppointment' })
@@ -81,21 +79,9 @@ function App() {
       }
 
     }
-    const currentDate = new Date();
-    const selectedDate = new Date(values.Date)
-    const hour = selectedDate.getHours();
-    const minutes = selectedDate.getMinutes();
 
-   
-    if (selectedDate < currentDate) {
-      toast.showErrorToast('You cannot make appointment with past date!', { toastId: 'errorAppointmentDate' });
-      return
-    }
+    if(!appointmentValidator(values)) return;
 
-    if (hour < 8 || hour > 13 || hour === 8 && minutes < 30 || hour === 13 && minutes > 10) {
-      toast.showErrorToast('Incorrect hour (8.30 - 13.30) only!', { toastId: 'errorAppointmentDate' });
-      return
-    }
     appointment(values, auth._id);
     const form = document.getElementById('appointmentForm');
     const textarea = document.getElementById('textAreaAppointment');

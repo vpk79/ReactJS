@@ -258,6 +258,9 @@ export default function Appointment() {
                                             </div>
 
                                         </div>
+                                        <div className="col-12 my-0">
+                                                    <p className="my-0" style={{fontSize: '14px', fontWeight: '600'}}>* Working time is Mo We Fr (8.30 - 13.30)</p>
+                                        </div>
                                         <div className="col-12">
                                             <textarea
                                             id="textAreaAppointment"

@@ -3,7 +3,7 @@ import * as utils from '../../utils/utils.js'
 import ContactInfo from "../Main/TeamComponent/ContactInfo.jsx";
 import * as request from "../../lib/request.js";
 import { APPOINTMENTS } from "../../const/const.js";
-import { showErrorToast } from "../../Toasts/toastsMsg.js";
+import { showErrorToast, showSuccessToast } from "../../Toasts/toastsMsg.js";
 import { ConfirmToast } from "react-confirm-toast";
 import { datePickerConfig } from "../../utils/datePickerConfig.js";
 import { TempusDominus } from "@eonasdan/tempus-dominus";
@@ -42,6 +42,9 @@ export default function AppointmentInfo({ employerData, toggleShowInfo, userData
                 // console.log(date);
                 // console.log(id);
                 const newDate = { Date: date };
+                if(!utils.appointmentValidator(newDate)) return;
+                showSuccessToast('Appointmen date changed successfuly!', {toastId: 'successChangeAppointment'})
+                
                 const updateDate = async (newData) => {
                     const response = await request.patch(`${APPOINTMENTS}/${id}`, newDate);
                     setAppointmentEntries(state => ({...state, ...response}));
