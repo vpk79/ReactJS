@@ -1,6 +1,6 @@
 
 
-export default function AppointmentsCard({data, toggleShowInfo, changeDoctorName}) {
+export default function AppointmentsCard({ data, toggleShowInfo,  choosedAppointment }) {
     const newdata = data.Date.split('T');
     // console.log(data);
     // console.log(data.Date);
@@ -10,9 +10,9 @@ export default function AppointmentsCard({data, toggleShowInfo, changeDoctorName
 
     return (
         <>
-            <div className="col-sm-3 calendar-wrapper" onClick={()=> (toggleShowInfo(), changeDoctorName(data.Doctor))}>
+            <div className="col-sm-3 calendar-wrapper" onClick={() => (toggleShowInfo(),  choosedAppointment(data))}>
                 <img
-                    src="../../../public/img/calendar_frame.png" alt=""
+                    src="/img/calendar_frame.png" alt=""
                     className="img-fluid bg-light p-2 mx-auto mb-4"
                 ></img>
                 <div className="date-wrapper d-flex flex-column align-items-center justify-content-center">

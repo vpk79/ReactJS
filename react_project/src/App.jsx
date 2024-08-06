@@ -70,6 +70,25 @@ function App() {
   };
 
   const appointmentSubmitHandler = (values) => {
+    console.log(values);
+    console.log(Object.values(values));
+    for(let item of Object.values(values)){
+      if(item === '' || item === 'Choose Doctor'){
+        toast.showErrorToast('You must fill all fields!',{toastId: 'errorAppointment'})
+        return;
+      }
+
+    }
+    const currentDate = new Date();
+    const selectedDate = new Date(values.Date)
+
+    console.log(currentDate);
+    console.log(selectedDate);
+
+    if (selectedDate < currentDate) {
+      toast.showErrorToast('You cannot make appointment with past date!', { toastId: 'errorAppointmentDate' });
+      return
+    } 
     appointment(values, auth._id);
   }
 
@@ -174,10 +193,12 @@ function App() {
     updateHandler,
     logoutHandler,
     username: auth.name || auth.username ? auth.name || auth.username || auth.email.split('@')[0]: 'guest',
+    lastname: auth.lastname || '',
     email: auth.email,
     userId: auth._id,
     isAuthenticated: !!auth.accessToken,
-    profileImage: auth.imageurl
+    profileImage: auth.imageurl,
+    phone: auth.phone
   }
 
   return (

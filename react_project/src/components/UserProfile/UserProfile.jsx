@@ -25,6 +25,7 @@ export function UserProfile() {
     const [showInfo, setShowInfo] = useState(false);
     const [employerData, setEmployerData] = useState([]);
     const [doctorName, setDoctorName] = useState('');
+    const [appointmentData, setAppointmentData] = useState([]);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -32,7 +33,7 @@ export function UserProfile() {
         const loadAppointments = async () => {
             const data = await request.get(`${APPOINTMENTS}?where=_ownerId%3D%22${userId}%22`);
             setAppointments(data);
-            console.log(data);
+            // console.log(data);
         }
         setUserData(loadData);
         setTempData(loadData);
@@ -71,6 +72,7 @@ export function UserProfile() {
     function menuHandler(e) {
         e.preventDefault();
         const value = e.target.textContent;
+        setShowInfo(false);
 
         setMenu(value);
     }
@@ -137,10 +139,11 @@ export function UserProfile() {
         setShowInfo(!showInfo);
     }
 
-    const changeDoctorName = (name) => {
-        console.log(name);
-        if (!!name) {
-            setDoctorName(name);
+    const choosedAppointment = (data) => {
+        // console.log(data);
+        setAppointmentData(data);
+        if (!!data.Doctor) {
+            setDoctorName(data.Doctor);
         }
     }
 
@@ -304,13 +307,17 @@ export function UserProfile() {
                         </div>
                         }
                         {menu === 'My Appointments' &&
+
                             <div className="col-lg-9 d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
-                                {/* <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
+                                {appointments.length < 1 &&
+                                 <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
                                     <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
                                     <h4>You have not any appoitments yet</h4>
                                     <p className="fw-bold">Choose a doctor and make appointment now!</p>
                                     <Link to="/appointment" className="btn btn-primary">Appointment</Link>
-                                </div> */}
+                                </div>
+
+                                }
                                 {!showInfo &&
                                     <div className="col-12 d-flex py-2 flex-row align-self-baseline flex-wrap">
                                         {appointments && appointments.map((data, index) =>
@@ -318,7 +325,8 @@ export function UserProfile() {
                                                 key={index}
                                                 data={data}
                                                 toggleShowInfo={toggleShowInfo}
-                                                changeDoctorName={changeDoctorName}>
+                                                choosedAppointment={choosedAppointment}
+                                                >
                                             </AppointmentsCard>
                                         )}
                                     </div>
@@ -328,6 +336,7 @@ export function UserProfile() {
                                         employerData={employerData}
                                         toggleShowInfo={toggleShowInfo}
                                         userData={userData}
+                                        appointmentData={appointmentData}
                                     ></AppointmentInfo>
                                 }
                             </div>

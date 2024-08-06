@@ -21,24 +21,30 @@ const AppoitmentFormKeys = {
 }
 
 export default function Appointment() {
+
+    const { isAuthenticated, appointmentSubmitHandler, username, lastname, phone, email } = useContext(AuthContext);
+
+
     const intialValues = {
-        [AppoitmentFormKeys.Name]: '',
-        [AppoitmentFormKeys.LastName]: '',
-        [AppoitmentFormKeys.Phone]: '',
+        [AppoitmentFormKeys.Name]: username || '',
+        [AppoitmentFormKeys.LastName]: lastname || '',
+        [AppoitmentFormKeys.Phone]: phone || '',
         [AppoitmentFormKeys.Date]: '',
-        [AppoitmentFormKeys.Email]: '',
+        [AppoitmentFormKeys.Email]: email || '',
         [AppoitmentFormKeys.Description]: '',
         [AppoitmentFormKeys.Departments]: '',
         [AppoitmentFormKeys.Doctor]: ''
 
     };
 
-    const { isAuthenticated, appointmentSubmitHandler } = useContext(AuthContext);
     const { values, onChange, onSubmit, setValues } = useForm(appointmentSubmitHandler, intialValues);
     const [employers, setEmployers] = useState([]);
     const [departments, setDepartments] = useState([]);
     const [doctors, setDoctors] = useState('');
     const dateTimePickerRef = useRef(null);
+
+
+
 
     useEffect(() => {
         request.get(EMPLOYERS)
@@ -312,7 +318,7 @@ export default function Appointment() {
                                                 Book Appointment
                                             </button>
                                         </div>
-                                        {isAuthenticated && <p><i class="text-primary fs-4 fas fa-info-circle"></i> You can check your apointments in your <Link to="/userProfile">profile</Link>.</p>}
+                                        {isAuthenticated && <p><i className="text-primary fs-4 fas fa-info-circle"></i> You can check your apointments in your <Link to="/userProfile">profile</Link>.</p>}
                                         {!isAuthenticated && <p className="my-4"> To use this form you must&nbsp; <span>
                                             <button
                                                 className="btn btn-primary btn-sm" data-bs-toggle="modal"
