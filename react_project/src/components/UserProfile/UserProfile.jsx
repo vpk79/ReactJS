@@ -34,7 +34,7 @@ export function UserProfile() {
     const [showConfirm, setShowConfirm] = useState(false);
     const [removeData, setRemoveData] = useState([]);
     const [messages, setMessages] = useState([]);
-    const [openMessage, setOpenMessage] = useState([]);
+    const [openMessage, setOpenMessage] = useState(false);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -62,7 +62,7 @@ export function UserProfile() {
 
         (async () => {
             const data = await request.get(`${MAILS}?where=_ownerId%3D%22${userId}%22`)
-            if(data.length > 0) setMessages(data);
+            if (data.length > 0) setMessages(data);
         })()
 
         return (() => {
@@ -236,9 +236,11 @@ export function UserProfile() {
     }
 
     const mailHandler = (event) => {
+        if (event.target.type == 'checkbox') return;
         event.preventDefault();
         setOpenMessage(true);
         console.log(event.target.id);
+        console.log(event.target.type);
     }
 
     return (
@@ -412,24 +414,24 @@ export function UserProfile() {
                         {menu === 'Messages' &&
                             <div className="col-lg-9 border d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
                                 <h5>Messages</h5>
-                                <div className='messages-header col-12 border row'>
-                                   
-                                    <div className='col-6'>
-                                        <span className='col-2 mx-3 d-inline-block'>
-                                            <input type="checkbox" />
+                                {!openMessage && <div className='messages-header col-12 border row my-2'>
+                                    <div className='col-6 d-flex align-items-center justify-content-around'>
+                                        <span className='col-2 mx-2 d-inline-block'>
+                                            <input className='p-3 border header-checkbox' type="checkbox" />
                                         </span>
-                                        <span className='col-2 mx-n4 d-inline-block'><i className="far fa-envelope-open"></i></span>
+                                        <span className='col-2 mx-n4 d-inline-block header-envelope'><i className="far fa-envelope-open"></i></span>
                                         <span className='col-1 mx-5 d-inline-block'><button><i className="fas fa-sync-alt"></i></button></span>
                                         <span className='col-2 d-inline-block'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
 
                                     </div>
-                                    <div className='col-6'>
+                                    <div className='col-6 d-flex align-items-center justify-content-evenly'>
                                         <span className='col-2 d-inline-block'><button className="btn btn-secondary btn-sm">Sent</button></span>
                                         <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Received</button></span>
                                         <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Unreaded</button></span>
                                     </div>
 
                                 </div >
+                                }       
 
                                 <div className='messages row col-12'>
                                     <form >
@@ -441,27 +443,34 @@ export function UserProfile() {
                                                 </div>
 
                                             }
-                                       {!openMessage && messages.length > 0 && messages.map(data => (
-                                        <MessageCard key={data._id} data={data}/>
-                                       ))}
+                                            {!openMessage && messages.length > 0 && messages.map(data => (
+                                                <MessageCard key={data._id} data={data} />
+                                            ))}
                                         </ul>
                                     </form>
-                                        {openMessage && 
-                                            <div className='row border col-12'>
-                                                <div className='border row message-header col-12'>
-                                                <p>Object: Hello, my dear Sir!</p>
-                                                </div>
-                                                <div className='row col-12 message-body'>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, sed? Blanditiis at eaque nostrum soluta, architecto fugit perspiciatis omnis repellat.</p>
-                                                </div>
-                                            <div className='row col-12 message-fotter'>
-                                            <p>22.08.2024 17:12</p>
-                                                </div>
+                                    {openMessage &&
+                                    <>
+                                        <div className='col-12 d-flex justify-content-between align-items-center'>
+                                            <span onClick={()=> setOpenMessage(false)} className='btn back-arrow'><i class="fs-1 fas fa-long-arrow-alt-left"></i></span>
+                                            <span className='d-inline-block pb-n10'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
+                                        </div>
+                                        <div className='row border col-12 mx-0 px-0 my-2 wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s"'>
+                                            <div className='border row message-header col-12 px-0 mx-0 align-middle'>
+                                                <p className='my-3 fw-bold'>Object: Hello, my dear Sir!</p>
                                             </div>
-                                        }
+                                            <div className='row col-12 message-body my-4'>
+                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, sed? Blanditiis at eaque nostrum soluta, architecto fugit perspiciatis omnis repellat.</p>
+                                            </div>
+                                            <div className='row col-12  border message-footer px-0 mx-0'>
+                                                <p className='my-3 fw-bold'>22.08.2024 17:12</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                       
+                                    }
                                 </div>
 
-                             
+
 
 
 

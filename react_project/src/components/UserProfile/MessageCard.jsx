@@ -22,12 +22,12 @@ export default function MessageCard({data}){
             <li 
                 id={id}
                 className='col-12 d-block border btn'>
-                <input type="checkbox" className='col-1' id={id} />
-                <span className='col-1 d-inline-block' id={id}>
+                <input type="checkbox" className='col-1 message-checkbox' id={id} />
+                <span className='col-1 d-inline-block message-envelope' id={id}>
                     <i className="far fa-envelope" id={id}></i></span>
                 <span className='col-3 d-inline-block' id={id}>{email}</span>
-                <span className='col-5 d-inline-block' id={id}>{subject}</span>
-                <span className='col-1 d-inline-block' id={id}>{formattedDate}</span>
+                <span className='col-4 d-inline-block' id={id}>{subject}</span>
+                <span className='col-2 d-inline-block' id={id}>{formattedDate}</span>
                 <span className='col-1 d-inline-block' id={id}>{hour}:{minutes}</span>
             </li>
         </>

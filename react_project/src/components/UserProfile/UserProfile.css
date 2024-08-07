@@ -286,7 +286,7 @@
     margin: 0;
 
     font-weight: bold;
-    font-size: 15px;
+    font-size: 18px;
     background-color: #FFDEE9;
     background-image: linear-gradient(0deg, #FFDEE9 0%, #def5f5 9%, #ffffff 80%);
 }
@@ -299,6 +299,12 @@
     transition: 0s !important;
 }
 
+.message-checkbox,
+.message-envelope,
+.header-checkbox,
+.header-envelope{
+    zoom: 1.4;
+}
 
 .favorites-container {
     gap: 20px;
