@@ -503,6 +503,21 @@ export function UserProfile() {
 
                             </div>
                         }
+
+                        {menu === 'Last Appointments' &&
+
+                            <div className="col-lg-9 d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
+                                {appointments.length < 1 &&
+                                    <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
+                                        <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
+                                        <h4>Not implemented yet</h4>
+                                        <p className="fw-bold">Choose a doctor and make appointment now!</p>
+                                        <Link to="/appointment" className="btn btn-primary">Appointment</Link>
+                                    </div>
+
+                                }
+                            </div>
+                        }
                     </div>
                     {showConfirm && <ConfirmToast
                         asModal='true'

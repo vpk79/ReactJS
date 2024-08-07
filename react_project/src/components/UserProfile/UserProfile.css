@@ -96,6 +96,7 @@
     align-items: center;
     width: 220px;
     height: 220px;
+    position: relative;
     outline: 5px solid lightgray;
     border: 2px solid white;
     /* outline: 1px groove indigo; */
@@ -110,9 +111,10 @@
 .profile-image-wrapper img {
     display: block;
     max-width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
-    scale: 1.3;
+    object-position: center;
+    /* scale: 1.3; */
 
 }
 
