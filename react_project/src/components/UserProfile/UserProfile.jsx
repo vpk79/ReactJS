@@ -44,7 +44,7 @@ export function UserProfile() {
             try {
                 const getEmployersData = async () => {
                     const data = await request.get(`${EMPLOYERS}?where=name%3D%22${doctorName}%22`);
-                    console.log(data);
+                    // console.log(data);
                     setEmployerData(data);
                 }
                 getEmployersData();
@@ -172,7 +172,7 @@ export function UserProfile() {
             const sendData = JSON.stringify(data)
             const result = await authService.update(sendData);
             updateHandler(result);
-            console.log(result);
+            // console.log(result);
         } catch (error) {
             console.log(error);
             showErrorToast(err.message, { toastId: 'updateError' });

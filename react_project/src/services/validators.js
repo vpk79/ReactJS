@@ -27,7 +27,7 @@ export function registerValidator(values) {
         // console.log(validatedValues[item].validated);
         if (item === 'RepeatPassword') {
             if (values[item] === values.Password) {
-                console.log(`${item} ---> passed`);
+                // console.log(`${item} ---> passed`);
                 continue;
             } else {
                 result = false;
