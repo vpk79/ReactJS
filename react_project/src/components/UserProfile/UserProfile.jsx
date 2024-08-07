@@ -127,7 +127,6 @@ export function UserProfile() {
             ...prevState,
             [name]: value,
         }));
-        console.log(name);
     };
 
     const cancelHandler = (e) => {
@@ -243,10 +242,6 @@ export function UserProfile() {
          setMessageData({});
          refreshData();
     }
-
-    useEffect(() => {
-        console.log(checkedMails);
-    }, [checkedMails])
 
     const mailHandler =async (event) => {
         if (event.target.type == 'checkbox'){
@@ -536,7 +531,7 @@ export function UserProfile() {
                         {menu === 'Last Appointments' &&
 
                             <div className="col-lg-9 d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
-                                {appointments.length < 1 &&
+                               
                                     <div className="apoitments-empty col-12  d-flex py-2 flex-column align-items-center justify-content-center">
                                         <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
                                         <h4>Not implemented yet</h4>
@@ -544,7 +539,7 @@ export function UserProfile() {
                                         <Link to="/appointment" className="btn btn-primary">Appointment</Link>
                                     </div>
 
-                                }
+                               
                             </div>
                         }
                     </div>
