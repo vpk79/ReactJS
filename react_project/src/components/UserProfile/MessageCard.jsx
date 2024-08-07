@@ -15,7 +15,7 @@ export default function MessageCard({data}){
 
     const addLeadingZero = (num) => (num < 10 ? `0${num}` : num);
 
-    const formattedDate = `${addLeadingZero(day)}:${addLeadingZero(month)}:${year}`;
+    const formattedDate = `${addLeadingZero(day)}.${addLeadingZero(month)}.${year}`;
     
     return(
         <>
@@ -24,7 +24,7 @@ export default function MessageCard({data}){
                 className='col-12 d-block border btn'>
                 <input type="checkbox" className='col-1 message-checkbox' id={id} />
                 <span className='col-1 d-inline-block message-envelope' id={id}>
-                    <i className="far fa-envelope" id={id}></i></span>
+                    <i className={`far ${data.read ? 'fa-envelope-open' : 'fa-envelope'}`} id={id}></i></span>
                 <span className='col-3 d-inline-block' id={id}>{email}</span>
                 <span className='col-4 d-inline-block' id={id}>{subject}</span>
                 <span className='col-2 d-inline-block' id={id}>{formattedDate}</span>

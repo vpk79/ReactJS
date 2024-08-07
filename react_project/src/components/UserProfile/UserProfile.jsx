@@ -15,6 +15,7 @@ import TeamCard from '../Main/TeamComponent/TeamCard';
 import ContactInfo from '../Main/TeamComponent/ContactInfo';
 import { ConfirmToast } from 'react-confirm-toast';
 import MessageCard from './MessageCard';
+import MessageContent from './MessageContent';
 
 export function UserProfile() {
     const { isAuthenticated, updateHandler, userId } = useContext(AuthContext);
@@ -35,6 +36,8 @@ export function UserProfile() {
     const [removeData, setRemoveData] = useState([]);
     const [messages, setMessages] = useState([]);
     const [openMessage, setOpenMessage] = useState(false);
+    const [messageData, setMessageData] = useState({});
+    const [checkedMails, setCheckedMails] = useState([]);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -235,12 +238,62 @@ export function UserProfile() {
         }
     }
 
-    const mailHandler = (event) => {
-        if (event.target.type == 'checkbox') return;
+    const closeMessage = () => {
+        setOpenMessage(false);
+         setMessageData({});
+         refreshData();
+    }
+
+    useEffect(() => {
+        console.log(checkedMails);
+    }, [checkedMails])
+
+    const mailHandler =async (event) => {
+        if (event.target.type == 'checkbox'){
+            const id = event.target.id;
+            if (event.target.checked) {
+                setCheckedMails(state => ([...state, id]));
+            } else {
+                const data = checkedMails.filter(x => x != id);
+                setCheckedMails(data);
+            }
+            return;
+        } 
         event.preventDefault();
-        setOpenMessage(true);
-        console.log(event.target.id);
-        console.log(event.target.type);
+        // console.log(event.target.id);
+
+        try {
+            const id = event.target.id;
+            const loadMsg = await request.get(`${MAILS}/${id}`);
+            if(loadMsg.read == false){
+                loadMsg.read = true;
+                await request.patch(`${MAILS}/${id}`, loadMsg);
+            }
+            setMessageData(loadMsg);
+            setOpenMessage(true);
+
+        } catch (error) {
+            showErrorToast(error.message, {toastId: 'errorMails'});
+        }
+    }
+
+    const refreshData = async () => {
+        const data = await request.get(`${MAILS}?where=_ownerId%3D%22${userId}%22`)
+        setMessages(data);
+    }
+
+    const deleteMesagges = (event) => {
+        event.preventDefault();
+        if(checkedMails.length == 0) return;
+        for(let id of checkedMails){
+            try {
+                const response = request.remove(`${MAILS}/${id}`);
+            } catch (error) {
+                showErrorToast(error.message, { toastId: 'errorMail2' });
+            }
+        }
+        setCheckedMails([]);
+        refreshData();
     }
 
     return (
@@ -420,8 +473,8 @@ export function UserProfile() {
                                             <input className='p-3 border header-checkbox' type="checkbox" />
                                         </span>
                                         <span className='col-2 mx-n4 d-inline-block header-envelope'><i className="far fa-envelope-open"></i></span>
-                                        <span className='col-1 mx-5 d-inline-block'><button><i className="fas fa-sync-alt"></i></button></span>
-                                        <span className='col-2 d-inline-block'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
+                                        <span className='col-1 mx-5 d-inline-block'><button className="btn" onClick={refreshData}><i className="fas fa-sync-alt"></i></button></span>
+                                        <span onClick={deleteMesagges} className='col-2 d-inline-block'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
 
                                     </div>
                                     <div className='col-6 d-flex align-items-center justify-content-evenly'>
@@ -448,31 +501,9 @@ export function UserProfile() {
                                             ))}
                                         </ul>
                                     </form>
-                                    {openMessage &&
-                                    <>
-                                        <div className='col-12 d-flex justify-content-between align-items-center'>
-                                            <span onClick={()=> setOpenMessage(false)} className='btn back-arrow'><i class="fs-1 fas fa-long-arrow-alt-left"></i></span>
-                                            <span className='d-inline-block pb-n10'><i className="btn btn-secondary btn-sm fas fa-trash-alt"></i></span>
-                                        </div>
-                                        <div className='row border col-12 mx-0 px-0 my-2 wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s"'>
-                                            <div className='border row message-header col-12 px-0 mx-0 align-middle'>
-                                                <p className='my-3 fw-bold'>Object: Hello, my dear Sir!</p>
-                                            </div>
-                                            <div className='row col-12 message-body my-4'>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, sed? Blanditiis at eaque nostrum soluta, architecto fugit perspiciatis omnis repellat.</p>
-                                            </div>
-                                            <div className='row col-12  border message-footer px-0 mx-0'>
-                                                <p className='my-3 fw-bold'>22.08.2024 17:12</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                       
-                                    }
+                                    {openMessage && messageData &&
+                                       <MessageContent data={messageData} closeMessage={closeMessage}/>                                    }
                                 </div>
-
-
-
-
 
                             </div>}
                         {menu === 'Favorites' &&

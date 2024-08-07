@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../../contexts/authContext";
 import useForm from "../../hooks/useForm";
 
@@ -22,7 +22,14 @@ export default function ContactPage() {
 
     const { values, onChange, onSubmit, setValues } = useForm(contactUsHandler, intialValues);
 
+useEffect(()=> {
+    setValues(intialValues);
 
+    return (() => {
+        setValues(intialValues);
+
+    })
+}, [])
 
     return (
         <>
