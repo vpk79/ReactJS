@@ -65,7 +65,6 @@ export default function ContactInfo({ data }) {
             try {
                 await checkLikes(data, userId);
             } catch (error) {
-                console.log();
                 setLiked(true);
             }
         })();

@@ -288,6 +288,38 @@
     margin: 0;
     font-weight: bold;
     font-size: 15px;
-background-color: #FFDEE9;
+    background-color: #FFDEE9;
     background-image: linear-gradient(0deg, #FFDEE9 0%, #def5f5 9%, #ffffff 80%);
 }
+
+.favorites-container {
+    gap: 20px;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 50px;
+}
+
+.unlikeBtn {
+    /* position: absolute; */
+    transform: translateX(270px);
+    /* border: 1px solid black; */
+    position: relative;
+    width: 2px;
+    height: 2px;
+    color: rgba(92, 4, 255, 0.7);
+    /* z-index: 10000; */
+}
+
+.unlikeBtn:hover {
+    scale: 1 !important;
+}
+
+.unlikeBtn:focus,
+.unlikeBtn:active {
+    scale: 1 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none;
+}
+

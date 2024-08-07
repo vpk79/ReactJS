@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import './TeamComponent.css'
 import AuthContext from '../../../contexts/authContext';
+import { Link } from 'react-router-dom';
 
 export default function TeamCard({ data, delay, personDetails }) {
 
@@ -18,19 +19,19 @@ export default function TeamCard({ data, delay, personDetails }) {
                             data-bs-toggle={isAuthenticated ? "modal": ''}
                             data-bs-target={isAuthenticated ? "#contactInfoModal": ''} src={data.imageUrl} alt="" />
                         </div>
-                        <div className="team-text bg-light text-center p-4">
+                        <div className="team-text bg-light text-center p-2">
                             <h5>{data.name}</h5>
                             <p className="text-primary">{data.department}</p>
                             <div className="team-social text-center">
-                                <a className="btn btn-square" href="">
+                                <Link to="https://www.facebook.com" target='_blank' className="btn btn-square" >
                                     <i className="fab fa-facebook-f" />
-                                </a>
-                                <a className="btn btn-square" href="">
+                                </Link>
+                                <Link to="https://www.twitter.com" target='_blank' className="btn btn-square" >
                                     <i className="fab fa-twitter" />
-                                </a>
-                                <a className="btn btn-square" href="">
+                                </Link>
+                                <Link to="https://www.instagram.com" target='_blank' className="btn btn-square" >
                                     <i className="fab fa-instagram" />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

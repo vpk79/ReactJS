@@ -7,13 +7,15 @@ import { uploadImage } from "../../services/imageUpload";
 import { showErrorToast, showSuccessToast } from "../../Toasts/toastsMsg";
 import { delay } from "../../utils/utils";
 import * as request from "../../lib/request";
-import { APPOINTMENTS, EMPLOYERS } from "../../const/const";
+import { APPOINTMENTS, EMPLOYERS, FAVORITES } from "../../const/const";
 import { Link } from "react-router-dom";
 import AppointmentInfo from "./ApoitmentInfo";
 import AppointmentsCard from "./AppointmentsCard";
+import TeamCard from '../Main/TeamComponent/TeamCard';
+import ContactInfo from '../Main/TeamComponent/ContactInfo';
 
 export function UserProfile() {
-    const { updateHandler, userId } = useContext(AuthContext);
+    const { isAuthenticated, updateHandler, userId } = useContext(AuthContext);
     const [userData, setUserData] = useState({});
     const [file, setFile] = useState(null);
     const [editMode, setEditMode] = useState(false);
@@ -24,19 +26,37 @@ export function UserProfile() {
     const [employerData, setEmployerData] = useState([]);
     const [doctorName, setDoctorName] = useState('');
     const [appointmentData, setAppointmentData] = useState([]);
+    const [likedData, setLikedData] = useState([]);
+    const [personData, setPersonData] = useState({});
+    const [tempLikedData, setTempLikedData] = useState([]);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
-
-        const loadAppointments = async () => {
-            const data = await request.get(`${APPOINTMENTS}?where=_ownerId%3D%22${userId}%22`);
-            setAppointments(data);
-            // console.log(data);
-        }
         setUserData(loadData);
         setTempData(loadData);
+        (async () => {
+            const data = await request.get(`${APPOINTMENTS}?where=_ownerId%3D%22${userId}%22`);
+            setAppointments(data);
+        })();
+        (async () => {
+            const data = await request.get(`${FAVORITES}?where=_ownerId%3D%22${userId}%22`);
+            if (data.length > 0) {
+                setTempLikedData(data);
+                // console.log(data);
+                const changedId = data.map(item => {
+                    return {
+                        ...item,
+                        _id: item.liked_id
+                    };
+                });
+                setLikedData(changedId);
+            }
+        })();
 
-        loadAppointments();
+        return (() => {
+            setAppointments([]);
+            setLikedData([]);
+        })
     }, [])
 
     useEffect(() => {
@@ -177,6 +197,35 @@ export function UserProfile() {
             console.log(error);
             showErrorToast(err.message, { toastId: 'updateError' });
         }
+    }
+
+
+    const personDetails = (data) => {
+        if (!isAuthenticated) {
+            toast.showInfoToast("You must login or register first!", {
+                toastId: "login"
+            })
+            return;
+        }
+        setPersonData(data);
+    };
+
+    const unlikeHandle = async (data) => {
+        const id = data._id;
+        const getLikedId = tempLikedData.filter(x => x.liked_id == id)[0]._id;
+
+        try {
+            const removeLike = request.remove(`${FAVORITES}/${getLikedId}`);
+            const removeLiked = likedData.filter(x => x._id != id);
+            setLikedData(removeLiked);
+        } catch (error) {
+            showErrorToast(error.message, {toastId: "errorLikes"})
+        }
+
+        console.log(data);
+        console.log(data.liked_id);
+        console.log(getLikedId);
+
     }
 
     return (
@@ -364,7 +413,7 @@ export function UserProfile() {
                                         <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Received</button></span>
                                         <span className='col-3 d-inline-block'><button className="btn btn-secondary btn-sm">Unreaded</button></span>
                                     </div>
-                                   
+
                                 </div >
                                 <div className='messages row col-12'>
                                     <ul className='col-12 border messages-container'>
@@ -431,8 +480,33 @@ export function UserProfile() {
 
 
                             </div>}
+                        {menu === 'Favorites' &&
+                            <div className="col-lg-9 d-flex py-2 flex-row flex-wrap  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
+                                {likedData.length < 1 &&
+                                    <div className=" mt-5 col-12 d-flex flex-column align-items-center justify-content-center">
+                                        <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
+                                        <h4>Your favorites list is empty</h4>
+                                    </div>
+                                }
+                                {likedData.length && <h2>Your Favorite Doctors</h2>}
+                                <div className="col-lg-12  favorites-container d-flex flex-wrap wow fadeInUp bg-light rounded-3 shadow ">
+                                    {likedData.length > 0 &&
+                                        likedData.map((data, index) =>
+                                            <>
+                                                <button onClick={() => unlikeHandle(data)} className='btn unlikeBtn'><i className="fas fa-user-times" data-bs-toggle="tooltip" title="Remove"></i></button>
+                                                <TeamCard key={data._id} data={data} delay={index * 200} personDetails={personDetails}>
+                                                </TeamCard>
+                                            </>
+                                        )
+                                    }
+                                </div>
+
+
+                            </div>
+                        }
                     </div>
                 </div>
+                {<ContactInfo data={personData} />}
             </div>
             }
         </>
