@@ -488,8 +488,8 @@ export function UserProfile() {
                                                 <div className="apoitments-empty col-12 my-5 d-flex py-2 flex-column align-items-center justify-content-center">
                                                     <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
                                                     <h4>You have no any messages</h4>
+                                                    <h6>You can message us <Link to="/contact"> here</Link></h6>
                                                 </div>
-
                                             }
                                             {!openMessage && messages.length > 0 && messages.map(data => (
                                                 <MessageCard key={data._id} data={data} />
