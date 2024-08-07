@@ -13,6 +13,7 @@ import AppointmentInfo from "./ApoitmentInfo";
 import AppointmentsCard from "./AppointmentsCard";
 import TeamCard from '../Main/TeamComponent/TeamCard';
 import ContactInfo from '../Main/TeamComponent/ContactInfo';
+import { ConfirmToast } from 'react-confirm-toast';
 
 export function UserProfile() {
     const { isAuthenticated, updateHandler, userId } = useContext(AuthContext);
@@ -29,6 +30,8 @@ export function UserProfile() {
     const [likedData, setLikedData] = useState([]);
     const [personData, setPersonData] = useState({});
     const [tempLikedData, setTempLikedData] = useState([]);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [removeData, setRemoveData] = useState([]);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -199,7 +202,6 @@ export function UserProfile() {
         }
     }
 
-
     const personDetails = (data) => {
         if (!isAuthenticated) {
             toast.showInfoToast("You must login or register first!", {
@@ -219,13 +221,8 @@ export function UserProfile() {
             const removeLiked = likedData.filter(x => x._id != id);
             setLikedData(removeLiked);
         } catch (error) {
-            showErrorToast(error.message, {toastId: "errorLikes"})
+            showErrorToast(error.message, { toastId: "errorLikes" })
         }
-
-        console.log(data);
-        console.log(data.liked_id);
-        console.log(getLikedId);
-
     }
 
     return (
@@ -492,10 +489,12 @@ export function UserProfile() {
                                 <div className="col-lg-12  favorites-container d-flex flex-wrap wow fadeInUp bg-light rounded-3 shadow ">
                                     {likedData.length > 0 &&
                                         likedData.map((data, index) =>
+
                                             <>
-                                                <button onClick={() => unlikeHandle(data)} className='btn unlikeBtn'><i className="fas fa-user-times" data-bs-toggle="tooltip" title="Remove"></i></button>
+                                                <button onClick={() => (setShowConfirm(true), setRemoveData(data))} className='btn unlikeBtn'><i className="fas fa-user-times" data-bs-toggle="tooltip" title="Remove"></i></button>
                                                 <TeamCard key={data._id} data={data} delay={index * 200} personDetails={personDetails}>
                                                 </TeamCard>
+
                                             </>
                                         )
                                     }
@@ -505,6 +504,19 @@ export function UserProfile() {
                             </div>
                         }
                     </div>
+                    {showConfirm && <ConfirmToast
+                        asModal='true'
+                        className='custom-confirm-toast-theme'
+                        position='top-center'
+                        buttonNoText='No'
+                        buttonYesText='Yes'
+                        customFunction={() => unlikeHandle(removeData)}
+                        setShowConfirmToast={setShowConfirm}
+                        showConfirmToast={showConfirm}
+                        // theme='light'
+                        toastText='Are you sure?'
+                    />
+                    }
                 </div>
                 {<ContactInfo data={personData} />}
             </div>

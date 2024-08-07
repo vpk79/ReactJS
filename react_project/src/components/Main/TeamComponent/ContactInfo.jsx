@@ -671,8 +671,7 @@ export default function ContactInfo({ data }) {
 
 
     const favoritesHandler = async (data) => {
-        console.log(data);
-
+        // console.log(data);
         try {
             if (await checkLikes(data, userId)) {
                 const addLike = await request.post(url.FAVORITES, data);
