@@ -131,9 +131,12 @@ function App() {
   }, []);
 
   const registerSubmitHandler = async (values) => {
+    if(values.hasOwnProperty('imageUrl')){
+      delete values['imageUrl'];
+    }
     try {
-      // console.log('values', values);
       registerValidator(values);
+      
       values.imageUrl = '/img/user_profile.jpg';
 
       const keysToLowerCase = obj => {
@@ -153,6 +156,7 @@ function App() {
 
     } catch (error) {
       toast.showErrorToast(error.message, { toastId: "registerError" });
+
       return
     }
   }

@@ -19,8 +19,11 @@ export function loginValidator(values) {
 }
 
 export function registerValidator(values) {
+    console.log(values);
+   
     let result = true;
     for (let item of Object.keys(values)) {
+      
 
         // console.log(validatedValues[item]);
         // console.log(validatedValues[item].value === values[item]);

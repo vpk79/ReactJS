@@ -105,7 +105,7 @@ export default function AppointmentInfo({ employerData, toggleShowInfo, userData
                     </div>
                     <div className="col-4 border py-2 d-flex flex-column justify-content-center">
                         <p className="my-2">Appoitment date:</p>
-                        <h6>{utils.getDayOfWeek(dayOfWeek)}, {day} {utils.getMonth(month)} {year}, {fullHour}</h6>
+                        <h6>{utils.getDayOfWeek(dayOfWeek)}, {day} {utils.getMonth(month -1)} {year}, {fullHour}</h6>
 
                     </div >
                     <div className="col-6 border d-flex flex-wrap flex-column-reverse justify-content-between py-2">
