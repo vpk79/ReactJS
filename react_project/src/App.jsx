@@ -71,7 +71,14 @@ function App() {
   };
 
   const contactUsHandler = (values) => {
-    contactUs(values);
+    if(contactUs(values)){
+      const form = document.getElementById('messagesForm');
+      const textarea = document.getElementById('messagesArea');
+      const textInput = document.getElementById('messageSubject');
+      form.reset();
+      textarea.value = '';
+      textInput.value = '';
+    }
     console.log(values);
   }
 

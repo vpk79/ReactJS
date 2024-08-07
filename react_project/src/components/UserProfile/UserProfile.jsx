@@ -7,13 +7,14 @@ import { uploadImage } from "../../services/imageUpload";
 import { showErrorToast, showSuccessToast } from "../../Toasts/toastsMsg";
 import { delay } from "../../utils/utils";
 import * as request from "../../lib/request";
-import { APPOINTMENTS, EMPLOYERS, FAVORITES } from "../../const/const";
+import { APPOINTMENTS, EMPLOYERS, FAVORITES, MAILS } from "../../const/const";
 import { Link } from "react-router-dom";
 import AppointmentInfo from "./ApoitmentInfo";
 import AppointmentsCard from "./AppointmentsCard";
 import TeamCard from '../Main/TeamComponent/TeamCard';
 import ContactInfo from '../Main/TeamComponent/ContactInfo';
 import { ConfirmToast } from 'react-confirm-toast';
+import MessageCard from './MessageCard';
 
 export function UserProfile() {
     const { isAuthenticated, updateHandler, userId } = useContext(AuthContext);
@@ -32,6 +33,8 @@ export function UserProfile() {
     const [tempLikedData, setTempLikedData] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
     const [removeData, setRemoveData] = useState([]);
+    const [messages, setMessages] = useState([]);
+    const [openMessage, setOpenMessage] = useState([]);
 
     useEffect(() => {
         const loadData = localService.getItem('userData');
@@ -55,6 +58,12 @@ export function UserProfile() {
                 setLikedData(changedId);
             }
         })();
+
+
+        (async () => {
+            const data = await request.get(`${MAILS}?where=_ownerId%3D%22${userId}%22`)
+            if(data.length > 0) setMessages(data);
+        })()
 
         return (() => {
             setAppointments([]);
@@ -98,8 +107,9 @@ export function UserProfile() {
         e.preventDefault();
         const value = e.target.textContent;
         setShowInfo(false);
-
         setMenu(value);
+
+
     }
 
 
@@ -176,7 +186,7 @@ export function UserProfile() {
     // form submit
     function updateUserHandler(e) {
         e.preventDefault();
-        console.log(userData);
+        // console.log(userData);
         try {
             updateUser(userData);
             setEditMode(false);
@@ -223,6 +233,11 @@ export function UserProfile() {
         } catch (error) {
             showErrorToast(error.message, { toastId: "errorLikes" })
         }
+    }
+
+    const mailHandler = (event) => {
+        event.preventDefault();
+        console.log(event.target.id);
     }
 
     return (
@@ -395,7 +410,9 @@ export function UserProfile() {
 
                         {menu === 'Messages' &&
                             <div className="col-lg-9 border d-flex py-2 flex-column  align-items-center justify-content-center  wow fadeInUp bg-light rounded-3 shadow" data-wow-delay="0.1s">
+                                <h5>Messages</h5>
                                 <div className='messages-header col-12 border row'>
+                                   
                                     <div className='col-6'>
                                         <span className='col-2 mx-3 d-inline-block'>
                                             <input type="checkbox" />
@@ -412,67 +429,27 @@ export function UserProfile() {
                                     </div>
 
                                 </div >
-                                <div className='messages row col-12'>
-                                    <ul className='col-12 border messages-container'>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
-                                        <li
-                                            className='col-12 d-block border'>
-                                            <input type="checkbox" className='col-1' />
-                                            <span className='col-1 d-inline-block'>
-                                                <i className="far fa-envelope"></i></span>
-                                            <span className='col-3 d-inline-block'>Потребител</span>
-                                            <span className='col-6 d-inline-block'>Заглавие</span>
-                                            <span className='col-1 d-inline-block'>Дата</span>
-                                        </li>
 
-                                    </ul>
+                                <div className='messages row col-12'>
+                                    <form >
+                                        <ul onClick={mailHandler} className='col-12 border messages-container'>
+                                            {messages.length < 1 &&
+                                                <div className="apoitments-empty col-12 my-5 d-flex py-2 flex-column align-items-center justify-content-center">
+                                                    <p className="calendar-icon"><i className="fas fa-calendar-alt "></i></p>
+                                                    <h4>You have no any messages</h4>
+                                                </div>
+
+                                            }
+                                       {messages.length > 0 && messages.map(data => (
+                                        <MessageCard key={data._id} data={data}/>
+                                       ))}
+                                        </ul>
+                                    </form>
+
+                                   
                                 </div>
 
-                                <h6>Messages</h6>
+                             
 
 
 

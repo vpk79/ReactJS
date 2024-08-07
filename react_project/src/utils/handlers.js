@@ -27,7 +27,13 @@ export const appointment = async (values, userId) => {
 }
 
 export const contactUs = async(values) => {
-
-    const response = await request.post(MAILS, values);
-    console.log(response);
+    try {
+        values.read = false;
+        const response = await request.post(MAILS, values);
+        showSuccessToast('Message sent successfuly.', {toastId: 'successMessage'});
+        return true;
+    } catch (error) {   
+        showErrorToast(error.message, {toastId: 'errorMessage'})
+        return false;
+    }
 }

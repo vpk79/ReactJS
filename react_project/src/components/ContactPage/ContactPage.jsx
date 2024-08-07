@@ -83,7 +83,7 @@ export default function ContactPage() {
                                 </p>
                                 <h1 className="mb-4">Have Any Query? Please Contact Us!</h1>
                                
-                                <form onSubmit={onSubmit}>
+                                <form onSubmit={onSubmit} id="messagesForm">
                                     <div className="row g-3">
                                         <div className="col-md-6">
                                             <div className="form-floating">
@@ -120,7 +120,7 @@ export default function ContactPage() {
                                                 <input
                                                     type="text"
                                                     className="form-control"
-                                                    id="subject"
+                                                    id="messageSubject"
                                                     placeholder="Subject"
                                                     name={ContactFormKeys.Subject}
                                                     value={values[ContactFormKeys.Subject]}
@@ -135,7 +135,7 @@ export default function ContactPage() {
                                                 <textarea
                                                     className="form-control"
                                                     placeholder="Leave a message here"
-                                                    id="message"
+                                                    id="messagesArea"
                                                     style={{ height: 130 }}
                                                     
                                                     name={ContactFormKeys.Message}

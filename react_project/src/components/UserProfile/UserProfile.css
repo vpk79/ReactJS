@@ -99,10 +99,8 @@
     position: relative;
     outline: 5px solid lightgray;
     border: 2px solid white;
-    /* outline: 1px groove indigo; */
     border-radius: 50%;
     overflow: hidden;
-
 }
 
 
@@ -114,8 +112,6 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* scale: 1.3; */
-
 }
 
 .form-control-plaintext {
@@ -278,7 +274,7 @@
 .messages-container {
     list-style: none;
     padding: 0;
-    margin-top: 2px
+    margin-top: 12px
 }
 
 .messages-container li {
@@ -288,11 +284,21 @@
     height: 60px;
     padding: 0;
     margin: 0;
+
     font-weight: bold;
     font-size: 15px;
     background-color: #FFDEE9;
     background-image: linear-gradient(0deg, #FFDEE9 0%, #def5f5 9%, #ffffff 80%);
 }
+
+
+.messages-container li:hover {
+    border: 3px solid rgba(104, 32, 238, 0.5) !important;
+    cursor: pointer;
+    scale: 1.0 !important;
+    transition: 0s !important;
+}
+
 
 .favorites-container {
     gap: 20px;
@@ -324,4 +330,3 @@
     outline: none !important;
     box-shadow: none;
 }
-

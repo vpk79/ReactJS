@@ -1,8 +1,9 @@
 
 
 export default function AppointmentsCard({ data, toggleShowInfo,  choosedAppointment }) {
-    const newdata = data.Date.split('T');
     // console.log(data);
+    const newdata = data.Date.split('T');
+   
     // console.log(data.Date);
     // console.log(data);
     const [year, month, day] = newdata[0].split('-');
