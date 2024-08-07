@@ -11,6 +11,7 @@ import * as request from '../../../lib/request';
 import * as url from '../../../const/const'
 import { ConfirmToast } from 'react-confirm-toast'
 import { LoadSpinner } from '../../../assets/Spinners/LoadSpinner';
+import { checkLikes } from '../../../services/services';
 
 
 export default function ContactInfo({ data }) {
@@ -40,6 +41,7 @@ export default function ContactInfo({ data }) {
     const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
     const [showArrow, setShowArrow] = useState(false);
     const [spinner, setSpinner] = useState(true);
+    const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 
     const msgAreaRef = useRef(null);
@@ -55,12 +57,23 @@ export default function ContactInfo({ data }) {
     let personName = 'Dr.'
 
     if (username) userName = username;
-    // if (email) userName = email.split('@')[0]; // create username for chat
     if (personData.hasOwnProperty('name')) personName = personData.name.split(' ')[0]; // create Doctor username for chat
 
     useEffect(() => {
         setPersonData((state) => ({ ...state, ...data }));
-        return (() => setPersonData({}))
+        (async () => {
+            try {
+                await checkLikes(data, userId);
+            } catch (error) {
+                console.log();
+                setLiked(true);
+            }
+        })();
+
+        return (() => {
+            setPersonData({});
+            setLiked(false);
+        });
     }, [data])
 
     useEffect(() => {
@@ -78,7 +91,7 @@ export default function ContactInfo({ data }) {
         if (listRef.current) {
             const listItems = listRef.current.children;
             if (listItems.length > 0) {
-                console.log('focus');
+                // console.log('focus');
                 listItems[listItems.length - 1].focus();
                 listItems[listItems.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
             }
@@ -577,7 +590,7 @@ export default function ContactInfo({ data }) {
             setPosting(false);
             utils.delay(1000);
             if (doctorCounter == 2 && response.includes('appointment')) {
-                console.log('enter');
+                // console.log('enter');
                 setShowArrow(true);
             }
             if (doctorCounter >= 3) {
@@ -657,6 +670,22 @@ export default function ContactInfo({ data }) {
         };
     }, []);
 
+
+    const favoritesHandler = async (data) => {
+        console.log(data);
+
+        try {
+            if (await checkLikes(data, userId)) {
+                const addLike = await request.post(url.FAVORITES, data);
+                setLiked(true);
+                showSuccessToast('User added to your favorite list.', { toasId: 'succesFavorites' })
+            }
+        } catch (error) {
+            showErrorToast(error.message, { toastId: 'errorFavorites' });
+            return;
+        }
+    }
+
     return (
         <>
             {personData && (
@@ -672,7 +701,7 @@ export default function ContactInfo({ data }) {
                                         <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                         <p className='person-department'>{personData.department}</p>
                                         <div className='left-btn-container'>
-                                            <button onClick={() => navigateHandler('Favorites')} type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
+                                            <button onClick={() => favoritesHandler(personData)} type="button" className="btn btn-primary btn-sm add-to-favorities" disabled={liked}>{liked ? 'Already added' : 'Add to favorites'}</button>
                                             <button onClick={() => navigateHandler('Appointment')} type="button" data-bs-dismiss="modal" className={`btn btn-primary btn-sm appointment ${showArrow ? 'pressed' : ''}`}>Appointment</button>
                                             {showArrow && <div className='arrow-wrapper'>
                                                 <img src="../../../../public/img/arrow.gif" alt="" />
@@ -728,7 +757,7 @@ export default function ContactInfo({ data }) {
                                             </div>
                                             <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                             <p className='person-department'>{personData.department}</p>
-                                            <button onClick={() => navigateHandler('Favorites')} type="button" className="btn btn-primary btn-sm add-to-favorities" data-bs-dismiss="modal">Add to Favorities</button>
+                                            <button onClick={() => favoritesHandler(personData)} type="button" className="btn btn-primary btn-sm add-to-favorities" disabled={liked}>{liked ? 'Already added' : 'Add to favorites'}</button>
                                             <button onClick={() => navigateHandler('Appointment')} type="button" className="btn btn-primary btn-sm appointment" data-bs-dismiss="modal">Appointment</button>
                                         </div>
 
@@ -804,8 +833,8 @@ export default function ContactInfo({ data }) {
                                             <div className='person-name-wrapper'>
                                                 <p className='person-name'>{personData.name}&nbsp;{personData.title}</p>
                                                 <p className='person-department'>{personData.department}</p>
-                                                <button onClick={() => navigateHandler('Favorites')}  type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Add to Favorities</button>
-                                                <button onClick={() => navigateHandler('Appointment')}  type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
+                                                <button onClick={() => favoritesHandler(personData)} type="button" className="btn btn-primary btn-sm add-to-favorities" disabled={liked}>{liked ? 'Already added' : 'Add to favorites'}</button>
+                                                <button onClick={() => navigateHandler('Appointment')} type="button" data-bs-dismiss="modal" className="btn btn-primary btn-sm add-to-favorities">Make Appointment</button>
                                             </div>
                                             <div className="image-section">
                                                 <div className="image-wrapper">
