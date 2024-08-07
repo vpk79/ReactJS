@@ -237,6 +237,7 @@ export function UserProfile() {
 
     const mailHandler = (event) => {
         event.preventDefault();
+        setOpenMessage(true);
         console.log(event.target.id);
     }
 
@@ -440,13 +441,24 @@ export function UserProfile() {
                                                 </div>
 
                                             }
-                                       {messages.length > 0 && messages.map(data => (
+                                       {!openMessage && messages.length > 0 && messages.map(data => (
                                         <MessageCard key={data._id} data={data}/>
                                        ))}
                                         </ul>
                                     </form>
-
-                                   
+                                        {openMessage && 
+                                            <div className='row border col-12'>
+                                                <div className='border row message-header col-12'>
+                                                <p>Object: Hello, my dear Sir!</p>
+                                                </div>
+                                                <div className='row col-12 message-body'>
+                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, sed? Blanditiis at eaque nostrum soluta, architecto fugit perspiciatis omnis repellat.</p>
+                                                </div>
+                                            <div className='row col-12 message-fotter'>
+                                            <p>22.08.2024 17:12</p>
+                                                </div>
+                                            </div>
+                                        }
                                 </div>
 
                              
